@@ -691,5 +691,5 @@ class ReadinessCheckRemoveTag(RemoveTag):
                 TagKeys=keys)
 
 
-ReadinessCheck.filter_registry.register('marked-for-op', tags.TagActionFilter)
 ReadinessCheck.action_registry.register('mark-for-op', tags.TagDelayedAction)
+ReadinessCheck.filter_registry.register('marked-for-op', tags.TagActionFilter)

@@ -441,7 +441,6 @@ class Route53RecoveryReadinessCheckTest(BaseTest):
 
     def test_readiness_check_markop(self):
         session_factory = self.replay_flight_data("test_readiness_check_markop", region="us-west-2")
-
         p = self.load_policy(
             {
                 "name": "readiness-check-markop",
