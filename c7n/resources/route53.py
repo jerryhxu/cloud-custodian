@@ -624,7 +624,6 @@ class ReadinessCheck(QueryResourceManager):
         arn_type = 'readiness-check'
         enum_spec = ('list_readiness_checks', 'ReadinessChecks', None)
         name = id = 'ReadinessCheckName'
-        universal_taggable = object()
         global_resource = True
 
     def augment(self, readiness_checks):
