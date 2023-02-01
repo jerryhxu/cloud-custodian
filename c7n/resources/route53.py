@@ -17,6 +17,8 @@ from c7n.resources.shield import IsShieldProtected, SetShieldProtection
 from c7n.tags import RemoveTag, Tag
 from c7n.filters.related import RelatedResourceFilter
 from c7n import tags
+from c7n.filters.iamaccess import CrossAccountAccessFilter
+from c7n.resolver import ValuesFrom
 
 
 class Route53Base:
@@ -616,6 +618,9 @@ class LogConfigAssociationsFilter(Filter):
         return results
 
 
+region = 'us-west-2'
+
+
 @resources.register('readiness-check')
 class ReadinessCheck(QueryResourceManager):
 
@@ -626,8 +631,17 @@ class ReadinessCheck(QueryResourceManager):
         name = id = 'ReadinessCheckName'
         global_resource = True
 
+    def __init__(self, ctx, data):
+        # Readiness check in Amazon Route53 ARC is global feature. However,
+        # US West (N. California) Region must be specified in Route53 ARC readiness check api call.
+        # Please reference this AWS document:
+        # https://docs.aws.amazon.com/r53recovery/latest/dg/introduction-regions.html
+        ctx.options['region'] = region
+        super(ReadinessCheck, self).__init__(ctx, data)
+
     def augment(self, readiness_checks):
-        client = local_session(self.session_factory).client('route53-recovery-readiness')
+        client = local_session(self.session_factory) \
+            .client('route53-recovery-readiness', region_name=region)
         for r in readiness_checks:
             Tags = self.retry(
                 client.list_tags_for_resources,
@@ -692,3 +706,35 @@ class ReadinessCheckRemoveTag(RemoveTag):
 
 ReadinessCheck.action_registry.register('mark-for-op', tags.TagDelayedAction)
 ReadinessCheck.filter_registry.register('marked-for-op', tags.TagActionFilter)
+
+
+@ReadinessCheck.filter_registry.register('cross-account')
+class ReadinessCheckCrossAccount(CrossAccountAccessFilter):
+
+    schema = type_schema(
+        'cross-account',
+        # white list accounts
+        whitelist_from=ValuesFrom.schema,
+        whitelist={'type': 'array', 'items': {'type': 'string'}})
+    permissions = ('route53-recovery-readiness:ListCrossAccountAuthorizations',)
+
+    def process(self, resources, event=None):
+        client = local_session(self.manager.session_factory) \
+            .client('route53-recovery-readiness', region_name=region)
+        allowed_accounts = set(self.get_accounts())
+        results = []
+
+        paginator = client.get_paginator('list_cross_account_authorizations')
+        paginator.PAGE_ITERATOR_CLASS = RetryPageIterator
+        arns = paginator.paginate().build_full_result()["CrossAccountAuthorizations"]
+        for arn in arns:
+            account_id = arn.split(':', 5)[4]
+            if (account_id not in allowed_accounts):
+                results.append(account_id)
+        # Cross-account authorization in Route53 ARC is account level feature.
+        # If one account is not allowed, all resources will be considered noncompliant.
+        if (len(results) != 0):
+            for r in resources:
+                r['c7n:CrossAccountViolations'] = results
+            return resources
+        return results
