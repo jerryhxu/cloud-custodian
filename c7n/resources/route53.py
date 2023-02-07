@@ -618,7 +618,11 @@ class LogConfigAssociationsFilter(Filter):
         return results
 
 
-region = 'us-west-2'
+# Readiness check in Amazon Route53 ARC is global feature. However,
+# US West (N. California) Region must be specified in Route53 ARC readiness check api call.
+# Please reference this AWS document:
+# https://docs.aws.amazon.com/r53recovery/latest/dg/introduction-regions.html
+ARC_REGION = 'us-west-2'
 
 
 @resources.register('readiness-check')
@@ -631,17 +635,13 @@ class ReadinessCheck(QueryResourceManager):
         name = id = 'ReadinessCheckName'
         global_resource = True
 
-    def __init__(self, ctx, data):
-        # Readiness check in Amazon Route53 ARC is global feature. However,
-        # US West (N. California) Region must be specified in Route53 ARC readiness check api call.
-        # Please reference this AWS document:
-        # https://docs.aws.amazon.com/r53recovery/latest/dg/introduction-regions.html
-        ctx.options['region'] = region
-        super(ReadinessCheck, self).__init__(ctx, data)
+    def get_client(self):
+        return local_session(self.session_factory) \
+            .client('route53-recovery-readiness', region_name=ARC_REGION)
 
     def augment(self, readiness_checks):
         client = local_session(self.session_factory) \
-            .client('route53-recovery-readiness', region_name=region)
+            .client('route53-recovery-readiness', region_name=ARC_REGION)
         for r in readiness_checks:
             Tags = self.retry(
                 client.list_tags_for_resources,
@@ -720,7 +720,7 @@ class ReadinessCheckCrossAccount(CrossAccountAccessFilter):
 
     def process(self, resources, event=None):
         client = local_session(self.manager.session_factory) \
-            .client('route53-recovery-readiness', region_name=region)
+            .client('route53-recovery-readiness', region_name=ARC_REGION)
         allowed_accounts = set(self.get_accounts())
         results = []
 
