@@ -640,11 +640,9 @@ class ReadinessCheck(QueryResourceManager):
             .client('route53-recovery-readiness', region_name=ARC_REGION)
 
     def augment(self, readiness_checks):
-        client = local_session(self.session_factory) \
-            .client('route53-recovery-readiness', region_name=ARC_REGION)
         for r in readiness_checks:
             Tags = self.retry(
-                client.list_tags_for_resources,
+                self.get_client().list_tags_for_resources,
                 ResourceArn=r['ReadinessCheckArn'])['Tags']
             r['Tags'] = [{'Key': k, "Value": v} for k, v in Tags.items()]
         return readiness_checks
@@ -719,22 +717,21 @@ class ReadinessCheckCrossAccount(CrossAccountAccessFilter):
     permissions = ('route53-recovery-readiness:ListCrossAccountAuthorizations',)
 
     def process(self, resources, event=None):
-        client = local_session(self.manager.session_factory) \
-            .client('route53-recovery-readiness', region_name=ARC_REGION)
         allowed_accounts = set(self.get_accounts())
-        results = []
+        results, account_ids, found = [], [], False
 
-        paginator = client.get_paginator('list_cross_account_authorizations')
+        paginator = self.manager.get_client().get_paginator('list_cross_account_authorizations')
         paginator.PAGE_ITERATOR_CLASS = RetryPageIterator
         arns = paginator.paginate().build_full_result()["CrossAccountAuthorizations"]
+
         for arn in arns:
             account_id = arn.split(':', 5)[4]
-            if (account_id not in allowed_accounts):
-                results.append(account_id)
-        # Cross-account authorization in Route53 ARC is account level feature.
-        # If one account is not allowed, all resources will be considered noncompliant.
-        if (len(results) != 0):
+            if account_id not in allowed_accounts:
+                account_ids.append(account_id)
+                found = True
+        if (found):
             for r in resources:
-                r['c7n:CrossAccountViolations'] = results
-            return resources
+                r['c7n:CrossAccountViolations'] = account_ids
+                results.append(r)
+
         return results
