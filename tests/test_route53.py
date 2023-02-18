@@ -471,3 +471,40 @@ class Route53RecoveryReadinessCheckTest(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
         self.assertEqual(resources[0]['c7n:CrossAccountViolations'], ['222222222222'])
+
+
+class Route53RecoveryClusterTest(BaseTest):
+
+    def test_recovery_cluster_add_tag(self):
+        session_factory = self.replay_flight_data("test_recovery_cluster_add_tag",)
+        p = self.load_policy(
+            {
+                "name": "recovery-cluster-add-tag",
+                "resource": "recovery-cluster",
+                "filters": [{"tag:TestTag": "absent"}],
+                "actions": [{"type": "tag", "key": "TestTag", "value": "TestValue"}],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        client = session_factory(region="us-west-2").client("route53-recovery-control-config")
+        tags = client.list_tags_for_resource(ResourceArn=resources[0]["ClusterArn"])['Tags']
+        self.assertEqual(tags, {"TestTag": "TestValue"})
+
+    def test_recovery_cluster_remove_tag(self):
+        session_factory = self.replay_flight_data("test_recovery_cluster_remove_tag",)
+        p = self.load_policy(
+            {
+                "name": "recovery-cluster-remove-tag",
+                "resource": "recovery-cluster",
+                "filters": [{"tag:TestTag": "present"}],
+                "actions": [{"type": "remove-tag", "tags": ["TestTag"]}],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        client = session_factory(region="us-west-2").client("route53-recovery-control-config")
+        tags = client.list_tags_for_resource(ResourceArn=resources[0]["ClusterArn"])['Tags']
+        self.assertEqual(len(tags), 0)

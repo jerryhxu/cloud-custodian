@@ -735,3 +735,88 @@ class ReadinessCheckCrossAccount(CrossAccountAccessFilter):
                 results.append(r)
 
         return results
+
+
+@resources.register('recovery-cluster')
+class RecoveryCluster(QueryResourceManager):
+
+    class resource_type(TypeInfo):
+        service = 'route53-recovery-control-config'
+        arn_type = 'cluster'
+        enum_spec = ('list_clusters', 'Clusters', None)
+        name = id = 'Name'
+        global_resource = True
+
+    def get_client(self):
+        return local_session(self.session_factory) \
+            .client('route53-recovery-control-config', region_name=ARC_REGION)
+
+    def augment(self, clusters):
+        for r in clusters:
+            Tags = self.retry(
+                self.get_client().list_tags_for_resource,
+                ResourceArn=r['ClusterArn'])['Tags']
+            r['Tags'] = [{'Key': k, "Value": v} for k, v in Tags.items()]
+        return clusters
+
+
+@RecoveryCluster.action_registry.register('tag')
+class RecoveryClusterAddTag(Tag):
+    """Adds tags to a cluster
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: recovery-cluster-tag
+            resource: recovery-cluster
+            filters:
+              - "tag:DesiredTag": absent
+            actions:
+              - type: tag
+                key: DesiredTag
+                value: DesiredValue
+    """
+    permissions = ('route53-recovery-control-config:TagResource',)
+
+    def get_client(self):
+        return local_session(self.manager.session_factory) \
+            .client('route53-recovery-control-config', region_name=ARC_REGION)
+
+    def process_resource_set(self, client, clusters, tags):
+        Tags = {r['Key']: r['Value'] for r in tags}
+        for r in clusters:
+            client.tag_resource(
+                ResourceArn=r['ClusterArn'],
+                Tags=Tags)
+
+
+@RecoveryCluster.action_registry.register('remove-tag')
+class RecoveryClusterRemoveTag(RemoveTag):
+    """Remove tags from a cluster
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: recovery-cluster-remove-tag
+            resource: recovery-cluster
+            filters:
+              - "tag:ExpiredTag": present
+            actions:
+              - type: remove-tag
+                tags: ['ExpiredTag']
+    """
+    permissions = ('route53-recovery-control-config:UntagResource',)
+
+    def get_client(self):
+        return local_session(self.manager.session_factory) \
+            .client('route53-recovery-control-config', region_name=ARC_REGION)
+
+    def process_resource_set(self, client, readiness_checks, keys):
+        for r in readiness_checks:
+            client.untag_resource(
+                ResourceArn=r['ClusterArn'],
+                TagKeys=keys)
