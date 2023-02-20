@@ -781,8 +781,7 @@ class RecoveryClusterAddTag(Tag):
     permissions = ('route53-recovery-control-config:TagResource',)
 
     def get_client(self):
-        return local_session(self.manager.session_factory) \
-            .client('route53-recovery-control-config', region_name=ARC_REGION)
+        return self.manager.get_client()
 
     def process_resource_set(self, client, clusters, tags):
         Tags = {r['Key']: r['Value'] for r in tags}
@@ -812,8 +811,7 @@ class RecoveryClusterRemoveTag(RemoveTag):
     permissions = ('route53-recovery-control-config:UntagResource',)
 
     def get_client(self):
-        return local_session(self.manager.session_factory) \
-            .client('route53-recovery-control-config', region_name=ARC_REGION)
+        return self.manager.get_client()
 
     def process_resource_set(self, client, readiness_checks, keys):
         for r in readiness_checks:
