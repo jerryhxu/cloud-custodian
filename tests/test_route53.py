@@ -451,7 +451,27 @@ class Route53RecoveryReadinessCheckTest(BaseTest):
         client = session_factory(region="us-west-2").client("route53-recovery-readiness")
         tags = client.list_tags_for_resources(ResourceArn=resources[0]["ReadinessCheckArn"])['Tags']
         self.assertEqual(len(tags), 1)
-        self.assertEqual(tags, {'TestTag': 'Resource does not meet policy: notify@2022/12/29'})
+        self.assertEqual(tags, {'TestTag': 'Resource does not meet policy: notify@2023/02/22'})
+
+    def test_readiness_check_markedforop(self):
+        session_factory = self.replay_flight_data("test_readiness_check_marked_for_op")
+        p = self.load_policy(
+            {
+                "name": "readiness-check-markedforop",
+                "resource": "readiness-check",
+                "filters": [
+                    {
+                        "type": "marked-for-op",
+                        "tag": "TestTag",
+                        "op": "notify",
+                        "skew": 3,
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
 
     def test_readiness_cross_account(self):
         session_factory = self.replay_flight_data("test_readiness_cross_account")

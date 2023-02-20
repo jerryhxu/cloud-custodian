@@ -668,6 +668,9 @@ class ReadinessAddTag(Tag):
     """
     permissions = ('route53-recovery-readiness:TagResource',)
 
+    def get_client(self):
+        return self.manager.get_client()
+
     def process_resource_set(self, client, readiness_checks, tags):
         Tags = {r['Key']: r['Value'] for r in tags}
         for r in readiness_checks:
@@ -695,6 +698,9 @@ class ReadinessCheckRemoveTag(RemoveTag):
     """
     permissions = ('route53-recovery-readiness:UntagResource',)
 
+    def get_client(self):
+        return self.manager.get_client()
+
     def process_resource_set(self, client, readiness_checks, keys):
         for r in readiness_checks:
             client.untag_resource(
@@ -702,8 +708,18 @@ class ReadinessCheckRemoveTag(RemoveTag):
                 TagKeys=keys)
 
 
-ReadinessCheck.action_registry.register('mark-for-op', tags.TagDelayedAction)
-ReadinessCheck.filter_registry.register('marked-for-op', tags.TagActionFilter)
+@ReadinessCheck.action_registry.register('mark-for-op')
+class MarkForOpReadinessCheck(tags.TagDelayedAction):
+
+    def get_client(self):
+        return self.manager.get_client()
+
+
+@ReadinessCheck.filter_registry.register('marked-for-op')
+class MarkedForOpReadinessCheck(tags.TagActionFilter):
+
+    def get_client(self):
+        return self.manager.get_client()
 
 
 @ReadinessCheck.filter_registry.register('cross-account')
