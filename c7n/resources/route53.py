@@ -794,7 +794,7 @@ class RecoveryClusterAddTag(Tag):
                 key: DesiredTag
                 value: DesiredValue
     """
-    permissions = ('route53-recovery-control:TagResource',)
+    permissions = ('route53-recovery-control-config:TagResource',)
 
     def get_client(self):
         return self.manager.get_client()
@@ -824,7 +824,7 @@ class RecoveryClusterRemoveTag(RemoveTag):
               - type: remove-tag
                 tags: ['ExpiredTag']
     """
-    permissions = ('route53-recovery-control:UntagResource',)
+    permissions = ('route53-recovery-control-config:UntagResource',)
 
     def get_client(self):
         return self.manager.get_client()
