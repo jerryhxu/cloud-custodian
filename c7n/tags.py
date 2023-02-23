@@ -317,13 +317,12 @@ class TagActionFilter(Filter):
                 tag, v, i['InstanceId']))
             return False
 
-        if self.current_date is None:
-            self.current_date = datetime.now()
-
         if action_date.tzinfo:
             # if action_date is timezone aware, set to timezone provided
             action_date = action_date.astimezone(tz)
             self.current_date = datetime.now(tz=tz)
+        else:
+            self.current_date = datetime.now()
 
         return self.current_date >= (
             action_date - timedelta(days=skew, hours=skew_hours))
