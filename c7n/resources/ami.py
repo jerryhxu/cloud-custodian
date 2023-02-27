@@ -415,16 +415,17 @@ class SetPermissions(BaseAction):
                 if principals:
                     add.extend([{'OrganizationalUnitArn': a} for a in principals])
 
-        if not remove and not add:
-            return
-        self.manager.retry(client.modify_image_attribute,
-            ImageId=image['ImageId'],
-            LaunchPermission={'Remove': remove},
-            OperationType='remove')
-        self.manager.retry(client.modify_image_attribute,
-            ImageId=image['ImageId'],
-            LaunchPermission={'Add': add},
-            OperationType='add')
+        if remove:
+            self.manager.retry(client.modify_image_attribute,
+                ImageId=image['ImageId'],
+                LaunchPermission={'Remove': remove},
+                OperationType='remove')
+
+        if add:
+            self.manager.retry(client.modify_image_attribute,
+                ImageId=image['ImageId'],
+                LaunchPermission={'Add': add},
+                OperationType='add')
 
 
 @AMI.action_registry.register('copy')
