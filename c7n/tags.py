@@ -271,8 +271,6 @@ class TagActionFilter(Filter):
         op={'type': 'string'})
     schema_alias = True
 
-    current_date = None
-
     def validate(self):
         op = self.data.get('op')
         if self.manager and op not in self.manager.action_registry.keys():
@@ -320,11 +318,11 @@ class TagActionFilter(Filter):
         if action_date.tzinfo:
             # if action_date is timezone aware, set to timezone provided
             action_date = action_date.astimezone(tz)
-            self.current_date = datetime.now(tz=tz)
+            current_date = datetime.now(tz=tz)
         else:
-            self.current_date = datetime.now()
+            current_date = datetime.now()
 
-        return self.current_date >= (
+        return current_date >= (
             action_date - timedelta(days=skew, hours=skew_hours))
 
 
