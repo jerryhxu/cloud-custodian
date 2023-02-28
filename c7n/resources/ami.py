@@ -381,8 +381,8 @@ class SetPermissions(BaseAction):
         remove = []
         add = []
         account_regex = re.compile('\\d{12}')
-        org_regex = re.compile('arn:[a-zA-Z-]+:organizations::\\d{12}:organization/o-.*')
-        ou_regex = re.compile('arn:[a-zA-Z-]+:organizations::\\d{12}:ou/o-.*/ou-.*')
+        org_regex = re.compile('arn:[a-zA-Z-]+:organizations:\\d{12}:organization/o-.*')
+        ou_regex = re.compile('arn:[a-zA-Z-]+:organizations:\\d{12}:ou/o-.*/ou-.*')
         if to_remove:
             if 'all' in to_remove:
                 remove.append({'Group': 'all'})
