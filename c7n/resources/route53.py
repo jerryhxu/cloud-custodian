@@ -874,6 +874,7 @@ class ControlPanel(query.ChildResourceManager):
 
     class resource_type(query.TypeInfo):
         service = 'route53-recovery-control-config'
+        arn_type = 'controlpanel'
         parent_spec = ('recovery-cluster', 'ClusterArn', None)
         enum_spec = ('list_control_panels', 'ControlPanels', None)
         name = id = 'ControlPanelArn'
