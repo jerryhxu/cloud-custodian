@@ -893,7 +893,7 @@ class ControlPanel(query.ChildResourceManager):
 
 @ControlPanel.action_registry.register('tag')
 class ControlPanelAddTag(Tag):
-    """Adds tags to a cluster
+    """Adds tags to a control panel
 
     :example:
 
@@ -924,7 +924,7 @@ class ControlPanelAddTag(Tag):
 
 @ControlPanel.action_registry.register('remove-tag')
 class ControlPanelRemoveTag(RemoveTag):
-    """Remove tags from a cluster
+    """Remove tags from a control panel
 
     :example:
 
