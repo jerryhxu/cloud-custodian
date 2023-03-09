@@ -546,7 +546,7 @@ class TestControlPanel(BaseTest):
         p = self.load_policy(
             {
                 "name": "all-control-panels",
-                "resource": "control-panel",
+                "resource": "recovery-control-panel",
             },
             session_factory=session_factory,
         )
@@ -558,7 +558,7 @@ class TestControlPanel(BaseTest):
         p = self.load_policy(
             {
                 "name": "control-panel-add-tag",
-                "resource": "control-panel",
+                "resource": "recovery-control-panel",
                 "filters": [{"tag:TestTag": "absent"}],
                 "actions": [{"type": "tag", "key": "TestTag", "value": "TestValue"}],
             },
@@ -575,7 +575,7 @@ class TestControlPanel(BaseTest):
         p = self.load_policy(
             {
                 "name": "control-panel-remove-tag",
-                "resource": "control-panel",
+                "resource": "recovery-control-panel",
                 "filters": [{"tag:TestTag": "present"}],
                 "actions": [{"type": "remove-tag", "tags": ["TestTag"]}],
             },

@@ -855,11 +855,6 @@ class DescribeControlPanel(query.ChildDescribeSource):
         self.query = query.ChildResourceQuery(
             self.manager.session_factory, self.manager)
 
-    def get_query(self):
-        query = super(DescribeControlPanel, self).get_query()
-        query.capture_parent_id = True
-        return query
-
     def augment(self, controlpanels):
         for r in controlpanels:
             Tags = self.manager.retry(
@@ -869,7 +864,7 @@ class DescribeControlPanel(query.ChildDescribeSource):
         return controlpanels
 
 
-@resources.register('control-panel')
+@resources.register('recovery-control-panel')
 class ControlPanel(query.ChildResourceManager):
 
     class resource_type(query.TypeInfo):
@@ -901,7 +896,7 @@ class ControlPanelAddTag(Tag):
 
         policies:
           - name: control-panel-tag
-            resource: control-panel
+            resource: recovery-control-panel
             filters:
               - "tag:DesiredTag": absent
             actions:
@@ -932,7 +927,7 @@ class ControlPanelRemoveTag(RemoveTag):
 
         policies:
           - name: control-panel-remove-tag
-            resource: control-panel
+            resource: recovery-control-panel
             filters:
               - "tag:ExpiredTag": present
             actions:
