@@ -594,7 +594,7 @@ class TestControlPanel(BaseTest):
             {
                 "name": "control-panel-safety-rule",
                 "resource": "recovery-control-panel",
-                "filters": [{'type': 'has-safety-rule', 'state': "true"}],
+                "filters": [{'type': 'has-safety-rule', 'state': True}],
             },
             session_factory=session_factory,
         )
