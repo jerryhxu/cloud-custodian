@@ -950,7 +950,7 @@ class ControlPanelRemoveTag(RemoveTag):
 @ControlPanel.filter_registry.register('has-safety-rule')
 class HasSafeRule(Filter):
 
-    permissions = ('route53-recovery-control-config:ListSafetyRules')
+    permissions = ('route53-recovery-control-config:ListSafetyRules',)
     schema = type_schema('has-safety-rule', state={'type': 'boolean'})
 
     def process(self, resources, event=None):
