@@ -1,0 +1,25 @@
+{
+    "status_code": 200,
+    "data": {
+        "ResponseMetadata": {},
+        "SafetyRules": [
+            {
+                "ASSERTION": {
+                    "AssertedControls": [
+                        "arn:aws:route53-recovery-control::644160558196:controlpanel/1c3d2533925b4acda7fa00dad9497f2b/routingcontrol/e2bf72026cc34754"
+                    ],
+                    "ControlPanelArn": "arn:aws:route53-recovery-control::644160558196:controlpanel/1c3d2533925b4acda7fa00dad9497f2b",
+                    "Name": "test-safety-rule",
+                    "RuleConfig": {
+                        "Inverted": false,
+                        "Threshold": 10,
+                        "Type": "ATLEAST"
+                    },
+                    "SafetyRuleArn": "arn:aws:route53-recovery-control::644160558196:controlpanel/1c3d2533925b4acda7fa00dad9497f2b/safetyrule/63031ae7310d47ad",
+                    "Status": "DEPLOYED",
+                    "WaitPeriodMs": 5000
+                }
+            }
+        ]
+    }
+}

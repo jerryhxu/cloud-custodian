@@ -945,3 +945,24 @@ class ControlPanelRemoveTag(RemoveTag):
             client.untag_resource(
                 ResourceArn=r['ControlPanelArn'],
                 TagKeys=keys)
+
+
+@ControlPanel.filter_registry.register('has-safety-rule')
+class HasSafeRule(Filter):
+
+    permissions = ('route53-recovery-control-config:ListSafetyRules')
+    schema = type_schema('has-safety-rule', state={'type': 'boolean'})
+
+    def process(self, resources, event=None):
+        result = []
+        state = self.data.get('state', False)
+        for r in resources:
+            paginator = self.manager.get_client().get_paginator('list_safety_rules')
+            paginator.PAGE_ITERATOR_CLASS = RetryPageIterator
+            response = paginator.paginate(ControlPanelArn=r['ControlPanelArn']).build_full_result()
+
+            if state and len(response["SafetyRules"]):
+                result.append(r)
+            elif not state and len(response["SafetyRules"]) == 0:
+                result.append(r)
+        return result
