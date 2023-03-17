@@ -600,3 +600,16 @@ class TestControlPanel(BaseTest):
         )
         resources = p.run()
         self.assertEqual(len(resources), 1)
+        self.assertEqual(resources[0]['ControlPanelArn'], 'arn:aws:route53-recovery-control::644160558196:controlpanel/fd5a6bfc73364a0dbd48d3915867a306')
+
+        p = self.load_policy(
+            {
+                "name": "control-panel-safety-rule",
+                "resource": "recovery-control-panel",
+                "filters": [{'type': 'has-safety-rule', 'state': False}],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        self.assertEqual(resources[0]['ControlPanelArn'], 'arn:aws:route53-recovery-control::644160558196:controlpanel/7a721a1a44014ad1973539b3d83161ff')
