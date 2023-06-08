@@ -57,9 +57,9 @@ class ElasticFileSystemMountTarget(ChildResourceManager):
         enum_spec = ('describe_mount_targets', 'MountTargets', None)
         permission_prefix = 'elasticfilesystem'
         name = id = 'MountTargetId'
-        arn = False
         filter_name = 'MountTargetId'
         filter_type = 'scalar'
+        arn = False
         cfn_type = 'AWS::EFS::MountTarget'
         supports_trailevents = True
     
