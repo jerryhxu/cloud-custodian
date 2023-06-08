@@ -84,18 +84,18 @@ class ResourceQuery:
         """
         m = self.resolve(resource_manager.resource_type)
         params = {}
-        client_filter = True
+        client_filter = False
 
         # Try to formulate server side query
         if m.filter_name:
             if m.filter_type == 'list':
                 params[m.filter_name] = identities
-                client_filter = False
-            elif m.filter_type == 'scalar' and len(identities) == 1:
+            elif m.filter_type == 'scalar':
+                assert len(identities) == 1, "Scalar server side filter"
                 params[m.filter_name] = identities[0]
         else:
-            client_filter = False
-
+            client_filter = True
+            
         resources = self.filter(resource_manager, **params)
         if client_filter:
             # This logic was added to prevent the issue from:
