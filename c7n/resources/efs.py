@@ -58,12 +58,11 @@ class ElasticFileSystemMountTarget(ChildResourceManager):
         permission_prefix = 'elasticfilesystem'
         name = id = 'MountTargetId'
         arn = False
+        filter_name = 'MountTargetId'
+        filter_type = 'scalar'
         cfn_type = 'AWS::EFS::MountTarget'
         supports_trailevents = True
     
-    def get_resources(self, ids, cache=True):
-        return super(ElasticFileSystemMountTarget, self).get_resources(ids, cache)
-
 
 @ElasticFileSystemMountTarget.filter_registry.register('subnet')
 class Subnet(SubnetFilter):
