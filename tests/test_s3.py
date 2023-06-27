@@ -4014,3 +4014,30 @@ class TestBucketOwnership:
             ]
         }, session_factory=factory)
         test.assertRaises(PolicyExecutionError, p.run)
+
+
+class BucketReplication(BaseTest):
+
+    def test_s3_bucket_replication_filter(self):
+        session_factory = self.replay_flight_data("test_s3_replication_rule")
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-s3-repl-test",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": "false",
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run() or []
+        self.assertEqual(len(resources), 1)

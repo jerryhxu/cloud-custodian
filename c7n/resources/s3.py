@@ -3216,6 +3216,7 @@ class BucketEncryption(KMSKeyResolverMixin, Filter):
             for sse in rules:
                 return self.filter_bucket(b, sse)
             return False
+        
         else:
             for sse in rules:
                 return not self.filter_bucket(b, sse)
@@ -3475,3 +3476,113 @@ class BucketOwnershipControls(BucketFilterBase, ValueFilter):
                 raise
             controls = {}
         b[self.annotation_key] = controls.get('OwnershipControls')
+
+
+@filters.register('bucket-replication')
+class BucketReplication(Filter):
+    """Filters for S3 buckets that have replication-rule
+
+    Reference: https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html
+
+    :example
+
+    Find buckets with replication rule enabled
+
+    .. code-block:: yaml
+
+            policies:
+              - name: s3-bucket-replication-cross-region
+                resource: s3
+                region: us-east-1
+                filters:
+                  - type: bucket-replication
+                    state: True
+                    destination: cross-region
+              - name: s3-bucket-replication-same-region
+                resource: s3
+                region: us-east-1
+                filters:
+                  - type: bucket-replication
+                    state: True
+                    destination: same-region
+              - name: s3-bucket-has-replication
+                resource: s3
+                region: us-east-1
+                filters:
+                  - type: bucket-replication
+                    state: True
+    """
+    schema = type_schema('bucket-replication',
+                         state={'type': 'boolean'},
+                         destination={'type': 'string', 'enum': ['cross-region', 'same-region']})
+
+    permissions = ('s3:GetReplicationConfiguration')
+    annotation_key = 'c7n:bucket-replication'
+
+    def process(self, buckets, event=None):
+        results = []
+        with self.executor_factory(max_workers=2) as w:
+            futures = {w.submit(self.process_bucket, b): b for b in buckets}
+            for future in as_completed(futures):
+                b = futures[future]
+                if future.exception():
+                    self.log.error("Message: %s Bucket: %s", future.exception(),
+                                   b['Name'])
+                    continue
+                if future.result():
+                    results.append(b)
+        return results
+
+    def process_bucket(self, b):
+        client = bucket_client(local_session(self.manager.session_factory), b)
+        rules = []
+        if self.annotation_key not in b:
+            try:
+                bucket_replication = client.get_bucket_replication(Bucket=b['Name'])
+            except ClientError as e:
+                if e.response['Error']['Code'] != 'ReplicationConfigurationNotFoundError':
+                    raise
+                bucket_replication = {}
+            b[self.annotation_key] = bucket_replication
+        else:
+            bucket_replication = b[self.annotation_key]
+
+        rules = bucket_replication.get('ReplicationConfiguration', {}).get('Rules', [])
+        destination = self.data.get('destination')
+        if not destination and not rules:
+            return True
+        # default `state` to True as previous impl assumed state == True
+        # to preserve backwards compatibility
+        if self.data.get('state', True):
+            if not destination and rules:
+                return True
+            for replication in rules:
+                if self.filter_bucket(b, replication, destination):
+                    return True
+            return False
+        else:
+            if not destination and not rules:
+                return True
+            for replication in rules:
+                if not self.filter_bucket(b, replication, destination):
+                    return True
+            return False
+
+    def filter_bucket(self, b, replication, destination):
+        destination = self.data.get('destination')
+        destination_bucket = replication.get('Destination').get('Bucket')
+        destination_region = get_region(destination_bucket)
+        source_region = get_region(b)
+
+        if destination == "cross-region":
+            if destination_region != source_region:
+                return True
+            else:
+                return False
+
+        if destination == "same-region":
+            if destination_region == source_region:
+                return True
+            else:
+                return False
+            
