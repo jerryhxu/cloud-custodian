@@ -3549,24 +3549,30 @@ class BucketReplication(Filter):
 
         rules = bucket_replication.get('ReplicationConfiguration', {}).get('Rules', [])
         destination = self.data.get('destination')
-        if not destination and not rules:
-            return True
         # default `state` to True as previous impl assumed state == True
         # to preserve backwards compatibility
         if self.data.get('state', True):
-            if not destination and rules:
-                return True
-            for replication in rules:
-                if self.filter_bucket(b, replication, destination, client):
+            if not destination:
+                if rules:
                     return True
-            return False
+                else:
+                    return False
+            else:
+                for replication in rules:
+                    if self.filter_bucket(b, replication, destination, client):
+                        return True
+                return False
         else:
-            if not destination and not rules:
-                return True
-            for replication in rules:
-                if not self.filter_bucket(b, replication, destination, client):
+            if not destination:
+                if rules:
+                    return False
+                else:
                     return True
-            return False
+            else:
+                for replication in rules:
+                    if not self.filter_bucket(b, replication, destination, client):
+                        return True
+                return False
 
     def filter_bucket(self, b, replication, destination, client):
         destination = self.data.get('destination')
