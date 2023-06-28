@@ -4029,7 +4029,7 @@ class BucketReplication(BaseTest):
                         "type": "value",
                         "key": "Name",
                         "op": "eq",
-                        "value": "custodian-s3-repl-test",
+                        "value": "custodian-repl-test-1",
                     },
                     {
                         "type": "bucket-replication",
@@ -4041,3 +4041,100 @@ class BucketReplication(BaseTest):
         )
         resources = p.run() or []
         self.assertEqual(len(resources), 1)
+
+    def test_s3_bucket_replication_filter_cross_region(self):
+        session_factory = self.replay_flight_data("test_s3_replication_rule")
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": True,
+                        "destination": "cross-region"
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run() or []
+        self.assertEqual(len(resources), 1)
+
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": False,
+                        "destination": "same-region"
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run() or []
+        self.assertEqual(len(resources), 1)
+
+    def test_s3_bucket_replication_filter_same_region(self):
+        session_factory = self.replay_flight_data("test_s3_replication_rule")
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": True,
+                        "destination": "same-region"
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run() or []
+        self.assertEqual(len(resources), 1)
+
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": False,
+                        "destination": "cross-region"
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run() or []
+        self.assertEqual(len(resources), 1)
+
