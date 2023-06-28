@@ -3516,7 +3516,7 @@ class BucketReplication(Filter):
                          state={'type': 'boolean'},
                          destination={'type': 'string', 'enum': ['cross-region', 'same-region']})
 
-    permissions = ('s3:GetReplicationConfiguration')
+    permissions = ("s3:GetReplicationConfiguration",)
     annotation_key = 'c7n:bucket-replication'
 
     def process(self, buckets, event=None):

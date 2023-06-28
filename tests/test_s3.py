@@ -4033,7 +4033,7 @@ class BucketReplication(BaseTest):
                     },
                     {
                         "type": "bucket-replication",
-                        "state": "false",
+                        "state": False,
                     }
                 ],
             },
