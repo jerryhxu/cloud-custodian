@@ -4018,7 +4018,7 @@ class TestBucketOwnership:
 
 class BucketReplication(BaseTest):
 
-    def test_s3_bucket_replication_filter(self):
+    def test_s3_bucket_replication_filter_no_rule(self):
         session_factory = self.replay_flight_data("test_s3_replication_rule")
         p = self.load_policy(
             {
@@ -4056,6 +4056,52 @@ class BucketReplication(BaseTest):
                     {
                         "type": "bucket-replication",
                         "state": True,
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run() or []
+        self.assertEqual(len(resources), 0)
+
+    def test_s3_bucket_replication_filter_has_rule(self):
+        session_factory = self.replay_flight_data("test_s3_replication_has_rule")
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": True,
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run() or []
+        self.assertEqual(len(resources), 1)
+
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": False,
                     }
                 ],
             },
