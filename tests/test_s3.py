@@ -4043,7 +4043,7 @@ class BucketReplication(BaseTest):
         self.assertEqual(len(resources), 1)
 
     def test_s3_bucket_replication_filter_cross_region(self):
-        session_factory = self.replay_flight_data("test_s3_replication_rule")
+        session_factory = self.replay_flight_data("test_s3_replication_rule_cross_region")
         p = self.load_policy(
             {
                 "name": "s3-replication-rule",
@@ -4091,7 +4091,7 @@ class BucketReplication(BaseTest):
         self.assertEqual(len(resources), 1)
 
     def test_s3_bucket_replication_filter_same_region(self):
-        session_factory = self.replay_flight_data("test_s3_replication_rule")
+        session_factory = self.replay_flight_data("test_s3_replication_rule_same_region")
         p = self.load_policy(
             {
                 "name": "s3-replication-rule",

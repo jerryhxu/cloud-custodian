@@ -1,0 +1,20 @@
+{
+    "status_code": 200,
+    "data": {
+        "ResponseMetadata": {},
+        "Owner": {
+            "DisplayName": "jerryhxu",
+            "ID": "3f7350bf5d3dab59930bea77eec4aeb7790ca043fbc1891bbabb70df0c63ff01"
+        },
+        "Grants": [
+            {
+                "Grantee": {
+                    "DisplayName": "jerryhxu",
+                    "ID": "3f7350bf5d3dab59930bea77eec4aeb7790ca043fbc1891bbabb70df0c63ff01",
+                    "Type": "CanonicalUser"
+                },
+                "Permission": "FULL_CONTROL"
+            }
+        ]
+    }
+}
