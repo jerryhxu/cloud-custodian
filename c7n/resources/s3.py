@@ -3557,22 +3557,26 @@ class BucketReplication(Filter):
             if not destination and rules:
                 return True
             for replication in rules:
-                if self.filter_bucket(b, replication, destination):
+                if self.filter_bucket(b, replication, destination, client):
                     return True
             return False
         else:
             if not destination and not rules:
                 return True
             for replication in rules:
-                if not self.filter_bucket(b, replication, destination):
+                if not self.filter_bucket(b, replication, destination, client):
                     return True
             return False
 
-    def filter_bucket(self, b, replication, destination):
+    def filter_bucket(self, b, replication, destination, client):
         destination = self.data.get('destination')
-        destination_bucket = replication.get('Destination').get('Bucket')
-        destination_region = get_region(destination_bucket)
+        destination_bucket = replication.get('Destination').get('Bucket').split(':')[5]
+        destination_region = client.get_bucket_location(
+            Bucket=destination_bucket).get('LocationConstraint')
         source_region = get_region(b)
+
+        if destination_region is None:
+            destination_region = 'us-east-1'
 
         if destination == "cross-region":
             if destination_region != source_region:
