@@ -3216,7 +3216,6 @@ class BucketEncryption(KMSKeyResolverMixin, Filter):
             for sse in rules:
                 return self.filter_bucket(b, sse)
             return False
-
         else:
             for sse in rules:
                 return not self.filter_bucket(b, sse)
