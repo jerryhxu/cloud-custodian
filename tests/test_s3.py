@@ -4019,6 +4019,8 @@ class TestBucketOwnership:
 class BucketReplication(BaseTest):
 
     def test_s3_bucket_replication_filter_no_rule(self):
+        self.patch(s3.S3, "executor_factory", MainThreadExecutor)
+        self.patch(s3, "S3_AUGMENT_TABLE", [])
         session_factory = self.replay_flight_data("test_s3_replication_rule")
         p = self.load_policy(
             {
@@ -4065,6 +4067,8 @@ class BucketReplication(BaseTest):
         self.assertEqual(len(resources), 0)
 
     def test_s3_bucket_replication_filter_has_rule(self):
+        self.patch(s3.S3, "executor_factory", MainThreadExecutor)
+        self.patch(s3, "S3_AUGMENT_TABLE", [])
         session_factory = self.replay_flight_data("test_s3_replication_has_rule")
         p = self.load_policy(
             {
