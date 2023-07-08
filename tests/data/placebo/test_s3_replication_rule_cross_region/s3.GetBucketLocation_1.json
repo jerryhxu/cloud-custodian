@@ -1,6 +1,7 @@
 {
     "status_code": 200,
     "data": {
+        "LocationConstraint": "us-west-2",
         "ResponseMetadata": {}
     }
 }

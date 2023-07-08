@@ -4111,6 +4111,8 @@ class BucketReplication(BaseTest):
         self.assertEqual(len(resources), 0)
 
     def test_s3_bucket_replication_filter_cross_region(self):
+        self.patch(s3.S3, "executor_factory", MainThreadExecutor)
+        self.patch(s3, "S3_AUGMENT_TABLE", [])
         session_factory = self.replay_flight_data("test_s3_replication_rule_cross_region")
         p = self.load_policy(
             {
