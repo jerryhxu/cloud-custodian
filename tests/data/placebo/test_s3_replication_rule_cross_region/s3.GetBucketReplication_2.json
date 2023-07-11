@@ -3,10 +3,10 @@
     "data": {
         "ResponseMetadata": {},
         "ReplicationConfiguration": {
-            "Role": "arn:aws:iam::644160558196:role/service-role/s3crr_role_for_custodian-repl-test-1",
+            "Role": "arn:aws:iam::644160558196:role/service-role/s3crr_role_for_custodian-repl-test-1_3",
             "Rules": [
                 {
-                    "ID": "cross-region",
+                    "ID": "rule-1",
                     "Priority": 0,
                     "Filter": {
                         "Prefix": "abc"

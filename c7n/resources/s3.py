@@ -63,6 +63,7 @@ from c7n.tags import RemoveTag, Tag, TagActionFilter, TagDelayedAction
 from c7n.utils import (
     chunks, local_session, set_annotation, type_schema, filter_empty,
     dumps, format_string_values, get_account_alias_from_sts)
+from c7n.resources.aws import inspect_bucket_region
 
 
 log = logging.getLogger('custodian.s3')
@@ -3516,7 +3517,7 @@ class BucketReplication(Filter):
                          destination={'type': 'string', 'enum': ['cross-region', 'same-region']})
 
     permissions = ("s3:GetReplicationConfiguration",)
-    annotation_key = 'c7n:bucket-replication'
+    annotation_key = 'Replication'
 
     def process(self, buckets, event=None):
         results = []
@@ -3576,12 +3577,8 @@ class BucketReplication(Filter):
     def filter_bucket(self, b, replication, destination, client):
         destination = self.data.get('destination')
         destination_bucket = replication.get('Destination').get('Bucket').split(':')[5]
-        destination_region = client.get_bucket_location(
-            Bucket=destination_bucket).get('LocationConstraint')
+        destination_region = inspect_bucket_region(destination_bucket, client.meta.endpoint_url)
         source_region = get_region(b)
-
-        if destination_region is None:
-            destination_region = 'us-east-1'
 
         if destination == "cross-region":
             if destination_region != source_region:
