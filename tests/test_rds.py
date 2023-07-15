@@ -2046,7 +2046,7 @@ class RDSProxy(BaseTest):
         self.assertEqual(len(resources), 1)
         self.assertEqual(resources[0]['DBProxyName'], 'test-us-east-1-db-proxy')
         self.assertEqual(resources[0]['RequireTLS'], False)
-    
+
     def test_rds_proxy_subnet_filter(self):
         session_factory = self.replay_flight_data("test_rds_proxy_subnet_filter")
         p = self.load_policy(
