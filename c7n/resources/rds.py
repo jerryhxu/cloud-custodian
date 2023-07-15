@@ -66,6 +66,7 @@ from c7n.utils import (
 from c7n.resources.kms import ResourceKmsKeyAlias
 from c7n.resources.securityhub import PostFinding
 from c7n.filters.backup import ConsecutiveAwsBackupsFilter
+import c7n.filters.vpc as net_filters
 
 log = logging.getLogger('custodian.rds')
 
@@ -2043,6 +2044,23 @@ class RDSProxy(QueryResourceManager):
         'describe': DescribeDBProxy,
         'config': ConfigSource
     }
+
+
+@RDSProxy.filter_registry.register('subnet')
+class RDSProxySubnetFilter(net_filters.SubnetFilter):
+
+    RelatedIdsExpression = "VpcSubnetIds[]"
+
+
+@RDSProxy.filter_registry.register('security-group')
+class RDSProxySecurityGroupFilter(net_filters.SecurityGroupFilter):
+
+    RelatedIdsExpression = "VpcSecurityGroupIds[]"
+
+@RDSProxy.filter_registry.register('vpc')
+class RDSProxySecurityGroupFilter(net_filters.VpcFilter):
+
+    RelatedIdsExpression = "VpcId"
 
 
 @filters.register('db-option-groups')
