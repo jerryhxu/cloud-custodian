@@ -2045,6 +2045,40 @@ class RDSProxy(QueryResourceManager):
     }
 
 
+@RDSProxy.action_registry.register('delete')
+class DeleteRDSProxy(BaseAction):
+    """
+    Deletes a RDS Proxy
+
+    :example:
+
+    .. code-block:: yaml
+
+      policies:
+        - name: delete-rds-proxy
+          resource: aws.rds-proxy
+          filters:
+            - type: value
+              key: "DBProxyName"
+              op: eq
+              value: "proxy-test-1"
+          actions:
+            - type: delete
+    """
+
+    schema = type_schema('delete')
+
+    permissions = ('rds:DeleteDBProxy',)
+
+    def process(self, resources):
+        client = local_session(self.manager.session_factory).client('rds')
+        for r in resources:
+            try:
+                client.delete_db_proxy(DBProxyName=r['DBProxyName'])
+            except client.exceptions.NotFoundException:
+                continue
+
+
 @filters.register('db-option-groups')
 class DbOptionGroups(ValueFilter):
     """This filter describes RDS option groups for associated RDS instances.
