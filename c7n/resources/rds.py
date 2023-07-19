@@ -2073,10 +2073,10 @@ class DeleteRDSProxy(BaseAction):
     def process(self, resources):
         client = local_session(self.manager.session_factory).client('rds')
         for r in resources:
-            try:
-                client.delete_db_proxy(DBProxyName=r['DBProxyName'])
-            except client.exceptions.NotFoundException:
-                continue
+            self.manager.retry(
+                client.delete_db_proxy, DBProxyName=r['DBProxyName'],
+                ignore_err_codes=('DBProxyNotFoundFault',
+                'InvalidDBProxyStateFault'))
 
 
 @filters.register('db-option-groups')
