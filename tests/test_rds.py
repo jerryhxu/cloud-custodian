@@ -2073,7 +2073,7 @@ class RDSProxy(BaseTest):
         resources = client.describe_db_proxies()
         self.assertEqual(resources['DBProxies'][0]['DBProxyName'], 'proxy-test-1')
         self.assertEqual(resources['DBProxies'][0]['Status'], 'deleting')
-        
+
     def test_rds_proxy_subnet_filter(self):
         session_factory = self.replay_flight_data("test_rds_proxy_subnet_filter")
         p = self.load_policy(
