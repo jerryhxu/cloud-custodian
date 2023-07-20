@@ -3,7 +3,7 @@
     "data": {
         "ResponseMetadata": {},
         "ReplicationConfiguration": {
-            "Role": "arn:aws:iam::644160558196:role/service-role/s3crr_role_for_custodian-repl-test-1_3",
+            "Role": "arn:aws:iam::644160558196:role/service-role/s3crr_role_for_custodian-repl-test-1",
             "Rules": [
                 {
                     "ID": "rule-1",
@@ -13,7 +13,7 @@
                     },
                     "Status": "Enabled",
                     "Destination": {
-                        "Bucket": "arn:aws:s3:::custodian-repl-test-west"
+                        "Bucket": "arn:aws:s3:::custodian-repl-west"
                     },
                     "DeleteMarkerReplication": {
                         "Status": "Disabled"
