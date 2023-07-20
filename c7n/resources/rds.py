@@ -2077,6 +2077,23 @@ class DeleteRDSProxy(BaseAction):
                 client.delete_db_proxy, DBProxyName=r['DBProxyName'],
                 ignore_err_codes=('DBProxyNotFoundFault',
                 'InvalidDBProxyStateFault'))
+            
+            
+@RDSProxy.filter_registry.register('subnet')
+class RDSProxySubnetFilter(net_filters.SubnetFilter):
+
+    RelatedIdsExpression = "VpcSubnetIds[]"
+
+
+@RDSProxy.filter_registry.register('security-group')
+class RDSProxySecurityGroupFilter(net_filters.SecurityGroupFilter):
+
+    RelatedIdsExpression = "VpcSecurityGroupIds[]"
+
+@RDSProxy.filter_registry.register('vpc')
+class RDSProxyVpcFilter(net_filters.VpcFilter):
+
+    RelatedIdsExpression = "VpcId"
 
 
 @filters.register('db-option-groups')
