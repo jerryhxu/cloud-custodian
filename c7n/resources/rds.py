@@ -2078,7 +2078,7 @@ class DeleteRDSProxy(BaseAction):
                 ignore_err_codes=('DBProxyNotFoundFault',
                 'InvalidDBProxyStateFault'))
 
-            
+
 @RDSProxy.filter_registry.register('subnet')
 class RDSProxySubnetFilter(net_filters.SubnetFilter):
 
