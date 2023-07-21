@@ -24,6 +24,7 @@ from c7n.resources import s3
 from c7n.mu import LambdaManager
 from c7n.ufuncs import s3crypt
 from c7n.utils import get_account_alias_from_sts
+import vcr
 
 from .common import (
     BaseTest,
@@ -4138,8 +4139,13 @@ class BucketReplication(BaseTest):
             },
             session_factory=session_factory,
         )
-        resources = p.run() or []
-        self.assertEqual(len(resources), 1)
+
+        with vcr.use_cassette(
+          f'tests/data/vcr_cassettes/test_s3/cross_region_true.yaml',
+            record_mode='none'
+        ):
+            resources = p.run() or []
+            self.assertEqual(len(resources), 1)
 
         p = self.load_policy(
             {
@@ -4161,8 +4167,13 @@ class BucketReplication(BaseTest):
             },
             session_factory=session_factory,
         )
-        resources = p.run() or []
-        self.assertEqual(len(resources), 1)
+
+        with vcr.use_cassette(
+          f'tests/data/vcr_cassettes/test_s3/cross_region_false.yaml',
+            record_mode='none'
+        ):
+            resources = p.run() or []
+            self.assertEqual(len(resources), 1)
 
     def test_s3_bucket_replication_filter_same_region(self):
         self.patch(s3.S3, "executor_factory", MainThreadExecutor)
@@ -4189,8 +4200,12 @@ class BucketReplication(BaseTest):
             },
             session_factory=session_factory,
         )
-        resources = p.run() or []
-        self.assertEqual(len(resources), 1)
+        with vcr.use_cassette(
+          f'tests/data/vcr_cassettes/test_s3/same_region_true.yaml',
+            record_mode='none'
+        ):
+            resources = p.run() or []
+            self.assertEqual(len(resources), 1)
 
         p = self.load_policy(
             {
@@ -4212,6 +4227,10 @@ class BucketReplication(BaseTest):
             },
             session_factory=session_factory,
         )
-        resources = p.run() or []
-        self.assertEqual(len(resources), 1)
+        with vcr.use_cassette(
+          f'tests/data/vcr_cassettes/test_s3/same_region_false.yaml',
+            record_mode='none'
+        ):
+            resources = p.run() or []
+            self.assertEqual(len(resources), 1)
 

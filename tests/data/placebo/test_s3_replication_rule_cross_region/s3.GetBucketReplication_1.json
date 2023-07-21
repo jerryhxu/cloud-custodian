@@ -13,7 +13,7 @@
                     },
                     "Status": "Enabled",
                     "Destination": {
-                        "Bucket": "arn:aws:s3:::custodian-repl-west"
+                        "Bucket": "arn:aws:s3:::custodian-repl-test-west"
                     },
                     "DeleteMarkerReplication": {
                         "Status": "Disabled"
