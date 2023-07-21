@@ -4461,8 +4461,8 @@ class BucketReplication(BaseTest):
         )
 
         with vcr.use_cassette(
-          f'tests/data/vcr_cassettes/test_s3/cross_region_true.yaml',
-            record_mode='none'
+          'tests/data/vcr_cassettes/test_s3/cross_region_true.yaml',
+           record_mode='none'
         ):
             resources = p.run() or []
             self.assertEqual(len(resources), 1)
@@ -4489,8 +4489,8 @@ class BucketReplication(BaseTest):
         )
 
         with vcr.use_cassette(
-          f'tests/data/vcr_cassettes/test_s3/cross_region_false.yaml',
-            record_mode='none'
+          'tests/data/vcr_cassettes/test_s3/cross_region_false.yaml',
+           record_mode='none'
         ):
             resources = p.run() or []
             self.assertEqual(len(resources), 1)
@@ -4521,8 +4521,8 @@ class BucketReplication(BaseTest):
             session_factory=session_factory,
         )
         with vcr.use_cassette(
-          f'tests/data/vcr_cassettes/test_s3/same_region_true.yaml',
-            record_mode='none'
+          'tests/data/vcr_cassettes/test_s3/same_region_true.yaml',
+           record_mode='none'
         ):
             resources = p.run() or []
             self.assertEqual(len(resources), 1)
@@ -4548,8 +4548,8 @@ class BucketReplication(BaseTest):
             session_factory=session_factory,
         )
         with vcr.use_cassette(
-          f'tests/data/vcr_cassettes/test_s3/same_region_false.yaml',
-            record_mode='none'
+          'tests/data/vcr_cassettes/test_s3/same_region_false.yaml',
+           record_mode='none'
         ):
             resources = p.run() or []
             self.assertEqual(len(resources), 1)
