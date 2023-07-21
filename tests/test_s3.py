@@ -25,6 +25,7 @@ from c7n.resources import s3
 from c7n.mu import LambdaManager
 from c7n.ufuncs import s3crypt
 from c7n.utils import get_account_alias_from_sts, jmespath_search
+import vcr
 
 from .common import (
     BaseTest,
@@ -4334,3 +4335,221 @@ class IntelligentTieringConfiguration(BaseTest):
         self.assertIn(
           'Access Denied Bucket:example-abc-123 while reading intelligent tiering configurations',
             log_output.getvalue())
+
+
+class BucketReplication(BaseTest):
+
+    def test_s3_bucket_replication_filter_no_rule(self):
+        self.patch(s3.S3, "executor_factory", MainThreadExecutor)
+        self.patch(s3, "S3_AUGMENT_TABLE", [])
+        session_factory = self.replay_flight_data("test_s3_replication_rule")
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": False,
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run() or []
+        self.assertEqual(len(resources), 1)
+
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": True,
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run() or []
+        self.assertEqual(len(resources), 0)
+
+    def test_s3_bucket_replication_filter_has_rule(self):
+        self.patch(s3.S3, "executor_factory", MainThreadExecutor)
+        self.patch(s3, "S3_AUGMENT_TABLE", [])
+        session_factory = self.replay_flight_data("test_s3_replication_has_rule")
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": True,
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run() or []
+        self.assertEqual(len(resources), 1)
+
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": False,
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run() or []
+        self.assertEqual(len(resources), 0)
+
+    def test_s3_bucket_replication_filter_cross_region(self):
+        self.patch(s3.S3, "executor_factory", MainThreadExecutor)
+        self.patch(s3, "S3_AUGMENT_TABLE", [])
+        session_factory = self.replay_flight_data("test_s3_replication_rule_cross_region")
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": True,
+                        "destination": "cross-region"
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+
+        with vcr.use_cassette(
+          f'tests/data/vcr_cassettes/test_s3/cross_region_true.yaml',
+            record_mode='none'
+        ):
+            resources = p.run() or []
+            self.assertEqual(len(resources), 1)
+
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": False,
+                        "destination": "same-region"
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+
+        with vcr.use_cassette(
+          f'tests/data/vcr_cassettes/test_s3/cross_region_false.yaml',
+            record_mode='none'
+        ):
+            resources = p.run() or []
+            self.assertEqual(len(resources), 1)
+
+    def test_s3_bucket_replication_filter_same_region(self):
+        self.patch(s3.S3, "executor_factory", MainThreadExecutor)
+        self.patch(s3, "S3_AUGMENT_TABLE", [('get_bucket_replication',
+     'Replication', None, None, 's3:GetReplicationConfiguration')])
+        session_factory = self.replay_flight_data("test_s3_replication_rule_same_region")
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": True,
+                        "destination": "same-region"
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        with vcr.use_cassette(
+          f'tests/data/vcr_cassettes/test_s3/same_region_true.yaml',
+            record_mode='none'
+        ):
+            resources = p.run() or []
+            self.assertEqual(len(resources), 1)
+
+        p = self.load_policy(
+            {
+                "name": "s3-replication-rule",
+                "resource": "s3",
+                "filters": [
+                    {
+                        "type": "value",
+                        "key": "Name",
+                        "op": "eq",
+                        "value": "custodian-repl-test-1",
+                    },
+                    {
+                        "type": "bucket-replication",
+                        "state": False,
+                        "destination": "cross-region"
+                    }
+                ],
+            },
+            session_factory=session_factory,
+        )
+        with vcr.use_cassette(
+          f'tests/data/vcr_cassettes/test_s3/same_region_false.yaml',
+            record_mode='none'
+        ):
+            resources = p.run() or []
+            self.assertEqual(len(resources), 1)
