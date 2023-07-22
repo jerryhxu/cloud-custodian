@@ -3785,26 +3785,14 @@ class BucketReplication(Filter):
         # to preserve backwards compatibility
         if self.data.get('state', True):
             if not destination:
-                if rules:
-                    return True
-                else:
-                    return False
+                return bool(rules)
             else:
-                for replication in rules:
-                    if self.filter_bucket(b, replication, destination, client):
-                        return True
-                return False
+                return any(self.filter_bucket(b, replication, destination, client) for replication in rules)
         else:
             if not destination:
-                if rules:
-                    return False
-                else:
-                    return True
+                return not bool(rules)
             else:
-                for replication in rules:
-                    if not self.filter_bucket(b, replication, destination, client):
-                        return True
-                return False
+                return not all(self.filter_bucket(b, replication, destination, client) for replication in rules)
 
     def filter_bucket(self, b, replication, destination, client):
         destination = self.data.get('destination')
@@ -3813,13 +3801,6 @@ class BucketReplication(Filter):
         source_region = get_region(b)
 
         if destination == "cross-region":
-            if destination_region != source_region:
-                return True
-            else:
-                return False
-
-        if destination == "same-region":
-            if destination_region == source_region:
-                return True
-            else:
-                return False
+            return destination_region != source_region
+        elif destination == "same-region":
+            return destination_region == source_region
