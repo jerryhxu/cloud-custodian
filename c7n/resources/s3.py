@@ -3787,12 +3787,14 @@ class BucketReplication(Filter):
             if not destination:
                 return bool(rules)
             else:
-                return any(self.filter_bucket(b, replication, destination, client) for replication in rules)
+                return any(self.filter_bucket(b, replication, destination, client)
+                            for replication in rules)
         else:
             if not destination:
                 return not bool(rules)
             else:
-                return not all(self.filter_bucket(b, replication, destination, client) for replication in rules)
+                return not all(self.filter_bucket(b, replication, destination, client)
+                                for replication in rules)
 
     def filter_bucket(self, b, replication, destination, client):
         destination = self.data.get('destination')
