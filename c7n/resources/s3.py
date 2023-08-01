@@ -3772,7 +3772,7 @@ class BucketReplication(ListItemFilter):
                 self.augment_bucket_replication(b, replication, client)
 
         return rules
-    
+
     def augment_bucket_replication(self, b, replication, client):
         destination_bucket = replication.get('Destination').get('Bucket').split(':')[5]
         destination_region = inspect_bucket_region(destination_bucket, client.meta.endpoint_url)
