@@ -3754,16 +3754,8 @@ class BucketReplication(ListItemFilter):
 
     def get_item_values(self, b):
         client = bucket_client(local_session(self.manager.session_factory), b)
-        if self.annotation_key not in b:
-            try:
-                bucket_replication = client.get_bucket_replication(Bucket=b['Name'])
-            except ClientError as e:
-                if e.response['Error']['Code'] != 'ReplicationConfigurationNotFoundError':
-                    raise
-                bucket_replication = {}
-            b[self.annotation_key] = bucket_replication
-        else:
-            bucket_replication = b[self.annotation_key]
+        # replication configuration is called in S3_AUGMENT_TABLE:
+        bucket_replication = b[self.annotation_key]
 
         rules = []
         if bucket_replication is not None:
