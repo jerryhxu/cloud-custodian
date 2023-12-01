@@ -4,7 +4,7 @@ from c7n.actions import BaseAction
 from c7n.filters.vpc import SecurityGroupFilter, SubnetFilter
 from c7n.manager import resources
 from c7n.query import QueryResourceManager, TypeInfo
-
+from c7n.tags import RemoveTag, Tag, TagActionFilter, TagDelayedAction
 from c7n.utils import local_session, type_schema
 
 
@@ -21,6 +21,7 @@ class ComputeEnvironment(QueryResourceManager):
         enum_spec = (
             'describe_compute_environments', 'computeEnvironments', None)
         cfn_type = config_type = 'AWS::Batch::ComputeEnvironment'
+        universal_taggable = object()
 
 
 @ComputeEnvironment.filter_registry.register('security-group')
@@ -33,6 +34,28 @@ class ComputeSGFilter(SecurityGroupFilter):
 class ComputeSubnetFilter(SubnetFilter):
 
     RelatedIdsExpression = "computeResources.subnets[]"
+
+# @ComputeEnvironment.action_registry.register('tag')
+# class TagComputingEnvironment(Tag):
+#     """Create tags on Bedrock custom models
+
+#     :example:
+
+#     .. code-block:: yaml
+
+#         policies:
+#             - name: bedrock-custom-models-tag
+#               resource: aws.bedrock-custom-model
+#               actions:
+#                 - type: tag
+#                   key: test
+#                   value: something
+#     """
+#     permissions = ('bedrock:TagResource',)
+
+#     def process_resource_set(self, client, resources, new_tags):
+#         for r in resources:
+#             client.tag_resource(resourceArn=r["computeEnvironmentArn"], tags={t['Key']: t['Value'] for t in new_tags})
 
 
 @resources.register('batch-definition')
@@ -48,6 +71,7 @@ class JobDefinition(QueryResourceManager):
         enum_spec = (
             'describe_job_definitions', 'jobDefinitions', None)
         cfn_type = 'AWS::Batch::JobDefinition'
+        universal_taggable = object()
 
 
 @ComputeEnvironment.action_registry.register('update-environment')
@@ -181,3 +205,87 @@ class BatchJobQueue(QueryResourceManager):
         enum_spec = (
             'describe_job_queues', 'jobQueues', None)
         cfn_type = config_type = 'AWS::Batch::JobQueue'
+        universal_taggable = object()
+
+@BatchJobQueue.action_registry.register('delete')
+class DeleteBatchJobQueue(BaseAction):
+    """Delete an AWS batch compute environment
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: delete-environments
+            resource: batch-compute
+            filters:
+              - computeResources.desiredvCpus: 0
+            actions:
+              - type: delete
+    """
+    schema = type_schema('delete')
+    permissions = ('batch:DeleteComputeEnvironment',)
+    valid_origin_states = ('DISABLED',)
+    valid_origin_status = ('VALID', 'INVALID')
+
+    def delete_job_queue(self, client, r):
+        client.delete_job_queue(
+            jobQueue=r['jobQueueName'])
+
+    def process(self, resources):
+        resources = self.filter_resources(
+            self.filter_resources(
+                resources, 'state', self.valid_origin_states),
+            'status', self.valid_origin_status)
+        client = local_session(self.manager.session_factory).client('batch')
+        for e in resources:
+            self.delete_job_queue(client, e)
+
+@BatchJobQueue.action_registry.register('update-job-queue')
+class UpdateBatchJobQueue(BaseAction):
+    """Updates an AWS batch compute environment
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: update-environments
+            resource: batch-compute
+            filters:
+              - computeResources.desiredvCpus: 0
+              - state: ENABLED
+            actions:
+              - type: update-environment
+                state: DISABLED
+    """
+    schema = {
+        'type': 'object',
+        'additionalProperties': False,
+        'properties': {
+            'type': {'enum': ['update-job-queue']},
+            'computeEnvironment': {'type': 'string'},
+            'state': {'type': 'string', 'enum': ['ENABLED', 'DISABLED']},
+            'computeResources': {
+                'type': 'object',
+                'additionalProperties': False,
+                'properties': {
+                    'minvCpus': {'type': 'integer'},
+                    'maxvCpus': {'type': 'integer'},
+                    'desiredvCpus': {'type': 'integer'}
+                }
+            },
+            'serviceRole': {'type': 'string'}
+        }
+    }
+    permissions = ('batch:UpdateComputeEnvironment',)
+    valid_origin_status = ('VALID', 'INVALID')
+
+    def process(self, resources):
+        resources = self.filter_resources(resources, 'status', self.valid_origin_status)
+        client = local_session(self.manager.session_factory).client('batch')
+        params = dict(self.data)
+        params.pop('type')
+        for r in resources:
+            params['jobQueue'] = r['jobQueueName']
+            client.update_compute_environment(**params)

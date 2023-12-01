@@ -66,3 +66,46 @@ class TestBatchDefinition(BaseTest):
         defs = client.describe_job_definitions(
             jobDefinitionName=def_name)['jobDefinitions']
         self.assertEqual(defs[0]['status'], 'INACTIVE')
+
+
+class TestBatchJobQueue(BaseTest):
+
+    def test_batch_queue_update(self):
+        session_factory = self.record_flight_data("test_batch_queue_update")
+        p = self.load_policy(
+            {
+                "name": "batch-queue-test",
+                "resource": "batch-queue",
+                "filters": [{"computeResources.desiredvCpus": 0}, {"state": "ENABLED"}],
+                "actions": [{"type": "update-job-queue", "state": "DISABLED"}],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        client = session_factory().client("batch")
+        envs = client.describe_compute_environments(
+            computeEnvironments=[resources[0]["computeEnvironmentName"]]
+        )[
+            "computeEnvironments"
+        ]
+        self.assertEqual(envs[0]["state"], "DISABLED")
+
+    def test_batch_queue_delete(self):
+        session_factory = self.record_flight_data("test_batch_queue_delete")
+        p = self.load_policy(
+            {
+                "name": "batch-queue-test",
+                "resource": "batch-queue",
+                "filters": [{"computeResources.desiredvCpus": 0}],
+                "actions": [{"type": "delete"}],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        client = session_factory().client("batch")
+        envs = client.describe_compute_environments(
+            computeEnvironments=[resources[0]['computeEnvironmentName']]
+        )['computeEnvironments']
+        self.assertEqual(envs[0]['status'], 'DELETING')
