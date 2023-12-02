@@ -5,6 +5,35 @@ from .common import BaseTest
 
 class TestBatchComputeEnvironment(BaseTest):
 
+    def test_batch_compute_tag(self):
+        session_factory = self.replay_flight_data('test_batch_compute_tag')
+        p = self.load_policy(
+            {
+                'name': 'batch-compute-tag',
+                'resource': 'batch-compute',
+                'filters': [
+                    {'tag:team': 'absent'},
+                    {'tag:owner': 'c7n'},
+                ],
+                'actions': [
+                    {
+                        'type': 'tag',
+                        'tags': {'team': 'policy'}
+                    },
+                    {
+                        'type': 'remove-tag',
+                        'tags': ['owner']
+                    }
+                ]
+            }, session_factory=session_factory
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        client = session_factory().client('batch')
+        tags = client.list_tags_for_resource(resourceArn=resources[0]['computeEnvironmentArn'])['tags']
+        self.assertEqual(len(tags), 1)
+        self.assertEqual(tags, {'team': 'policy'})
+
     def test_batch_compute_update(self):
         session_factory = self.replay_flight_data("test_batch_compute_update")
         p = self.load_policy(
@@ -48,6 +77,35 @@ class TestBatchComputeEnvironment(BaseTest):
 
 class TestBatchDefinition(BaseTest):
 
+    def test_definition_tag(self):
+        session_factory = self.replay_flight_data('test_batch_definition_tag')
+        p = self.load_policy(
+            {
+                'name': 'batch-definition-tag',
+                'resource': 'batch-definition',
+                'filters': [
+                    {'tag:team': 'absent'},
+                    {'tag:owner': 'c7n'},
+                ],
+                'actions': [
+                    {
+                        'type': 'tag',
+                        'tags': {'team': 'policy'}
+                    },
+                    {
+                        'type': 'remove-tag',
+                        'tags': ['owner']
+                    }
+                ]
+            }, session_factory=session_factory
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        client = session_factory().client('batch')
+        tags = client.list_tags_for_resource(resourceArn=resources[0]['jobDefinitionArn'])['tags']
+        self.assertEqual(len(tags), 1)
+        self.assertEqual(tags, {'team': 'policy'})
+
     def test_definition_deregister(self):
         def_name = 'c7n_batch'
         session_factory = self.replay_flight_data(
@@ -70,13 +128,42 @@ class TestBatchDefinition(BaseTest):
 
 class TestBatchJobQueue(BaseTest):
 
+    def test_batch_queue_tag(self):
+        session_factory = self.replay_flight_data('test_batch_queue_tag')
+        p = self.load_policy(
+            {
+                'name': 'batch-queue-tag',
+                'resource': 'batch-queue',
+                'filters': [
+                    {'tag:team': 'absent'},
+                    {'tag:owner': 'c7n'},
+                ],
+                'actions': [
+                    {
+                        'type': 'tag',
+                        'tags': {'team': 'policy'}
+                    },
+                    {
+                        'type': 'remove-tag',
+                        'tags': ['owner']
+                    }
+                ]
+            }, session_factory=session_factory
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        client = session_factory().client('batch')
+        tags = client.list_tags_for_resource(resourceArn=resources[0]['jobQueueArn'])['tags']
+        self.assertEqual(len(tags), 1)
+        self.assertEqual(tags, {'team': 'policy'})
+
     def test_batch_queue_update(self):
-        session_factory = self.record_flight_data("test_batch_queue_update")
+        session_factory = self.replay_flight_data("test_batch_queue_update")
         p = self.load_policy(
             {
                 "name": "batch-queue-test",
                 "resource": "batch-queue",
-                "filters": [{"computeResources.desiredvCpus": 0}, {"state": "ENABLED"}],
+                "filters": [{"state": "ENABLED"}],
                 "actions": [{"type": "update-job-queue", "state": "DISABLED"}],
             },
             session_factory=session_factory,
@@ -84,20 +171,20 @@ class TestBatchJobQueue(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
         client = session_factory().client("batch")
-        envs = client.describe_compute_environments(
-            computeEnvironments=[resources[0]["computeEnvironmentName"]]
+        envs = client.describe_job_queues(
+            jobQueues=[resources[0]["jobQueueName"]]
         )[
-            "computeEnvironments"
+            "jobQueues"
         ]
         self.assertEqual(envs[0]["state"], "DISABLED")
 
     def test_batch_queue_delete(self):
-        session_factory = self.record_flight_data("test_batch_queue_delete")
+        session_factory = self.replay_flight_data("test_batch_queue_delete")
         p = self.load_policy(
             {
                 "name": "batch-queue-test",
                 "resource": "batch-queue",
-                "filters": [{"computeResources.desiredvCpus": 0}],
+                "filters": [{"state": "DISABLED"}],
                 "actions": [{"type": "delete"}],
             },
             session_factory=session_factory,
@@ -105,7 +192,7 @@ class TestBatchJobQueue(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
         client = session_factory().client("batch")
-        envs = client.describe_compute_environments(
-            computeEnvironments=[resources[0]['computeEnvironmentName']]
-        )['computeEnvironments']
+        envs = client.describe_job_queues(
+            jobQueues=[resources[0]['jobQueueName']]
+        )['jobQueues']
         self.assertEqual(envs[0]['status'], 'DELETING')

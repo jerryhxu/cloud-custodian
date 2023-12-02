@@ -35,28 +35,6 @@ class ComputeSubnetFilter(SubnetFilter):
 
     RelatedIdsExpression = "computeResources.subnets[]"
 
-# @ComputeEnvironment.action_registry.register('tag')
-# class TagComputingEnvironment(Tag):
-#     """Create tags on Bedrock custom models
-
-#     :example:
-
-#     .. code-block:: yaml
-
-#         policies:
-#             - name: bedrock-custom-models-tag
-#               resource: aws.bedrock-custom-model
-#               actions:
-#                 - type: tag
-#                   key: test
-#                   value: something
-#     """
-#     permissions = ('bedrock:TagResource',)
-
-#     def process_resource_set(self, client, resources, new_tags):
-#         for r in resources:
-#             client.tag_resource(resourceArn=r["computeEnvironmentArn"], tags={t['Key']: t['Value'] for t in new_tags})
-
 
 @resources.register('batch-definition')
 class JobDefinition(QueryResourceManager):
@@ -264,18 +242,17 @@ class UpdateBatchJobQueue(BaseAction):
         'additionalProperties': False,
         'properties': {
             'type': {'enum': ['update-job-queue']},
-            'computeEnvironment': {'type': 'string'},
             'state': {'type': 'string', 'enum': ['ENABLED', 'DISABLED']},
-            'computeResources': {
+            'schedulingPolicyArn': {'type': 'string'},
+            'priority': {'type': 'integer'},
+            'computeEnvironmentOrder': {
                 'type': 'object',
                 'additionalProperties': False,
                 'properties': {
-                    'minvCpus': {'type': 'integer'},
-                    'maxvCpus': {'type': 'integer'},
-                    'desiredvCpus': {'type': 'integer'}
+                    'order': {'type': 'integer'},
+                    'computeEnvironment': {'type': 'string'}
                 }
-            },
-            'serviceRole': {'type': 'string'}
+            }
         }
     }
     permissions = ('batch:UpdateComputeEnvironment',)
@@ -288,4 +265,4 @@ class UpdateBatchJobQueue(BaseAction):
         params.pop('type')
         for r in resources:
             params['jobQueue'] = r['jobQueueName']
-            client.update_compute_environment(**params)
+            client.update_job_queue(**params)
