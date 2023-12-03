@@ -4,7 +4,6 @@ from c7n.actions import BaseAction
 from c7n.filters.vpc import SecurityGroupFilter, SubnetFilter
 from c7n.manager import resources
 from c7n.query import QueryResourceManager, TypeInfo
-from c7n.tags import RemoveTag, Tag, TagActionFilter, TagDelayedAction
 from c7n.utils import local_session, type_schema
 
 
@@ -187,22 +186,22 @@ class BatchJobQueue(QueryResourceManager):
 
 @BatchJobQueue.action_registry.register('delete')
 class DeleteBatchJobQueue(BaseAction):
-    """Delete an AWS batch compute environment
+    """Delete an AWS batch job queue
 
     :example:
 
     .. code-block:: yaml
 
         policies:
-          - name: delete-environments
-            resource: batch-compute
+          - name: delete-job-queue
+            resource: batch-queue
             filters:
-              - computeResources.desiredvCpus: 0
+              - state: ENABLED
             actions:
               - type: delete
     """
     schema = type_schema('delete')
-    permissions = ('batch:DeleteComputeEnvironment',)
+    permissions = ('batch:DeleteJobQueue',)
     valid_origin_states = ('DISABLED',)
     valid_origin_status = ('VALID', 'INVALID')
 
@@ -228,13 +227,12 @@ class UpdateBatchJobQueue(BaseAction):
     .. code-block:: yaml
 
         policies:
-          - name: update-environments
-            resource: batch-compute
+          - name: update-job-queue
+            resource: batch-queue
             filters:
-              - computeResources.desiredvCpus: 0
               - state: ENABLED
             actions:
-              - type: update-environment
+              - type: update-job-queue
                 state: DISABLED
     """
     schema = {
@@ -255,7 +253,7 @@ class UpdateBatchJobQueue(BaseAction):
             }
         }
     }
-    permissions = ('batch:UpdateComputeEnvironment',)
+    permissions = ('batch:UpdateJobQueue',)
     valid_origin_status = ('VALID', 'INVALID')
 
     def process(self, resources):
