@@ -165,7 +165,7 @@ class TestBatchJobQueue(BaseTest):
                 "name": "batch-queue-test",
                 "resource": "batch-queue",
                 "filters": [{"state": "ENABLED"}],
-                "actions": [{"type": "update-job-queue", "state": "DISABLED"}],
+                "actions": [{"type": "update", "state": "DISABLED"}],
             },
             session_factory=session_factory,
         )

@@ -218,7 +218,7 @@ class DeleteBatchJobQueue(BaseAction):
         for e in resources:
             self.delete_job_queue(client, e)
 
-@BatchJobQueue.action_registry.register('update-job-queue')
+@BatchJobQueue.action_registry.register('update')
 class UpdateBatchJobQueue(BaseAction):
     """Updates an AWS batch compute environment
 
@@ -232,14 +232,14 @@ class UpdateBatchJobQueue(BaseAction):
             filters:
               - state: ENABLED
             actions:
-              - type: update-job-queue
+              - type: update
                 state: DISABLED
     """
     schema = {
         'type': 'object',
         'additionalProperties': False,
         'properties': {
-            'type': {'enum': ['update-job-queue']},
+            'type': {'enum': ['update']},
             'state': {'type': 'string', 'enum': ['ENABLED', 'DISABLED']},
             'schedulingPolicyArn': {'type': 'string'},
             'priority': {'type': 'integer'},
