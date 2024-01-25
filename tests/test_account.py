@@ -1298,16 +1298,16 @@ class AccountTests(BaseTest):
 
 
     def test_get_bedrock_model_invocation_logging(self):
-        factory = self.record_flight_data('test_get_bedrock_model_invocation_logging')
+        factory = self.replay_flight_data('test_get_bedrock_model_invocation_logging')
         p = self.load_policy({
             'name': 'get-bedrock-model-invocation-logging',
             'resource': 'account',
-            'filers': [
+            'filters': [
                             {
                                 "type": "bedrock-model-invocation-logging", 
                                 "attrs": [
                                     {"s3Config": "not-null"},
-                                    {"imageDataDeliveryEnabled": False}
+                                    {"imageDataDeliveryEnabled": True}
                                 ]
                             }
                         ]
@@ -1319,7 +1319,7 @@ class AccountTests(BaseTest):
 
 
     def test_delete_bedrock_model_invocation_logging(self):
-        factory = self.record_flight_data('test_delete_bedrock_model_invocation_logging')
+        factory = self.replay_flight_data('test_delete_bedrock_model_invocation_logging')
         p = self.load_policy({
             'name': 'delete-bedrock-model-invocation-logging',
             'resource': 'account',
