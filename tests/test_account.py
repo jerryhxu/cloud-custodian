@@ -1297,6 +1297,87 @@ class AccountTests(BaseTest):
         self.assertEqual(resources[0]['c7n:ses-max-bounce-rate'], 6)
 
 
+    def test_get_bedrock_model_invocation_logging(self):
+        factory = self.record_flight_data('test_get_bedrock_model_invocation_logging')
+        p = self.load_policy({
+            'name': 'get-bedrock-model-invocation-logging',
+            'resource': 'account',
+            'filers': [
+                            {
+                                "type": "bedrock-model-invocation-logging", 
+                                "attrs": [
+                                    {"s3Config": "not-null"},
+                                    {"imageDataDeliveryEnabled": False}
+                                ]
+                            }
+                        ]
+                        },
+            config={'region': 'us-east-1'},
+            session_factory=factory)
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+
+
+    def test_delete_bedrock_model_invocation_logging(self):
+        factory = self.record_flight_data('test_delete_bedrock_model_invocation_logging')
+        p = self.load_policy({
+            'name': 'delete-bedrock-model-invocation-logging',
+            'resource': 'account',
+            'actions': [
+                            {
+                                "type": "delete-bedrock-model-invocation-logging", 
+                            }
+                        ]
+                        },
+            config={'region': 'us-east-1'},
+            session_factory=factory)
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+    
+
+    def test_update_bedrock_model_invocation_logging(self):
+        factory = self.replay_flight_data("test_update_bedrock_model_invocation_logging")
+        p = self.load_policy(
+            {
+                "name": "set-bedrock-model-invocation-logging",
+                "resource": "account",
+                "actions": [
+                    {
+                        "type": "set-bedrock-model-invocation-logging",
+                        "loggingConfig": {
+                            "textDataDeliveryEnabled": True,
+                            "imageDataDeliveryEnabled": True,
+                            "embeddingDataDeliveryEnabled": False,
+                            "s3Config":
+                                {
+                                    "bucketName": "test-bedrock-1",
+                                    "keyPrefix": "logging/"
+                                }
+                        }
+                    }
+                ]
+            },
+            session_factory=factory,
+        )
+
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        client = local_session(factory).client('bedrock')
+        configuration = client.get_model_invocation_logging_configuration()
+        self.assertEqual(
+            [
+                configuration['loggingConfig']['textDataDeliveryEnabled'],
+                configuration['loggingConfig']['imageDataDeliveryEnabled'],
+                configuration['loggingConfig']['embeddingDataDeliveryEnabled'],
+            ],
+            [
+                True,
+                True,
+                False,
+            ]
+        )
+
+
 class AccountDataEvents(BaseTest):
 
     def make_bucket(self, session_factory, name):

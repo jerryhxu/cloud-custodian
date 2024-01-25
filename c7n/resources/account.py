@@ -20,6 +20,7 @@ from c7n.filters.missing import Missing
 from c7n.manager import ResourceManager, resources
 from c7n.utils import local_session, type_schema, generate_arn, get_support_region, jmespath_search
 from c7n.query import QueryResourceManager, TypeInfo
+from c7n.filters import ListItemFilter
 
 from c7n.resources.iam import CredentialReport
 from c7n.resources.securityhub import OtherResourcePostFinding
@@ -2390,3 +2391,101 @@ class SesConsecutiveStats(Filter):
         resources[0][self.max_bounce_annotation] = max_bounce_rate
 
         return resources
+
+
+@filters.register('bedrock-model-invocation-logging')
+class BedrockModelInvocationLogging(ListItemFilter):
+    """Filter for S3 buckets to look at intelligent tiering configurations
+
+    The schema to supply to the attrs follows the schema here:
+     https://botocore.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/list_bucket_intelligent_tiering_configurations.html
+
+    :example:
+
+    .. code-block:: yaml
+
+            policies:
+              - name: bedrock-model-invocation-logging
+                resource: account
+                filters:
+                  - type: bedrock-model-invocation-logging
+                    attrs:
+                      - imageDataDeliveryEnabled: True
+
+    """
+    schema = type_schema(
+        'bedrock-model-invocation-logging',
+        attrs={'$ref': '#/definitions/filters_common/list_item_attrs'},
+        count={'type': 'number'},
+        count_op={'$ref': '#/definitions/filters_common/comparison_operators'}
+    )
+    #permissions = ('s3:GetIntelligentTieringConfiguration',)
+    #annotation_key = "c7n:IntelligentTiering"
+    #annotate_items = True
+
+    # def get_client(self):
+    #     if self._client:
+    #         return self._client
+    #     self._client = local_session(self.manager.session_factory).client()
+    #     return self._client
+
+    def get_item_values(self, resource):
+        #if self.annotation_key not in b:
+        item_values = []
+        client = local_session(self.manager.session_factory).client('bedrock')
+        invocation_logging_config = client.get_model_invocation_logging_configuration()
+        item_values.append(invocation_logging_config['loggingConfig'])
+            # try:
+            #     invocation_logging_config = client.client.get_model_invocation_logging_configuration()
+            #     # b[self.annotation_key] = int_tier_config.get(
+            #     #     'IntelligentTieringConfigurationList', [])
+            # except ClientError as e:
+            #     if e.response['Error']['Code'] == 'AccessDenied':
+            #         method = 'list_bucket_intelligent_tiering_configurations'
+            #         self.log.warning(
+            #             "Bucket:%s unable to invoke method:%s error:%s ",
+            #               b['Name'], method, e.response['Error']['Message'])
+            #         b.setdefault('c7n:DeniedMethods', []).append(method)
+        return item_values
+
+
+@actions.register('delete-bedrock-model-invocation-logging')
+class DeleteBedrockModelInvocationLogging(BaseAction):
+    """Delete Bedrock Model Invocation Logging Configuration on an account."""
+
+    permissions = ('bedrock:DeleteModelInvocationLoggingConfiguration',)
+
+    schema = type_schema('delete-bedrock-model-invocation-logging')
+
+    def process(self, resources):
+        client = local_session(self.manager.session_factory).client('bedrock')
+        client.delete_model_invocation_logging_configuration()
+
+
+@actions.register('set-bedrock-model-invocation-logging')
+class SetBedrockModelInvocationLogging(BaseAction):
+   
+    schema = type_schema('set-bedrock-model-invocation-logging')
+
+    permissions = ('bedrock:PutModelInvocationLoggingConfiguration',)
+    shape = 'PutModelInvocationLoggingConfigurationRequest'
+    service = 'bedrock'
+
+    def validate(self):
+        cfg = dict(self.data)
+        cfg.pop('type')
+        return shape_validate(
+            cfg,
+            self.shape,
+            self.service)
+
+    def process(self, resources):
+        client = local_session(self.manager.session_factory).client('bedrock')
+        #account = resources[0]
+        #config = client.get_model_invocation_logging_configuration()
+        #params = dict(self.data['configuration'])
+        params = self.data.get('loggingConfig')
+        #config.update(params)
+        #config = {k: v for (k, v) in config.items() if k not in ('ExpirePasswords',
+        #    'PasswordPolicyConfigured')}
+        client.put_model_invocation_logging_configuration(loggingConfig=params)
