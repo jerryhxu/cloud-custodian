@@ -2481,7 +2481,7 @@ class SetBedrockModelInvocationLogging(BaseAction):
         },
     }
 
-    #permissions = ('bedrock:PutModelInvocationLoggingConfiguration',)
+    permissions = ('bedrock:PutModelInvocationLoggingConfiguration',)
     shape = 'PutModelInvocationLoggingConfigurationRequest'
     service = 'bedrock'
 
