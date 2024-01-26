@@ -2456,6 +2456,7 @@ class DeleteBedrockModelInvocationLogging(BaseAction):
 class SetBedrockModelInvocationLogging(BaseAction):
     """Set Bedrock Model Invocation Logging Configuration on an account.
      https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/bedrock/client/put_model_invocation_logging_configuration.html
+
     :example:
 
     .. code-block:: yaml
