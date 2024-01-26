@@ -2405,7 +2405,7 @@ class BedrockModelInvocationLogging(ListItemFilter):
     .. code-block:: yaml
 
             policies:
-              - name: bedrock-model-invocation-logging
+              - name: bedrock-model-invocation-logging-configuration
                 resource: account
                 filters:
                   - type: bedrock-model-invocation-logging
@@ -2439,7 +2439,7 @@ class DeleteBedrockModelInvocationLogging(BaseAction):
     .. code-block:: yaml
 
             policies:
-              - name: bedrock-model-invocation-logging
+              - name: delete-bedrock-model-invocation-logging
                 resource: account
                 actions:
                   - type: delete-bedrock-model-invocation-logging
@@ -2461,7 +2461,7 @@ class SetBedrockModelInvocationLogging(BaseAction):
     .. code-block:: yaml
 
             policies:
-              - name: bedrock-model-invocation-logging
+              - name: set-bedrock-model-invocation-logging
                 resource: account
                 actions:
                   - type: set-bedrock-model-invocation-logging
