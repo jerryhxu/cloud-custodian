@@ -1304,7 +1304,7 @@ class AccountTests(BaseTest):
             'resource': 'account',
             'filters': [
                             {
-                                "type": "bedrock-model-invocation-logging", 
+                                "type": "bedrock-model-invocation-logging",
                                 "attrs": [
                                     {"s3Config": "not-null"},
                                     {"imageDataDeliveryEnabled": True}
@@ -1325,7 +1325,7 @@ class AccountTests(BaseTest):
             'resource': 'account',
             'actions': [
                             {
-                                "type": "delete-bedrock-model-invocation-logging", 
+                                "type": "delete-bedrock-model-invocation-logging",
                             }
                         ]
                         },
@@ -1333,7 +1333,7 @@ class AccountTests(BaseTest):
             session_factory=factory)
         resources = p.run()
         self.assertEqual(len(resources), 1)
-    
+
 
     def test_update_bedrock_model_invocation_logging(self):
         factory = self.replay_flight_data("test_update_bedrock_model_invocation_logging")

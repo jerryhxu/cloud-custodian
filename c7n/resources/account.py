@@ -2432,7 +2432,6 @@ class BedrockModelInvocationLogging(ListItemFilter):
 @actions.register('delete-bedrock-model-invocation-logging')
 class DeleteBedrockModelInvocationLogging(BaseAction):
     """Delete Bedrock Model Invocation Logging Configuration on an account.
-    
      https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/bedrock/client/delete_model_invocation_logging_configuration.html
 
     :example:
@@ -2444,9 +2443,7 @@ class DeleteBedrockModelInvocationLogging(BaseAction):
                 resource: account
                 actions:
                   - type: delete-bedrock-model-invocation-logging
-    
     """
-
     permissions = ('bedrock:DeleteModelInvocationLoggingConfiguration',)
     schema = type_schema('delete-bedrock-model-invocation-logging')
 
@@ -2458,9 +2455,7 @@ class DeleteBedrockModelInvocationLogging(BaseAction):
 @actions.register('set-bedrock-model-invocation-logging')
 class SetBedrockModelInvocationLogging(BaseAction):
     """Set Bedrock Model Invocation Logging Configuration on an account.
-    
      https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/bedrock/client/put_model_invocation_logging_configuration.html
-
     :example:
 
     .. code-block:: yaml
