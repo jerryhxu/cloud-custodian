@@ -1325,7 +1325,8 @@ class AccountTests(BaseTest):
             'resource': 'account',
             'actions': [
                             {
-                                "type": "delete-bedrock-model-invocation-logging",
+                                "type": "set-bedrock-model-invocation-logging",
+                                "enabled": False
                             }
                         ]
                         },
@@ -1344,6 +1345,7 @@ class AccountTests(BaseTest):
                 "actions": [
                     {
                         "type": "set-bedrock-model-invocation-logging",
+                        "enabled": True,
                         "loggingConfig": {
                             "textDataDeliveryEnabled": True,
                             "imageDataDeliveryEnabled": True,
@@ -1369,11 +1371,15 @@ class AccountTests(BaseTest):
                 configuration['loggingConfig']['textDataDeliveryEnabled'],
                 configuration['loggingConfig']['imageDataDeliveryEnabled'],
                 configuration['loggingConfig']['embeddingDataDeliveryEnabled'],
+                configuration['loggingConfig']['s3Config']['bucketName'],
+                configuration['loggingConfig']['s3Config']['keyPrefix']
             ],
             [
                 True,
                 True,
                 False,
+                "test-bedrock-1",
+                "logging/"
             ]
         )
 

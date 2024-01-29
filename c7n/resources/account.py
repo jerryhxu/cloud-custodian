@@ -2429,29 +2429,6 @@ class BedrockModelInvocationLogging(ListItemFilter):
         return item_values
 
 
-@actions.register('delete-bedrock-model-invocation-logging')
-class DeleteBedrockModelInvocationLogging(BaseAction):
-    """Delete Bedrock Model Invocation Logging Configuration on an account.
-     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/bedrock/client/delete_model_invocation_logging_configuration.html
-
-    :example:
-
-    .. code-block:: yaml
-
-            policies:
-              - name: delete-bedrock-model-invocation-logging
-                resource: account
-                actions:
-                  - type: delete-bedrock-model-invocation-logging
-    """
-    permissions = ('bedrock:DeleteModelInvocationLoggingConfiguration',)
-    schema = type_schema('delete-bedrock-model-invocation-logging')
-
-    def process(self, resources):
-        client = local_session(self.manager.session_factory).client('bedrock')
-        client.delete_model_invocation_logging_configuration()
-
-
 @actions.register('set-bedrock-model-invocation-logging')
 class SetBedrockModelInvocationLogging(BaseAction):
     """Set Bedrock Model Invocation Logging Configuration on an account.
@@ -2466,11 +2443,18 @@ class SetBedrockModelInvocationLogging(BaseAction):
                 resource: account
                 actions:
                   - type: set-bedrock-model-invocation-logging
+                    enabled: True
                     loggingConfig:
                       textDataDeliveryEnabled: True
                       s3Config:
                         bucketName: test-bedrock-1
                         keyPrefix:  logging/
+
+              - name: delete-bedrock-model-invocation-logging
+                resource: account
+                actions:
+                  - type: set-bedrock-model-invocation-logging
+                    enabled: False
     """
 
     schema = {
@@ -2478,6 +2462,7 @@ class SetBedrockModelInvocationLogging(BaseAction):
         'additionalProperties': False,
         'properties': {
             'type': {'enum': ['set-bedrock-model-invocation-logging']},
+            'enabled': {'type': 'boolean'},
             'loggingConfig': {'type': 'object'}
         },
     }
@@ -2488,13 +2473,19 @@ class SetBedrockModelInvocationLogging(BaseAction):
 
     def validate(self):
         cfg = dict(self.data)
-        cfg.pop('type')
-        return shape_validate(
-            cfg,
-            self.shape,
-            self.service)
+        enabled = cfg.get('enabled')
+        if enabled:
+            cfg.pop('type')
+            cfg.pop('enabled')
+            return shape_validate(
+                cfg,
+                self.shape,
+                self.service)
 
     def process(self, resources):
         client = local_session(self.manager.session_factory).client('bedrock')
-        params = self.data.get('loggingConfig')
-        client.put_model_invocation_logging_configuration(loggingConfig=params)
+        if self.data.get('enabled'):
+            params = self.data.get('loggingConfig')
+            client.put_model_invocation_logging_configuration(loggingConfig=params)
+        else:
+            client.delete_model_invocation_logging_configuration()
