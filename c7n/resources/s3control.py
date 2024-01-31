@@ -95,3 +95,36 @@ class MultiRegionAccessPoint(QueryResourceManager):
         permission_prefix = 's3'
 
     source_mapping = {'describe': MultiRegionAccessPointDescribe}
+
+
+class StorageLensDescribe(DescribeSource):
+    def get_query_params(self, query_params):
+        query_params = query_params or {}
+        query_params['AccountId'] = self.manager.config.account_id
+        return query_params
+
+    def augment(self, resources):
+        client = local_session(self.manager.session_factory).client('s3control')
+        results = []
+        for r in resources:
+            arn = Arn.parse(r['StorageLensArn'])
+            storage_lens_configuration = client.get_storage_lens_configuration(AccountId=arn.account_id, ConfigId=r['Id'])
+            storage_lens_configuration.pop('ResponseMetadata', None)
+            results.append(storage_lens_configuration)
+        return results
+
+
+@resources.register('s3-storage-lens')
+class StorageLens(QueryResourceManager):
+    class resource_type(TypeInfo):
+        service = 's3control'
+        id = name = 'Id'
+        enum_spec = ('list_storage_lens_configurations', 'StorageLensConfigurationList', None)
+        arn = 'StorageLensArn'
+        arn_service = 's3'
+        arn_type = 'storage-lens'
+        cfn_type = 'AWS::S3::StorageLens'
+        permission_prefix = 's3'
+        universal_taggable = object()
+
+    source_mapping = {'describe': StorageLensDescribe}

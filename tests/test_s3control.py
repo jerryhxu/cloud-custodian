@@ -4,6 +4,9 @@ import time
 from botocore.exceptions import ClientError
 import pytest
 from pytest_terraform import terraform
+from .common import (
+    BaseTest
+)
 
 
 @terraform('s3_access_point', teardown=terraform.TEARDOWN_IGNORE)
@@ -34,3 +37,19 @@ def test_s3_access_point(test, s3_access_point):
         client.get_access_point(
             AccountId=p.options['account_id'], Name=resources[0]['Name']
         )
+
+class TestStorageLens(BaseTest):
+
+    def test_s3_storage_lens(self):
+        factory = self.record_flight_data('s3_storage_lens')
+        p = self.load_policy(
+            {
+                'name': 's3_storage_lens',
+                'resource': 'aws.s3-storage-lens',
+            },
+            session_factory=factory
+        )
+
+        resources = p.run()
+        assert len(resources) == 2
+        
