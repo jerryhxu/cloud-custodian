@@ -6,6 +6,7 @@ from c7n.manager import resources
 from c7n.resources.aws import Arn
 from c7n.query import QueryResourceManager, TypeInfo, DescribeSource
 from c7n.utils import local_session, type_schema
+from c7n.tags import RemoveTag, Tag, TagActionFilter, TagDelayedAction
 
 
 class AccessPointDescribe(DescribeSource):
@@ -124,7 +125,52 @@ class StorageLens(QueryResourceManager):
         arn_service = 's3'
         arn_type = 'storage-lens'
         cfn_type = 'AWS::S3::StorageLens'
-        permission_prefix = 's3'
-        universal_taggable = object()
+        permission_prefix = 's3'        
 
     source_mapping = {'describe': StorageLensDescribe}
+
+
+@StorageLens.action_registry.register('tag')
+class TagStorageLens(Tag):
+    """Create tags on Bedrock custom models
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+            - name: bedrock-custom-models-tag
+              resource: aws.bedrock-custom-model
+              actions:
+                - type: tag
+                  key: test
+                  value: something
+    """
+    permissions = ('bedrock:TagResource',)
+
+    def process_resource_set(self, client, resources, new_tags):
+        tags = [{'key': item['Key'], 'value': item['Value']} for item in new_tags]
+        for r in resources:
+            client.tag_resource(resourceARN=r["modelArn"], tags=tags)
+
+
+@StorageLens.action_registry.register('remove-tag')
+class RemoveTagStorageLens(RemoveTag):
+    """Remove tags from a bedrock custom model
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+            - name: bedrock-model-remove-tag
+              resource: aws.bedrock-custom-model
+              actions:
+                - type: remove-tag
+                  tags: ["tag-key"]
+    """
+    permissions = ('bedrock:UntagResource',)
+
+    def process_resource_set(self, client, resources, tags):
+        for r in resources:
+            client.untag_resource(resourceARN=r['modelArn'], tagKeys=tags)
+
