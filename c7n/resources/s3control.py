@@ -111,6 +111,8 @@ class StorageLensDescribe(DescribeSource):
             arn = Arn.parse(r['StorageLensArn'])
             storage_lens_configuration = client.get_storage_lens_configuration(AccountId=arn.account_id, ConfigId=r['Id'])
             storage_lens_configuration.pop('ResponseMetadata', None)
+            tags = client.get_storage_lens_configuration_tagging(AccountId=arn.account_id, ConfigId=r['Id'])
+            r['Tags'] = tags['Tags']
             results.append(storage_lens_configuration)
         return results
 
@@ -132,45 +134,50 @@ class StorageLens(QueryResourceManager):
 
 @StorageLens.action_registry.register('tag')
 class TagStorageLens(Tag):
-    """Create tags on Bedrock custom models
+    """Create tags on s3 storage lens
 
     :example:
 
     .. code-block:: yaml
 
         policies:
-            - name: bedrock-custom-models-tag
-              resource: aws.bedrock-custom-model
+            - name: s3-storage-lens-tag
+              resource: aws.s3-storage-lens
               actions:
                 - type: tag
                   key: test
-                  value: something
+                  value: storagelens
     """
-    permissions = ('bedrock:TagResource',)
+    permissions = ('s3:TagResource',)
 
     def process_resource_set(self, client, resources, new_tags):
-        tags = [{'key': item['Key'], 'value': item['Value']} for item in new_tags]
         for r in resources:
-            client.tag_resource(resourceARN=r["modelArn"], tags=tags)
+            client.tag_resource(
+                ConfigId=r['Id'], 
+                AccountId=self.manager.config.account_id, 
+                tagKeys=new_tags)
 
 
 @StorageLens.action_registry.register('remove-tag')
 class RemoveTagStorageLens(RemoveTag):
-    """Remove tags from a bedrock custom model
+    """Remove tags from a storage lens configuration
     :example:
 
     .. code-block:: yaml
 
         policies:
-            - name: bedrock-model-remove-tag
-              resource: aws.bedrock-custom-model
+            - name: storage-lens-remove-tag
+              resource: aws.s3-storage-lens
               actions:
                 - type: remove-tag
                   tags: ["tag-key"]
     """
-    permissions = ('bedrock:UntagResource',)
+    permissions = ('s3:UntagResource',)
 
     def process_resource_set(self, client, resources, tags):
         for r in resources:
-            client.untag_resource(resourceARN=r['modelArn'], tagKeys=tags)
+            client.untag_resource(
+                ConfigId=r['Id'],
+                AccountId=self.manager.config.account_id, 
+                tagKeys=tags)
 
