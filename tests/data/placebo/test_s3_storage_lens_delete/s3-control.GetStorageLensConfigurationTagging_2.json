@@ -1,0 +1,20 @@
+{
+    "status_code": 200,
+    "data": {
+        "ResponseMetadata": {},
+        "Tags": [
+            {
+                "Key": "owner",
+                "Value": "policy"
+            },
+            {
+                "Key": "yyt",
+                "Value": ""
+            },
+            {
+                "Key": "kj",
+                "Value": ""
+            }
+        ]
+    }
+}

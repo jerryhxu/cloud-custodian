@@ -1,0 +1,16 @@
+{
+    "status_code": 200,
+    "data": {
+        "ResponseMetadata": {},
+        "Tags": [
+            {
+                "Key": "owner",
+                "Value": "test"
+            },
+            {
+                "Key": "resource",
+                "Value": "storagelens"
+            }
+        ]
+    }
+}

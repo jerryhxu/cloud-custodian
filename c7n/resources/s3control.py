@@ -7,6 +7,7 @@ from c7n.resources.aws import Arn
 from c7n.query import QueryResourceManager, TypeInfo, DescribeSource
 from c7n.utils import local_session, type_schema
 from c7n.tags import RemoveTag, Tag, TagActionFilter, TagDelayedAction
+from c7n.actions import BaseAction
 
 
 class AccessPointDescribe(DescribeSource):
@@ -132,6 +133,29 @@ class StorageLens(QueryResourceManager):
     source_mapping = {'describe': StorageLensDescribe}
 
 
+def modify_storage_lens_tags(client, configId, accountId, add_tags={}, remove_tags={}):
+    existing_tags = client.get_storage_lens_configuration_tagging(
+            AccountId=accountId, 
+            ConfigId=configId)
+
+    if len(add_tags) > 0:
+        new_tags = {t['Key']: t['Value'] for t in add_tags}
+        for t in existing_tags:
+            if t['Key'] not in new_tags and t['Key'] not in remove_tags:
+                new_tags[t['Key']] = t['Value']
+    
+    if len(remove_tags) > 0:
+        for t in existing_tags:
+            if t['Key'] not in remove_tags:
+                new_tags[t['Key']] = t['Value']
+    #tags = [{'Key': k, 'Value': v} for k, v in new_tags.items()]
+
+    client.put_storage_lens_configuration_tagging(
+        AccountId=accountId,
+        configId=configId,
+        Tags=new_tags)
+
+
 @StorageLens.action_registry.register('tag')
 class TagStorageLens(Tag):
     """Create tags on s3 storage lens
@@ -150,13 +174,23 @@ class TagStorageLens(Tag):
     """
     permissions = ('s3:TagResource',)
 
-    def process_resource_set(self, client, resources, new_tags):
+    def process_resource_set(self, client, resources, add_tags):
+        accountId=self.manager.config.account_id
         for r in resources:
-            client.tag_resource(
-                ConfigId=r['Id'], 
-                AccountId=self.manager.config.account_id, 
-                tagKeys=new_tags)
-
+            configId=r['StorageLensConfiguration']['Id']
+            existing_tags = client.get_storage_lens_configuration_tagging(
+                AccountId=accountId, 
+                ConfigId=configId)
+            new_tags = {t['Key']: t['Value'] for t in add_tags}
+            for t in existing_tags['Tags']:
+                if t['Key'] not in new_tags:
+                    new_tags[t['Key']] = t['Value']
+            tags = [{'Key': k, 'Value': v} for k, v in new_tags.items()]
+            client.put_storage_lens_configuration_tagging(
+                AccountId=accountId,
+                ConfigId=configId,
+                Tags=tags)
+            
 
 @StorageLens.action_registry.register('remove-tag')
 class RemoveTagStorageLens(RemoveTag):
@@ -174,10 +208,48 @@ class RemoveTagStorageLens(RemoveTag):
     """
     permissions = ('s3:UntagResource',)
 
-    def process_resource_set(self, client, resources, tags):
+    def process_resource_set(self, client, resources, remove_tags):
+        accountId=self.manager.config.account_id
         for r in resources:
-            client.untag_resource(
-                ConfigId=r['Id'],
-                AccountId=self.manager.config.account_id, 
-                tagKeys=tags)
+            configId=r['StorageLensConfiguration']['Id']
+            existing_tags = client.get_storage_lens_configuration_tagging(
+                AccountId=accountId, 
+                ConfigId=configId)
+            new_tags = {}
+            for t in existing_tags['Tags']:
+                if t['Key'] not in remove_tags:
+                    new_tags[t['Key']] = t['Value']
+            tags = [{'Key': k, 'Value': v} for k, v in new_tags.items()]
+            client.put_storage_lens_configuration_tagging(
+                AccountId=accountId,
+                ConfigId=configId,
+                Tags=tags)
+
+
+@StorageLens.action_registry.register('delete')
+class DeleteStorageLens(BaseAction):
+    """Delete a storage lens configuration
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: storage-lens-delete
+            resource: aws.s3-storage-lens
+            actions:
+              - type: delete
+    """
+    schema = type_schema('delete')
+    permissions = ('s3:DeleteStorageLensConfiguration',)
+
+    def process(self, resources):
+        client = local_session(self.manager.session_factory).client('s3control')
+        accountId=self.manager.config.account_id
+        for r in resources:
+            configId=r['StorageLensConfiguration']['Id']
+            client.delete_storage_lens_configuration(
+                ConfigId=configId,
+                AccountId=accountId
+            )
 

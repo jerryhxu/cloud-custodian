@@ -41,15 +41,67 @@ def test_s3_access_point(test, s3_access_point):
 class TestStorageLens(BaseTest):
 
     def test_s3_storage_lens(self):
-        factory = self.record_flight_data('s3_storage_lens')
+        factory = self.replay_flight_data('s3_storage_lens')
         p = self.load_policy(
             {
                 'name': 's3_storage_lens',
                 'resource': 'aws.s3-storage-lens',
+                'filters': [
+                    {
+                        "type": "value",
+                        "key": "StorageLensConfiguration.Id",
+                        "op": "eq",
+                        "value": "test-2",
+                    }
+                ],
+                'actions': [
+                    {
+                        'type': 'tag',
+                        'tags': {'resource': 'storagelens'}
+                    },
+                    {
+                        'type': 'remove-tag',
+                        'tags': ['owner']
+                    }
+                ]
             },
             session_factory=factory
         )
 
         resources = p.run()
-        assert len(resources) == 2
+        assert len(resources) == 1
+        client = factory().client('s3control')
+        tags = client.get_storage_lens_configuration_tagging(AccountId=self.account_id, ConfigId=resources[0]['StorageLensConfiguration']['Id'])
+        self.assertEqual(len(tags['Tags']), 1)
+        self.assertEqual(tags['Tags'], [
+            {'Key': 'resource', 'Value': 'storagelens'}
+            ])
+
         
+    def test_s3_storage_lens_delete(self):
+        session_factory = self.replay_flight_data('test_s3_storage_lens_delete')
+        p = self.load_policy(
+            {
+                'name': 'storage-lens-delete',
+                'resource': 's3-storage-lens',
+                'filters': [
+                    {
+                        "type": "value",
+                        "key": "StorageLensConfiguration.Id",
+                        "op": "eq",
+                        "value": "test-3",
+                    }
+                ],
+                'actions': [{'type': 'delete'}]
+            },
+            session_factory=session_factory
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        client = session_factory().client('s3control')        
+        with self.assertRaises(ClientError) as e:
+            resources = client.get_storage_lens_configuration(
+                    ConfigId='test-3',
+                    AccountId=self.account_id)
+        self.assertEqual(e.exception.response['Error']['Code'], 'NoSuchConfiguration')
+
