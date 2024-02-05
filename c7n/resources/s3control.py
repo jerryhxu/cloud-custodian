@@ -151,7 +151,8 @@ class TagStorageLens(Tag):
                   key: test
                   value: storagelens
     """
-    permissions = ('s3:TagResource',)
+    permissions = ('s3:GetStorageLensConfigurationTagging',
+                   's3:PutStorageLensConfigurationTagging',)
 
     def process_resource_set(self, client, resources, add_tags):
         accountId=self.manager.config.account_id
@@ -185,7 +186,8 @@ class RemoveTagStorageLens(RemoveTag):
                 - type: remove-tag
                   tags: ["tag-key"]
     """
-    permissions = ('s3:UntagResource',)
+    permissions = ('s3:GetStorageLensConfigurationTagging',
+                   's3:PutStorageLensConfigurationTagging',)
 
     def process_resource_set(self, client, resources, remove_tags):
         accountId=self.manager.config.account_id
@@ -231,6 +233,7 @@ class DeleteStorageLens(BaseAction):
                 ConfigId=configId,
                 AccountId=accountId
             )
+
 
 StorageLens.filter_registry.register('marked-for-op', TagActionFilter)
 @StorageLens.action_registry.register('mark-for-op')
