@@ -115,7 +115,7 @@ class StorageLensDescribe(DescribeSource):
             storage_lens_configuration.pop('ResponseMetadata', None)
             tags = client \
                 .get_storage_lens_configuration_tagging(AccountId=arn.account_id, ConfigId=r['Id'])
-            r['Tags'] = tags['Tags']
+            storage_lens_configuration['Tags'] = tags['Tags']
             results.append(storage_lens_configuration)
         return results
 
@@ -133,29 +133,6 @@ class StorageLens(QueryResourceManager):
         permission_prefix = 's3'
 
     source_mapping = {'describe': StorageLensDescribe}
-
-
-def modify_storage_lens_tags(client, configId, accountId, add_tags={}, remove_tags={}):
-    existing_tags = client.get_storage_lens_configuration_tagging(
-            AccountId=accountId,
-            ConfigId=configId)
-
-    if len(add_tags) > 0:
-        new_tags = {t['Key']: t['Value'] for t in add_tags}
-        for t in existing_tags:
-            if t['Key'] not in new_tags and t['Key'] not in remove_tags:
-                new_tags[t['Key']] = t['Value']
-
-    if len(remove_tags) > 0:
-        for t in existing_tags:
-            if t['Key'] not in remove_tags:
-                new_tags[t['Key']] = t['Value']
-    #tags = [{'Key': k, 'Value': v} for k, v in new_tags.items()]
-
-    client.put_storage_lens_configuration_tagging(
-        AccountId=accountId,
-        configId=configId,
-        Tags=new_tags)
 
 
 @StorageLens.action_registry.register('tag')
