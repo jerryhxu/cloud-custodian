@@ -110,9 +110,11 @@ class StorageLensDescribe(DescribeSource):
         results = []
         for r in resources:
             arn = Arn.parse(r['StorageLensArn'])
-            storage_lens_configuration = client.get_storage_lens_configuration(AccountId=arn.account_id, ConfigId=r['Id'])
+            storage_lens_configuration = client \
+                .get_storage_lens_configuration(AccountId=arn.account_id, ConfigId=r['Id'])
             storage_lens_configuration.pop('ResponseMetadata', None)
-            tags = client.get_storage_lens_configuration_tagging(AccountId=arn.account_id, ConfigId=r['Id'])
+            tags = client \
+                .get_storage_lens_configuration_tagging(AccountId=arn.account_id, ConfigId=r['Id'])
             r['Tags'] = tags['Tags']
             results.append(storage_lens_configuration)
         return results
@@ -128,14 +130,14 @@ class StorageLens(QueryResourceManager):
         arn_service = 's3'
         arn_type = 'storage-lens'
         cfn_type = 'AWS::S3::StorageLens'
-        permission_prefix = 's3'        
+        permission_prefix = 's3'
 
     source_mapping = {'describe': StorageLensDescribe}
 
 
 def modify_storage_lens_tags(client, configId, accountId, add_tags={}, remove_tags={}):
     existing_tags = client.get_storage_lens_configuration_tagging(
-            AccountId=accountId, 
+            AccountId=accountId,
             ConfigId=configId)
 
     if len(add_tags) > 0:
@@ -143,7 +145,7 @@ def modify_storage_lens_tags(client, configId, accountId, add_tags={}, remove_ta
         for t in existing_tags:
             if t['Key'] not in new_tags and t['Key'] not in remove_tags:
                 new_tags[t['Key']] = t['Value']
-    
+
     if len(remove_tags) > 0:
         for t in existing_tags:
             if t['Key'] not in remove_tags:
@@ -179,7 +181,7 @@ class TagStorageLens(Tag):
         for r in resources:
             configId=r['StorageLensConfiguration']['Id']
             existing_tags = client.get_storage_lens_configuration_tagging(
-                AccountId=accountId, 
+                AccountId=accountId,
                 ConfigId=configId)
             new_tags = {t['Key']: t['Value'] for t in add_tags}
             for t in existing_tags['Tags']:
@@ -190,7 +192,7 @@ class TagStorageLens(Tag):
                 AccountId=accountId,
                 ConfigId=configId,
                 Tags=tags)
-            
+
 
 @StorageLens.action_registry.register('remove-tag')
 class RemoveTagStorageLens(RemoveTag):
@@ -213,7 +215,7 @@ class RemoveTagStorageLens(RemoveTag):
         for r in resources:
             configId=r['StorageLensConfiguration']['Id']
             existing_tags = client.get_storage_lens_configuration_tagging(
-                AccountId=accountId, 
+                AccountId=accountId,
                 ConfigId=configId)
             new_tags = {}
             for t in existing_tags['Tags']:
@@ -253,3 +255,22 @@ class DeleteStorageLens(BaseAction):
                 AccountId=accountId
             )
 
+StorageLens.filter_registry.register('marked-for-op', TagActionFilter)
+@StorageLens.action_registry.register('mark-for-op')
+class MarkStorageLensForOp(TagDelayedAction):
+    """Mark storage lens configuration for future actions
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: s3-storage-lens-mark
+            resource: aws.s3-storage-lens
+            filters:
+              - "tag:delete": present
+            actions:
+              - type: mark-for-op
+                op: delete
+                days: 1
+    """

@@ -71,13 +71,14 @@ class TestStorageLens(BaseTest):
         resources = p.run()
         assert len(resources) == 1
         client = factory().client('s3control')
-        tags = client.get_storage_lens_configuration_tagging(AccountId=self.account_id, ConfigId=resources[0]['StorageLensConfiguration']['Id'])
+        tags = client.get_storage_lens_configuration_tagging(
+            AccountId=self.account_id, ConfigId=resources[0]['StorageLensConfiguration']['Id'])
         self.assertEqual(len(tags['Tags']), 1)
         self.assertEqual(tags['Tags'], [
             {'Key': 'resource', 'Value': 'storagelens'}
             ])
 
-        
+
     def test_s3_storage_lens_delete(self):
         session_factory = self.replay_flight_data('test_s3_storage_lens_delete')
         p = self.load_policy(
@@ -98,7 +99,7 @@ class TestStorageLens(BaseTest):
         )
         resources = p.run()
         self.assertEqual(len(resources), 1)
-        client = session_factory().client('s3control')        
+        client = session_factory().client('s3control')
         with self.assertRaises(ClientError) as e:
             resources = client.get_storage_lens_configuration(
                     ConfigId='test-3',
