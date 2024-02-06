@@ -95,3 +95,5 @@ class MultiRegionAccessPoint(QueryResourceManager):
         permission_prefix = 's3'
 
     source_mapping = {'describe': MultiRegionAccessPointDescribe}
+
+#something
