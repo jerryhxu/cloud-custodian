@@ -155,9 +155,9 @@ class TagStorageLens(Tag):
                    's3:PutStorageLensConfigurationTagging',)
 
     def process_resource_set(self, client, resources, add_tags):
-        accountId=self.manager.config.account_id
+        accountId = self.manager.config.account_id
         for r in resources:
-            configId=r['StorageLensConfiguration']['Id']
+            configId = r['StorageLensConfiguration']['Id']
             existing_tags = client.get_storage_lens_configuration_tagging(
                 AccountId=accountId,
                 ConfigId=configId)
@@ -190,9 +190,9 @@ class RemoveTagStorageLens(RemoveTag):
                    's3:PutStorageLensConfigurationTagging',)
 
     def process_resource_set(self, client, resources, remove_tags):
-        accountId=self.manager.config.account_id
+        accountId = self.manager.config.account_id
         for r in resources:
-            configId=r['StorageLensConfiguration']['Id']
+            configId = r['StorageLensConfiguration']['Id']
             existing_tags = client.get_storage_lens_configuration_tagging(
                 AccountId=accountId,
                 ConfigId=configId)
@@ -226,9 +226,9 @@ class DeleteStorageLens(BaseAction):
 
     def process(self, resources):
         client = local_session(self.manager.session_factory).client('s3control')
-        accountId=self.manager.config.account_id
+        accountId = self.manager.config.account_id
         for r in resources:
-            configId=r['StorageLensConfiguration']['Id']
+            configId = r['StorageLensConfiguration']['Id']
             client.delete_storage_lens_configuration(
                 ConfigId=configId,
                 AccountId=accountId
