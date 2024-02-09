@@ -6,7 +6,7 @@ from c7n.manager import resources
 from c7n.resources.aws import Arn
 from c7n.query import QueryResourceManager, TypeInfo, DescribeSource
 from c7n.utils import local_session, type_schema
-from c7n.tags import RemoveTag, Tag, TagActionFilter, TagDelayedAction
+from c7n.tags import TagActionFilter, TagDelayedAction
 from c7n.actions import BaseAction
 
 
@@ -111,8 +111,8 @@ class StorageLensDescribe(DescribeSource):
         for r in resources:
             arn = Arn.parse(r['StorageLensArn'])
             storage_lens_configuration = client \
-                .get_storage_lens_configuration(AccountId=arn.account_id, ConfigId=r['Id'])
-            storage_lens_configuration.pop('ResponseMetadata', None)
+                .get_storage_lens_configuration(AccountId=arn.account_id, ConfigId=r['Id'])\
+                ['StorageLensConfiguration']
             tags = client \
                 .get_storage_lens_configuration_tagging(AccountId=arn.account_id, ConfigId=r['Id'])
             storage_lens_configuration['Tags'] = tags['Tags']
@@ -131,80 +131,9 @@ class StorageLens(QueryResourceManager):
         arn_type = 'storage-lens'
         cfn_type = 'AWS::S3::StorageLens'
         permission_prefix = 's3'
+        universal_taggable = object()
 
     source_mapping = {'describe': StorageLensDescribe}
-
-
-@StorageLens.action_registry.register('tag')
-class TagStorageLens(Tag):
-    """Create tags on s3 storage lens
-
-    :example:
-
-    .. code-block:: yaml
-
-        policies:
-            - name: s3-storage-lens-tag
-              resource: aws.s3-storage-lens
-              actions:
-                - type: tag
-                  key: test
-                  value: storagelens
-    """
-    permissions = ('s3:GetStorageLensConfigurationTagging',
-                   's3:PutStorageLensConfigurationTagging',)
-
-    def process_resource_set(self, client, resources, add_tags):
-        accountId = self.manager.config.account_id
-        for r in resources:
-            configId = r['StorageLensConfiguration']['Id']
-            existing_tags = client.get_storage_lens_configuration_tagging(
-                AccountId=accountId,
-                ConfigId=configId)
-            new_tags = {t['Key']: t['Value'] for t in add_tags}
-            for t in existing_tags['Tags']:
-                if t['Key'] not in new_tags:
-                    new_tags[t['Key']] = t['Value']
-            tags = [{'Key': k, 'Value': v} for k, v in new_tags.items()]
-            client.put_storage_lens_configuration_tagging(
-                AccountId=accountId,
-                ConfigId=configId,
-                Tags=tags)
-
-
-@StorageLens.action_registry.register('remove-tag')
-class RemoveTagStorageLens(RemoveTag):
-    """Remove tags from a storage lens configuration
-    :example:
-
-    .. code-block:: yaml
-
-        policies:
-            - name: storage-lens-remove-tag
-              resource: aws.s3-storage-lens
-              actions:
-                - type: remove-tag
-                  tags: ["tag-key"]
-    """
-    permissions = ('s3:GetStorageLensConfigurationTagging',
-                   's3:PutStorageLensConfigurationTagging',)
-
-    def process_resource_set(self, client, resources, remove_tags):
-        accountId = self.manager.config.account_id
-        for r in resources:
-            configId = r['StorageLensConfiguration']['Id']
-            existing_tags = client.get_storage_lens_configuration_tagging(
-                AccountId=accountId,
-                ConfigId=configId)
-            new_tags = {}
-            for t in existing_tags['Tags']:
-                if t['Key'] not in remove_tags:
-                    new_tags[t['Key']] = t['Value']
-            tags = [{'Key': k, 'Value': v} for k, v in new_tags.items()]
-            client.put_storage_lens_configuration_tagging(
-                AccountId=accountId,
-                ConfigId=configId,
-                Tags=tags)
 
 
 @StorageLens.action_registry.register('delete')

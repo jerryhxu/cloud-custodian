@@ -49,7 +49,7 @@ class TestStorageLens(BaseTest):
                 'filters': [
                     {
                         "type": "value",
-                        "key": "StorageLensConfiguration.Id",
+                        "key": "Id",
                         "op": "eq",
                         "value": "test-2",
                     }
@@ -72,7 +72,7 @@ class TestStorageLens(BaseTest):
         assert len(resources) == 1
         client = factory().client('s3control')
         tags = client.get_storage_lens_configuration_tagging(
-            AccountId=self.account_id, ConfigId=resources[0]['StorageLensConfiguration']['Id'])
+            AccountId=self.account_id, ConfigId=resources[0]['Id'])
         self.assertEqual(len(tags['Tags']), 1)
         self.assertEqual(tags['Tags'], [
             {'Key': 'resource', 'Value': 'storagelens'}
