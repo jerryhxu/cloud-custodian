@@ -121,3 +121,26 @@ class DeleteBedrockCustomModel(BaseAction):
               client.delete_custom_model(modelIdentifier=r['modelArn'])
             except client.exceptions.ResourceNotFoundException:
               continue
+
+
+@resources.register('bedrock-knowledge-base')
+class BedrockKnowledgeBase(QueryResourceManager):
+    class resource_type(TypeInfo):
+        service = 'bedrock-agent'
+        enum_spec = ('list_knowledge_bases', 'knowledgeBaseSummaries[]', None)
+        detail_spec = (
+            'get_knowledge_base', 'knowledgeBaseId', 'knowledgeBaseId', None)
+        name = "name"
+        id = arn = "knowledgeBaseId"
+        permission_prefix = 'bedrock'
+
+    def augment(self, resources):
+        client = local_session(self.session_factory).client('bedrock-agent')
+
+        def _augment(r):
+            tags = self.retry(client.list_tags_for_resource,
+                resourceArn=r['knowledgeBase']['knowledgeBaseArn'])['tags']
+            r['Tags'] = [{'Key': t['key'], 'Value':t['value']} for t in tags]
+            return r
+        resources = super(BedrockKnowledgeBase, self).augment(resources)
+        return list(map(_augment, resources))
