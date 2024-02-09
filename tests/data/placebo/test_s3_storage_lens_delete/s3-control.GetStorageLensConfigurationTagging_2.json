@@ -4,16 +4,8 @@
         "ResponseMetadata": {},
         "Tags": [
             {
-                "Key": "owner",
-                "Value": "policy"
-            },
-            {
-                "Key": "yyt",
-                "Value": ""
-            },
-            {
-                "Key": "kj",
-                "Value": ""
+                "Key": "resource",
+                "Value": "storagelens"
             }
         ]
     }

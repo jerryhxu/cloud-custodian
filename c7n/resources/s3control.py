@@ -112,7 +112,7 @@ class StorageLensDescribe(DescribeSource):
             arn = Arn.parse(r['StorageLensArn'])
             storage_lens_configuration = client \
                 .get_storage_lens_configuration(AccountId=arn.account_id, ConfigId=r['Id'])\
-                ['StorageLensConfiguration']
+                .get('StorageLensConfiguration')
             tags = client \
                 .get_storage_lens_configuration_tagging(AccountId=arn.account_id, ConfigId=r['Id'])
             storage_lens_configuration['Tags'] = tags['Tags']
@@ -157,7 +157,7 @@ class DeleteStorageLens(BaseAction):
         client = local_session(self.manager.session_factory).client('s3control')
         accountId = self.manager.config.account_id
         for r in resources:
-            configId = r['StorageLensConfiguration']['Id']
+            configId = r['Id']
             client.delete_storage_lens_configuration(
                 ConfigId=configId,
                 AccountId=accountId

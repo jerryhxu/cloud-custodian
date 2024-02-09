@@ -88,7 +88,7 @@ class TestStorageLens(BaseTest):
                 'filters': [
                     {
                         "type": "value",
-                        "key": "StorageLensConfiguration.Id",
+                        "key": "Id",
                         "op": "eq",
                         "value": "test-3",
                     }
