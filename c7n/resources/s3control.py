@@ -109,10 +109,9 @@ class StorageLensDescribe(DescribeSource):
         client = local_session(self.manager.session_factory).client('s3control')
         results = []
         for r in resources:
-            arn = Arn.parse(r['StorageLensArn'])
             storage_lens_configuration = self.manager.retry( \
                 client.get_storage_lens_configuration,
-                AccountId=arn.account_id,
+                AccountId=self.manager.config.account_id,
                 ConfigId=r['Id']) \
                 .get('StorageLensConfiguration')
             results.append(storage_lens_configuration)
