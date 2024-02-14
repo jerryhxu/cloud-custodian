@@ -6,7 +6,7 @@ from c7n.manager import resources
 from c7n.resources.aws import Arn
 from c7n.query import QueryResourceManager, TypeInfo, DescribeSource
 from c7n.utils import local_session, type_schema
-from c7n.tags import TagActionFilter, TagDelayedAction
+from c7n.tags import TagActionFilter, TagDelayedAction, universal_augment
 from c7n.actions import BaseAction
 
 
@@ -110,14 +110,14 @@ class StorageLensDescribe(DescribeSource):
         results = []
         for r in resources:
             arn = Arn.parse(r['StorageLensArn'])
-            storage_lens_configuration = client \
-                .get_storage_lens_configuration(AccountId=arn.account_id, ConfigId=r['Id'])\
+            storage_lens_configuration = self.manager.retry( \
+                client.get_storage_lens_configuration,
+                AccountId=arn.account_id,
+                ConfigId=r['Id']) \
                 .get('StorageLensConfiguration')
-            tags = client \
-                .get_storage_lens_configuration_tagging(AccountId=arn.account_id, ConfigId=r['Id'])
-            storage_lens_configuration['Tags'] = tags['Tags']
             results.append(storage_lens_configuration)
-        return results
+        return universal_augment(
+            self.manager, super(StorageLensDescribe, self).augment(results))
 
 
 @resources.register('s3-storage-lens')
