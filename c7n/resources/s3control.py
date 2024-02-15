@@ -116,7 +116,7 @@ class StorageLensDescribe(DescribeSource):
                 .get('StorageLensConfiguration')
             results.append(storage_lens_configuration)
         return universal_augment(
-            self.manager, super(StorageLensDescribe, self).augment(results))
+            self.manager, super().augment(results))
 
 
 @resources.register('s3-storage-lens')
