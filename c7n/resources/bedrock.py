@@ -180,7 +180,7 @@ class RemoveTagBedrockKnowledgeBase(RemoveTag):
     .. code-block:: yaml
 
         policies:
-            - name: bedrock-knowledge-base-tag
+            - name: bedrock-knowledge-base-untag
               resource: aws.bedrock-knowledge-base
               actions:
                 - type: remove-tag
