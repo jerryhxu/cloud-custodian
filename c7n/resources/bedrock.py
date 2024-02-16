@@ -142,7 +142,7 @@ class BedrockKnowledgeBase(QueryResourceManager):
                 resourceArn=r['knowledgeBaseArn'])['tags']
             r['Tags'] = [{'Key': key, 'Value': value} for key, value in tags.items()]
             return r
-        resources = super(BedrockKnowledgeBase, self).augment(resources)
+        resources = super().augment(resources)
         return list(map(_augment, resources))
 
 
