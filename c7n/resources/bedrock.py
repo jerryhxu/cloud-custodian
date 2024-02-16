@@ -196,7 +196,7 @@ class RemoveTagBedrockKnowledgeBase(RemoveTag):
 BedrockKnowledgeBase.filter_registry.register('marked-for-op', TagActionFilter)
 @BedrockKnowledgeBase.action_registry.register('mark-for-op')
 class MarkBedrockKnowledgeBaseForOp(TagDelayedAction):
-    """Mark custom models for future actions
+    """Mark knowledge bases for future actions
 
     :example:
 
