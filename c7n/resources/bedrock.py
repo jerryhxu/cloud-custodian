@@ -124,24 +124,6 @@ class DeleteBedrockCustomModel(BaseAction):
               continue
 
 
-@resources.register('bedrock-knowledge-base')
-class BedrockKnowledgeBase(QueryResourceManager):
-    class resource_type(TypeInfo):
-        service = 'bedrock-agent'
-        enum_spec = ('list_knowledge_bases', 'knowledgeBaseSummaries', None)
-        detail_spec = (
-            'get_knowledge_base', 'knowledgeBaseId', 'knowledgeBaseId', "knowledgeBase")
-        name = "name"
-        id = "knowledgeBaseId"
-        arn = "knowledgeBaseArn"
-        permission_prefix = 'bedrock'
-
-    def augment(self, resources):
-        client = local_session(self.session_factory).client('bedrock-agent')
-        def _augment(r):
-            tags = self.retry(client.list_tags_for_resource,
-                resourceArn=r['knowledgeBaseArn'])['tags']
-            r['Tags'] = [{'Key': key, 'Value': value} for key, value in tags.items()]
 @BedrockCustomModel.filter_registry.register('kms-key')
 class BedrockCustomModelKmsFilter(KmsRelatedFilter):
     """
@@ -177,10 +159,6 @@ class DescribeBedrockCustomizationJob(DescribeSource):
         resources = super().augment(resources)
         return list(map(_augment, resources))
 
-
-@BedrockKnowledgeBase.action_registry.register('tag')
-class TagBedrockKnowledgeBase(Tag):
-    """Create tags on bedrock knowledge bases
     def get_resources(self, resource_ids, cache=True):
         client = local_session(self.manager.session_factory).client('bedrock')
         resources = []
@@ -349,3 +327,120 @@ class BedrockAgentKmsFilter(KmsRelatedFilter):
 
     """
     RelatedIdsExpression = 'customerEncryptionKeyArn'
+
+
+@resources.register('bedrock-knowledge-base')
+class BedrockKnowledgeBase(QueryResourceManager):
+    class resource_type(TypeInfo):
+        service = 'bedrock-agent'
+        enum_spec = ('list_knowledge_bases', 'knowledgeBaseSummaries', None)
+        detail_spec = (
+            'get_knowledge_base', 'knowledgeBaseId', 'knowledgeBaseId', "knowledgeBase")
+        name = "name"
+        id = "knowledgeBaseId"
+        arn = "knowledgeBaseArn"
+        permission_prefix = 'bedrock'
+
+    def augment(self, resources):
+        client = local_session(self.session_factory).client('bedrock-agent')
+        def _augment(r):
+            tags = self.retry(client.list_tags_for_resource,
+                resourceArn=r['knowledgeBaseArn'])['tags']
+            r['Tags'] = [{'Key': key, 'Value': value} for key, value in tags.items()]
+            return r
+        resources = super().augment(resources)
+        return list(map(_augment, resources))
+
+
+@BedrockKnowledgeBase.action_registry.register('tag')
+class TagBedrockKnowledgeBase(Tag):
+    """Create tags on bedrock knowledge bases
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+            - name: bedrock-knowledge-base-tag
+              resource: aws.bedrock-knowledge-base
+              actions:
+                - type: tag
+                  key: test
+                  value: test-tag
+    """
+    permissions = ('bedrock:TagResource',)
+
+    def process_resource_set(self, client, resources, new_tags):
+        tags = {}
+        for t in new_tags:
+            tags[t['Key']] = t['Value']
+        for r in resources:
+            client.tag_resource(resourceArn=r["knowledgeBaseArn"], tags=tags)
+
+
+@BedrockKnowledgeBase.action_registry.register('remove-tag')
+class RemoveTagBedrockKnowledgeBase(RemoveTag):
+    """Remove tags from a bedrock knowledge base
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+            - name: bedrock-knowledge-base-untag
+              resource: aws.bedrock-knowledge-base
+              actions:
+                - type: remove-tag
+                  tags: ["tag-key"]
+    """
+    permissions = ('bedrock:UntagResource',)
+
+    def process_resource_set(self, client, resources, tags):
+        for r in resources:
+            client.untag_resource(resourceArn=r['knowledgeBaseArn'], tagKeys=tags)
+
+
+BedrockKnowledgeBase.filter_registry.register('marked-for-op', TagActionFilter)
+@BedrockKnowledgeBase.action_registry.register('mark-for-op')
+class MarkBedrockKnowledgeBaseForOp(TagDelayedAction):
+    """Mark knowledge bases for future actions
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: knowledge-base-tag-mark
+            resource: aws.bedrock-knowledge-base
+            filters:
+              - "tag:delete": present
+            actions:
+              - type: mark-for-op
+                op: delete
+                days: 1
+    """
+
+
+@BedrockKnowledgeBase.action_registry.register('delete')
+class DeleteBedrockKnowledgeBase(BaseAction):
+    """Delete a bedrock knowledge base
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: knowledge-base-delete
+            resource: aws.bedrock-knowledge-base
+            actions:
+              - type: delete
+    """
+    schema = type_schema('delete')
+    permissions = ('bedrock:DeleteKnowledgeBase',)
+
+    def process(self, resources):
+        client = local_session(self.manager.session_factory).client('bedrock-agent')
+        for r in resources:
+            try:
+              client.delete_knowledge_base(knowledgeBaseId=r['knowledgeBaseId'])
+            except client.exceptions.ResourceNotFoundException:
+              continue
