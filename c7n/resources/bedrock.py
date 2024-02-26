@@ -344,8 +344,8 @@ class DeleteBedrockAgentBase(BaseAction):
               - type: delete
                 skipResourceInUseCheck: false
     """
-    schema = type_schema('delete')
-    permissions = ('bedrock:DeleteKnowledgeBase',)
+    schema = type_schema('delete', **{'skipResourceInUseCheck': {'type': 'boolean'}})
+    permissions = ('bedrock:DeleteAgent',)
 
     def process(self, resources):
         skipResourceInUseCheck = self.data.get('skipResourceInUseCheck', False)
