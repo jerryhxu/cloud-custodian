@@ -1,6 +1,7 @@
 # Copyright The Cloud Custodian Authors.
 # SPDX-License-Identifier: Apache-2.0
 from .common import BaseTest, event_data
+from botocore.exceptions import ClientError
 
 
 class BedrockCustomModel(BaseTest):
@@ -148,6 +149,25 @@ class BedrockAgent(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
         self.assertEqual(resources[0]['agentName'], 'c7n-test')
+
+    def test_bedrock_agent_delete(self):
+        session_factory = self.replay_flight_data('test_bedrock_agent_delete')
+        p = self.load_policy(
+            {
+                "name": "bedrock-agent-delete",
+                "resource": "bedrock-agent",
+                "filters": [{"tag:owner": "policy"}],
+                "actions": [{"type": "delete"}]
+            },
+            session_factory=session_factory
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        deleted_agentId = resources[0]['agentId']
+        client = session_factory().client('bedrock-agent')
+        with self.assertRaises(ClientError) as e:
+            resources = client.get_agent(agentId=deleted_agentId)
+        self.assertEqual(e.exception.response['Error']['Code'], 'ResourceNotFoundException')
 
 
 class BedrockKnowledgeBase(BaseTest):

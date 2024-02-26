@@ -329,6 +329,38 @@ class BedrockAgentKmsFilter(KmsRelatedFilter):
     RelatedIdsExpression = 'customerEncryptionKeyArn'
 
 
+@BedrockAgent.action_registry.register('delete')
+class DeleteBedrockAgentBase(BaseAction):
+    """Delete a bedrock agent
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: bedrock-agent-delete
+            resource: aws.bedrock-agent
+            actions:
+              - type: delete
+                skipResourceInUseCheck: false
+    """
+    schema = type_schema('delete')
+    permissions = ('bedrock:DeleteKnowledgeBase',)
+
+    def process(self, resources):
+        skipResourceInUseCheck = self.data.get('skipResourceInUseCheck', False)
+        client = local_session(self.manager.session_factory).client('bedrock-agent')
+        for r in resources:
+            try:
+              client.delete_agent(
+                  agentId=r['agentId'],
+                  skipResourceInUseCheck = skipResourceInUseCheck
+                  )
+            except client.exceptions.ResourceNotFoundException:
+              continue
+
+
+
 @resources.register('bedrock-knowledge-base')
 class BedrockKnowledgeBase(QueryResourceManager):
     class resource_type(TypeInfo):
