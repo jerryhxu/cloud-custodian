@@ -11,12 +11,14 @@ class FirewallDescribe(DescribeSource):
 
     def augment(self, resources):
         resources = super().augment(resources)
+        augmented_resources = []
         for r in resources:
             status = r.pop('FirewallStatus', {})
             r['Firewall']['UpdateToken'] = r['UpdateToken']
-            r = r.pop('Firewall')
-            r['FirewallStatus'] = status
-        return resources
+            ar = r.pop('Firewall')
+            ar['FirewallStatus'] = status
+            augmented_resources.append(ar)
+        return augmented_resources
 
 
 class FirewallConfig(ConfigSource):
