@@ -1,0 +1,11 @@
+{
+    "status_code": 400,
+    "data": {
+        "Error": {
+            "Message": "Unable to delete the object because delete protection is enabled",
+            "Code": "InvalidOperationException"
+        },
+        "ResponseMetadata": {},
+        "Message": "Unable to delete the object because delete protection is enabled"
+    }
+}

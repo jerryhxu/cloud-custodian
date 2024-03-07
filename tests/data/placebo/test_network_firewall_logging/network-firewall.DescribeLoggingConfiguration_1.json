@@ -1,0 +1,25 @@
+{
+    "status_code": 200,
+    "data": {
+        "FirewallArn": "arn:aws:network-firewall:us-east-1:644160558196:firewall/test-firewall",
+        "LoggingConfiguration": {
+            "LogDestinationConfigs": [
+                {
+                    "LogType": "FLOW",
+                    "LogDestinationType": "S3",
+                    "LogDestination": {
+                        "bucketName": "test-bedrock-1"
+                    }
+                },
+                {
+                    "LogType": "ALERT",
+                    "LogDestinationType": "S3",
+                    "LogDestination": {
+                        "bucketName": "test-bedrock-1"
+                    }
+                }
+            ]
+        },
+        "ResponseMetadata": {}
+    }
+}
