@@ -1,28 +1,23 @@
 {
     "status_code": 200,
     "data": {
-        "UpdateToken": "f4c84bf9-d969-469a-9dc6-2b16328ad09e",
+        "UpdateToken": "8aee202f-353c-4b73-9cfa-23e6904affbb",
         "Firewall": {
-            "FirewallName": "test-firewall",
-            "FirewallArn": "arn:aws:network-firewall:us-east-1:644160558196:firewall/test-firewall",
+            "FirewallName": "test-firewall-1",
+            "FirewallArn": "arn:aws:network-firewall:us-east-1:644160558196:firewall/test-firewall-1",
             "FirewallPolicyArn": "arn:aws:network-firewall:us-east-1:644160558196:firewall-policy/test-firewall-policy",
-            "VpcId": "vpc-0d4f819d13b730139",
+            "VpcId": "vpc-072f438c953672ace",
             "SubnetMappings": [
                 {
-                    "SubnetId": "subnet-0707ce1b2a6305995",
+                    "SubnetId": "subnet-023db907202d61c00",
                     "IPAddressType": "IPV4"
                 }
             ],
             "DeleteProtection": true,
             "SubnetChangeProtection": true,
             "FirewallPolicyChangeProtection": false,
-            "FirewallId": "f4df2ae5-6107-49e7-92d0-0213c7876ea8",
-            "Tags": [
-                {
-                    "Key": "owner",
-                    "Value": "policy"
-                }
-            ],
+            "FirewallId": "f922fc1a-643a-4dab-832a-5998ff907d4f",
+            "Tags": [],
             "EncryptionConfiguration": {
                 "KeyId": "AWS_OWNED_KMS_KEY",
                 "Type": "AWS_OWNED_KMS_KEY"
@@ -34,8 +29,8 @@
             "SyncStates": {
                 "us-east-1a": {
                     "Attachment": {
-                        "SubnetId": "subnet-0707ce1b2a6305995",
-                        "EndpointId": "vpce-0e1f834bd86c6c64d",
+                        "SubnetId": "subnet-023db907202d61c00",
+                        "EndpointId": "vpce-0b4fbb573faf68190",
                         "Status": "READY"
                     },
                     "Config": {

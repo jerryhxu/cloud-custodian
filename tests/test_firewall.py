@@ -101,7 +101,7 @@ class NetworkFirewallTest(BaseTest):
         self.assertEqual(len(resources), 1)
 
     def test_firewall_logging(self):
-        factory = self.record_flight_data('test_network_firewall_logging')
+        session_factory = self.replay_flight_data('test_network_firewall_logging')
         p = self.load_policy(
             {
                 "name": "firewall-config",
@@ -115,12 +115,18 @@ class NetworkFirewallTest(BaseTest):
                         }
                     ],
                 },
-            session_factory = factory,
+            session_factory = session_factory,
             config = {'region': 'us-east-1'}
         )
         resources = p.run()
         self.assertEqual(len(resources), 1)
-        assert resources[0]['FirewallName'] == 'test-firewall'
+        assert resources[0]['FirewallName'] == 'test-firewall-1'
+        client = session_factory().client("network-firewall")
+        logging_config = client \
+                .describe_logging_configuration(FirewallName=resources[0]['FirewallName'])
+        logDestination = logging_config.get('LoggingConfiguration').get('LogDestinationConfigs')[0]
+        self.assertEqual(logDestination['LogType'],'ALERT')
+
 
     def test_delete_firewall(self):
         session_factory = self.replay_flight_data("test_delete_firewall")
@@ -138,6 +144,7 @@ class NetworkFirewallTest(BaseTest):
         )
         resources = p.run()
         self.assertEqual(resources[0]["FirewallName"], "test-firewall-2")
+
 
     def test_update_firewall_logging(self):
         session_factory = self.replay_flight_data("test_update_firewall_logging")
