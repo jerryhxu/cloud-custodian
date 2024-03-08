@@ -143,6 +143,7 @@ class NetworkFirewallTest(BaseTest):
             session_factory=session_factory,
         )
         resources = p.run()
+        self.assertEqual(1, len(resources))
         self.assertEqual(resources[0]["FirewallName"], "test-firewall-2")
 
 
@@ -175,6 +176,7 @@ class NetworkFirewallTest(BaseTest):
             session_factory=session_factory,
         )
         resources = p.run()
+        self.assertEqual(1, len(resources))
         self.assertEqual(resources[0]["FirewallName"], "test-firewall-1")
         client = session_factory().client("network-firewall")
         logging_config = client \
@@ -202,12 +204,39 @@ class NetworkFirewallTest(BaseTest):
             session_factory=session_factory,
         )
         resources = p.run()
+        self.assertEqual(1, len(resources))
         self.assertEqual(resources[0]["FirewallName"], "test-firewall-2")
         client = session_factory().client("network-firewall")
         logging_config = client \
                 .describe_logging_configuration(FirewallName=resources[0]['FirewallName'])
         logDestination = logging_config.get('LoggingConfiguration').get('LogDestinationConfigs')
         self.assertEqual(len(logDestination), 0)
+
+    def test_update_firewall_delete_protection(self):
+        session_factory = self.replay_flight_data("test_update_firewall_delete_protection")
+
+        p = self.load_policy(
+            {
+                "name": "update-firewall-delete-protection",
+                "resource": "firewall",
+                "filters": [{"tag:owner": "policy"}],
+                "actions": [
+                    {
+                        "type": "update-delete-protection",
+                        "state": False,
+                    }
+                ]
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run()
+        self.assertEqual(1, len(resources))
+        self.assertEqual(resources[0]["FirewallName"], "test-firewall-1")
+        client = session_factory().client("network-firewall")
+        firewall = client \
+                .describe_firewall(FirewallName=resources[0]['FirewallName'])
+        deleteProtection = firewall.get('Firewall').get('DeleteProtection')
+        self.assertEqual(deleteProtection, False)
 
 
 
