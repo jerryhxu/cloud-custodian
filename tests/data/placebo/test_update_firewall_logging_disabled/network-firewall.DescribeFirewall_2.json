@@ -1,6 +1,7 @@
 {
     "status_code": 200,
     "data": {
+        "UpdateToken": "2916d81f-3dcb-4bce-b002-d5be1df5964f",
         "Firewall": {
             "FirewallName": "test-firewall-2",
             "FirewallArn": "arn:aws:network-firewall:us-east-1:644160558196:firewall/test-firewall-2",
@@ -12,18 +13,23 @@
                     "IPAddressType": "IPV4"
                 }
             ],
-            "DeleteProtection": false,
+            "DeleteProtection": true,
             "SubnetChangeProtection": true,
             "FirewallPolicyChangeProtection": false,
             "FirewallId": "6d389299-fa3b-462a-aa75-003858fbd925",
-            "Tags": [],
+            "Tags": [
+                {
+                    "Key": "owner",
+                    "Value": "policy"
+                }
+            ],
             "EncryptionConfiguration": {
                 "KeyId": "AWS_OWNED_KMS_KEY",
                 "Type": "AWS_OWNED_KMS_KEY"
             }
         },
         "FirewallStatus": {
-            "Status": "DELETING",
+            "Status": "READY",
             "ConfigurationSyncStateSummary": "IN_SYNC",
             "SyncStates": {
                 "us-east-1a": {

@@ -197,6 +197,13 @@ class DeleteNetworkFirewall(BaseAction):
 
     def process(self, resources):
         client = local_session(self.manager.session_factory).client('network-firewall')
+        if self.data.get('force', False):
+            del_protection_updater = self.manager.action_registry['update-delete-protection'](
+                {'type': 'update-delete-protection', 'state': False}, self.manager)
+            del_protection_updater.process(resources)
+            logging_updater = self.manager.action_registry['update-logging-configuration'](
+                {'type': 'update-logging-configuration', 'enabled': False}, self.manager)
+            logging_updater.process(resources)
         for r in resources:
             try:
               client.delete_firewall(
@@ -208,7 +215,7 @@ class DeleteNetworkFirewall(BaseAction):
 
 
 @NetworkFirewall.action_registry.register('update-delete-protection')
-class UpdateNetworkFirewall(BaseAction):
+class UpdateNetworkFirewallDeleteProtection(BaseAction):
     """Enable/disable network firewall delete protection."""
 
     permissions = ('network-firewall:UpdateFirewallDeleteProtection',)
@@ -229,3 +236,95 @@ class UpdateNetworkFirewall(BaseAction):
                     )
             except client.exceptions.ResourceNotFoundException:
                 continue
+
+
+@NetworkFirewall.action_registry.register('update-logging-configuration')
+class UpdateNetworkFirewallLoggingConfiguration(BaseAction):
+    """Update network firewall logging configuration.
+
+     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/network-firewall/client/update_logging_configuration.html
+
+    :example:
+
+    .. code-block:: yaml
+
+            policies:
+              - name: set-network-firewall-logging
+                resource: firewall
+                actions:
+                  - type: update-logging-configuration
+                    enabled: True
+                    LoggingConfiguration:
+                      LogDestinationConfigs:
+                        - LogDestination:
+                            bucketName: c7n-firewall-logging
+                          LogType: ALERT
+                          LogDestinationType: S3
+
+              - name: delete-network-firewall-logging
+                resource: firewall
+                actions:
+                  - type: update-logging-configuration
+                    enabled: False
+
+    """
+
+    schema = {
+        'type': 'object',
+        'additionalProperties': False,
+        'properties': {
+            'type': {'enum': ['update-logging-configuration']},
+            'enabled': {'type': 'boolean'},
+            'LoggingConfiguration': {'type': 'object'}
+        },
+    }
+    permissions = ('network-firewall:UpdateLoggingConfiguration',)
+    shape = 'UpdateLoggingConfigurationRequest'
+    service = 'network-firewall'
+
+    def validate(self):
+        cfg = dict(self.data)
+        enabled = cfg.get('enabled')
+        if enabled:
+            cfg.pop('type')
+            cfg.pop('enabled')
+            return shape_validate(
+              cfg,
+              self.shape,
+              self.service)
+
+    def process(self, resources):
+        client = local_session(self.manager.session_factory).client('network-firewall')
+
+        for r in resources:
+            params = self.data.get('LoggingConfiguration')
+            if self.data.get('enabled'):
+                    client.update_logging_configuration(
+                        FirewallName=r['FirewallName'],
+                        FirewallArn =r['FirewallArn'],
+                        LoggingConfiguration = params
+                        )
+            else:
+                loggingConfigurations = client.describe_logging_configuration(
+                    FirewallArn=r['FirewallArn'],
+                    FirewallName=r['FirewallName'])\
+                .get('LoggingConfiguration', {}).get('LogDestinationConfigs', [])
+                if len(loggingConfigurations) == 1:
+                    client.update_logging_configuration(
+                        FirewallName=r['FirewallName'],
+                        FirewallArn =r['FirewallArn'],
+                        LoggingConfiguration = { 'LogDestinationConfigs': []}
+                        )
+                elif len(loggingConfigurations) == 2:
+                    client.update_logging_configuration(
+                        FirewallName=r['FirewallName'],
+                        FirewallArn =r['FirewallArn'],
+                        LoggingConfiguration = {
+                             'LogDestinationConfigs': [loggingConfigurations[0]]
+                             }
+                        )
+                    client.update_logging_configuration(
+                        FirewallName=r['FirewallName'],
+                        FirewallArn =r['FirewallArn'],
+                        LoggingConfiguration = { 'LogDestinationConfigs': []}
+                        )

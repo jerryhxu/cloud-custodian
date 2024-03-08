@@ -123,54 +123,84 @@ class NetworkFirewallTest(BaseTest):
         assert resources[0]['FirewallName'] == 'test-firewall'
 
     def test_delete_firewall(self):
-        session_factory = self.record_flight_data("test_delete_firewall")
+        session_factory = self.replay_flight_data("test_delete_firewall")
         p = self.load_policy(
             {
                 "name": "delete-firewall",
                 "resource": "firewall",
                 "filters": [{"tag:owner": "policy"}],
-                "actions": [{"type": "delete"}],
+                "actions": [{
+                                "type": "delete",
+                                "force": True
+                            }],
             },
             session_factory=session_factory,
         )
         resources = p.run()
-        self.assertEqual(resources[0]["FirewallName"], "test-firewall")
+        self.assertEqual(resources[0]["FirewallName"], "test-firewall-2")
 
-    # def test_force_delete_dynamodb_tables(self):
-    #     session_factory = self.replay_flight_data("test_force_delete_dynamodb_tables")
-    #     client = session_factory().client("dynamodb")
-    #     self.patch(DeleteTable, "executor_factory", MainThreadExecutor)
-    #     p = self.load_policy(
-    #         {
-    #             "name": "delete-empty-tables",
-    #             "resource": "dynamodb-table",
-    #             "filters": [{"TableName": "c7n-test"}],
-    #             "actions": [
-    #                 {
-    #                     "type": "delete",
-    #                     "force": True
-    #                 }
-    #             ],
-    #         },
-    #         session_factory=session_factory,
-    #     )
-    #     resources = p.run()
-    #     self.assertEqual(resources[0]["DeletionProtectionEnabled"], True)
-    #     table = client.describe_table(TableName="c7n-test")["Table"]
-    #     self.assertEqual(table.get('TableStatus'), 'DELETING')
+    def test_update_firewall_logging(self):
+        session_factory = self.replay_flight_data("test_update_firewall_logging")
 
-    # def test_update_tables(self):
-    #     session_factory = self.replay_flight_data("test_dynamodb_update_table")
-    #     client = session_factory().client("dynamodb")
-    #     p = self.load_policy(
-    #         {
-    #             "name": "update-empty-tables",
-    #             "resource": "dynamodb-table",
-    #             "actions": [{"type": "update", "BillingMode": "PAY_PER_REQUEST"}],
-    #         },
-    #         session_factory=session_factory,
-    #     )
-    #     resources = p.run()
-    #     assert resources[0]["TableName"] == "cc-testing-table"
-    #     t = client.describe_table(TableName="cc-testing-table")["Table"]
-    #     assert t["BillingModeSummary"]["BillingMode"] == "PAY_PER_REQUEST"
+        p = self.load_policy(
+            {
+                "name": "update-firewall-logging",
+                "resource": "firewall",
+                "filters": [{"tag:owner": "policy"}],
+                "actions": [
+                    {
+                        "type": "update-logging-configuration",
+                        "enabled": True,
+                        "LoggingConfiguration": {
+                            "LogDestinationConfigs":[
+                                {
+                                    "LogType": "FLOW",
+                                    "LogDestinationType": "S3",
+                                    "LogDestination": {
+                                        "bucketName": "c7n-firewall-logging"
+                                    },
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run()
+        self.assertEqual(resources[0]["FirewallName"], "test-firewall-1")
+        client = session_factory().client("network-firewall")
+        logging_config = client \
+                .describe_logging_configuration(FirewallName=resources[0]['FirewallName'])
+        logDestination = logging_config.get('LoggingConfiguration').get('LogDestinationConfigs')[0]
+        self.assertEqual(logDestination['LogType'],'FLOW')
+        self.assertEqual(logDestination['LogDestinationType'],'S3')
+        self.assertEqual(logDestination['LogDestination']['bucketName'],'c7n-firewall-logging')
+
+    def test_update_firewall_logging_disabled(self):
+        session_factory = self.replay_flight_data("test_update_firewall_logging_disabled")
+
+        p = self.load_policy(
+            {
+                "name": "update-firewall-logging",
+                "resource": "firewall",
+                "filters": [{"tag:owner": "policy"}],
+                "actions": [
+                    {
+                        "type": "update-logging-configuration",
+                        "enabled": False,
+                    }
+                ]
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run()
+        self.assertEqual(resources[0]["FirewallName"], "test-firewall-2")
+        client = session_factory().client("network-firewall")
+        logging_config = client \
+                .describe_logging_configuration(FirewallName=resources[0]['FirewallName'])
+        logDestination = logging_config.get('LoggingConfiguration').get('LogDestinationConfigs')
+        self.assertEqual(len(logDestination), 0)
+
+
+
