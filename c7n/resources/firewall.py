@@ -5,14 +5,11 @@ from .aws import AWS
 from c7n.query import (
     QueryResourceManager, TypeInfo, DescribeSource, ConfigSource)
 from c7n.filters.vpc import VpcFilter, SubnetFilter
-from c7n.filters import ListItemFilter, FilterRegistry
-from c7n.actions import ActionRegistry, BaseAction
+from c7n.filters import ListItemFilter
+from c7n.actions import BaseAction
 from c7n.utils import local_session, type_schema
 from .aws import shape_validate
 from c7n.tags import RemoveTag, Tag, TagActionFilter, TagDelayedAction
-
-filters = FilterRegistry('aws.account.filters')
-actions = ActionRegistry('aws.account.actions')
 
 class FirewallDescribe(DescribeSource):
 
@@ -135,9 +132,9 @@ class MarkNetworkFirewallForOp(TagDelayedAction):
                 days: 1
     """
 
-@NetworkFirewall.filter_registry.register('logging')
+@NetworkFirewall.filter_registry.register('logging-config')
 class NetworkFirewallLogging(ListItemFilter):
-    """Filter for network firewall to look at network firewall logging configuration
+    """Filter for network firewall to look at logging configuration
 
     The schema to supply to the attrs follows the schema here:
      https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/network-firewall/client/describe_logging_configuration.html
@@ -148,14 +145,14 @@ class NetworkFirewallLogging(ListItemFilter):
 
             policies:
               - name: network-firewall-logging-configuration
-                resource: aws.network-firewall
+                resource: firewall
                 filters:
-                  - type: logging
+                  - type: logging-config
                     attrs:
                       - LogType: FLOW
     """
     schema = type_schema(
-        'logging',
+        'logging-config',
         attrs={'$ref': '#/definitions/filters_common/list_item_attrs'},
         count={'type': 'number'},
         count_op={'$ref': '#/definitions/filters_common/comparison_operators'}
@@ -197,8 +194,8 @@ class DeleteNetworkFirewall(BaseAction):
             del_protection_updater = self.manager.action_registry['update-delete-protection'](
                 {'type': 'update-delete-protection', 'state': False}, self.manager)
             del_protection_updater.process(resources)
-            logging_updater = self.manager.action_registry['update-logging-configuration'](
-                {'type': 'update-logging-configuration', 'enabled': False}, self.manager)
+            logging_updater = self.manager.action_registry['update-logging-config'](
+                {'type': 'update-logging-config', 'enabled': False}, self.manager)
             logging_updater.process(resources)
         for r in resources:
             try:
@@ -234,7 +231,7 @@ class UpdateNetworkFirewallDeleteProtection(BaseAction):
                 continue
 
 
-@NetworkFirewall.action_registry.register('update-logging-configuration')
+@NetworkFirewall.action_registry.register('update-logging-config')
 class UpdateNetworkFirewallLoggingConfiguration(BaseAction):
     """Update network firewall logging configuration.
 
@@ -248,7 +245,7 @@ class UpdateNetworkFirewallLoggingConfiguration(BaseAction):
               - name: set-network-firewall-logging
                 resource: firewall
                 actions:
-                  - type: update-logging-configuration
+                  - type: update-logging-config
                     enabled: True
                     LoggingConfiguration:
                       LogDestinationConfigs:
@@ -260,7 +257,7 @@ class UpdateNetworkFirewallLoggingConfiguration(BaseAction):
               - name: delete-network-firewall-logging
                 resource: firewall
                 actions:
-                  - type: update-logging-configuration
+                  - type: update-logging-config
                     enabled: False
 
     """
@@ -269,7 +266,7 @@ class UpdateNetworkFirewallLoggingConfiguration(BaseAction):
         'type': 'object',
         'additionalProperties': False,
         'properties': {
-            'type': {'enum': ['update-logging-configuration']},
+            'type': {'enum': ['update-logging-config']},
             'enabled': {'type': 'boolean'},
             'LoggingConfiguration': {'type': 'object'}
         },

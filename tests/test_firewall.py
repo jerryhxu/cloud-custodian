@@ -108,7 +108,7 @@ class NetworkFirewallTest(BaseTest):
                 "resource": "aws.firewall",
                 "filters": [
                         {
-                            "type": "logging",
+                            "type": "logging-config",
                             "attrs": [
                             {"LogType": "ALERT"},
                             ]
@@ -157,7 +157,7 @@ class NetworkFirewallTest(BaseTest):
                 "filters": [{"tag:owner": "policy"}],
                 "actions": [
                     {
-                        "type": "update-logging-configuration",
+                        "type": "update-logging-config",
                         "enabled": True,
                         "LoggingConfiguration": {
                             "LogDestinationConfigs":[
@@ -196,7 +196,7 @@ class NetworkFirewallTest(BaseTest):
                 "filters": [{"tag:owner": "policy"}],
                 "actions": [
                     {
-                        "type": "update-logging-configuration",
+                        "type": "update-logging-config",
                         "enabled": False,
                     }
                 ]
