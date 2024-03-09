@@ -90,7 +90,6 @@ class TagNetworkFirewall(Tag):
     permissions = ('network-firewall:TagResource',)
 
     def process_resource_set(self, client, resources, new_tags):
-        #tags = [{'key': item['Key'], 'value': item['Value']} for item in new_tags]
         for r in resources:
             client.tag_resource(ResourceArn=r["FirewallArn"], Tags=new_tags)
 
@@ -151,9 +150,6 @@ class NetworkFirewallLogging(ListItemFilter):
               - name: network-firewall-logging-configuration
                 resource: aws.network-firewall
                 filters:
-                #   - type: logging
-                #     attrs:
-                #       - LogType: ALERT
                   - type: logging
                     attrs:
                       - LogType: FLOW
@@ -293,38 +289,53 @@ class UpdateNetworkFirewallLoggingConfiguration(BaseAction):
               self.shape,
               self.service)
 
+    # Base on AWS documentation:
+    # You can perform only one of the following actions in any call to UpdateLoggingConfiguration:
+    # Create a new log destination object by adding a single LogDestinationConfig array element
+    #    to LogDestinationConfigs.
+    # Delete a log destination object by removing a single LogDestinationConfig array element from
+    #     LogDestinationConfigs.
+    # Change the LogDestination setting in a single LogDestinationConfig array element.
     def process(self, resources):
         client = local_session(self.manager.session_factory).client('network-firewall')
-
         for r in resources:
             params = self.data.get('LoggingConfiguration')
             if self.data.get('enabled'):
+                try:
                     client.update_logging_configuration(
                         FirewallName=r['FirewallName'],
                         FirewallArn =r['FirewallArn'],
                         LoggingConfiguration = params
                         )
+                except client.exceptions.ResourceNotFoundException:
+                    continue
             else:
                 loggingConfigurations = client.describe_logging_configuration(
                     FirewallArn=r['FirewallArn'],
                     FirewallName=r['FirewallName'])\
                 .get('LoggingConfiguration', {}).get('LogDestinationConfigs', [])
                 if len(loggingConfigurations) == 1:
-                    client.update_logging_configuration(
-                        FirewallName=r['FirewallName'],
-                        FirewallArn =r['FirewallArn'],
-                        LoggingConfiguration = { 'LogDestinationConfigs': []}
+                    try:
+                        client.update_logging_configuration(
+                            FirewallName=r['FirewallName'],
+                            FirewallArn =r['FirewallArn'],
+                            LoggingConfiguration = { 'LogDestinationConfigs': []}
                         )
+                    except client.exceptions.ResourceNotFoundException:
+                        continue
                 elif len(loggingConfigurations) == 2:
-                    client.update_logging_configuration(
-                        FirewallName=r['FirewallName'],
-                        FirewallArn =r['FirewallArn'],
-                        LoggingConfiguration = {
-                             'LogDestinationConfigs': [loggingConfigurations[0]]
-                             }
-                        )
-                    client.update_logging_configuration(
-                        FirewallName=r['FirewallName'],
-                        FirewallArn =r['FirewallArn'],
-                        LoggingConfiguration = { 'LogDestinationConfigs': []}
-                        )
+                    try:
+                        client.update_logging_configuration(
+                            FirewallName=r['FirewallName'],
+                            FirewallArn =r['FirewallArn'],
+                            LoggingConfiguration = {
+                                'LogDestinationConfigs': [loggingConfigurations[0]]
+                                }
+                            )
+                        client.update_logging_configuration(
+                            FirewallName=r['FirewallName'],
+                            FirewallArn =r['FirewallArn'],
+                            LoggingConfiguration = { 'LogDestinationConfigs': []}
+                            )
+                    except client.exceptions.ResourceNotFoundException:
+                        continue
