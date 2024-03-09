@@ -185,7 +185,8 @@ class DeleteNetworkFirewall(BaseAction):
             actions:
               - type: delete
     """
-    schema = type_schema('delete', )
+    schema = type_schema('delete',
+        force={'type': 'boolean', 'default': False})
     permissions = ('network-firewall:DeleteFirewall',)
 
     def process(self, resources):
