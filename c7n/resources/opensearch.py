@@ -19,7 +19,13 @@ class OpensearchServerless(QueryResourceManager):
         cfn_type = 'AWS::OpenSearchServerless::Collection'
         arn = "arn"
         permission_prefix = 'aoss'
-        augment = universal_augment
+
+    def augment(self, resources):
+        client = local_session(self.session_factory).client('opensearchserverless')
+        resources = super().augment(resources)
+        ids = [r["id"] for r in resources]
+        response = client.batch_get_collection(ids=ids).get('collectionDetails')
+        return response
 
 @OpensearchServerless.action_registry.register('tag')
 class TagOpensearchServerlessResource(Tag):
