@@ -202,17 +202,11 @@ class DeleteNetworkFirewall(BaseAction):
             # To forcibly delete a network firewall, it needs 2 conditions:
             # 1. DeleteProtection needs to be false.
             # 2. There should be no logging destination configured.
-            del_protection_updater = UpdateNetworkFirewallDeleteProtection(
-                data={'state': False},
-                manager=self.manager,
-                log_dir=self.log_dir,
-            )
+            del_protection_updater = self.manager.action_registry['update-delete-protection'](
+                {'type': 'update-delete-protection', 'state': False}, self.manager)
             del_protection_updater.process(resources)
-            logging_updater = UpdateNetworkFirewallLoggingConfiguration(
-                data={'enabled': False},
-                manager=self.manager,
-                log_dir=self.log_dir,
-            )
+            logging_updater = self.manager.action_registry['update-logging-config'](
+                {'type': 'update-logging-config', 'enabled': False}, self.manager)
             logging_updater.process(resources)
         for r in resources:
             try:
