@@ -54,7 +54,6 @@ class NetworkFirewall(QueryResourceManager):
         id = name = 'FirewallName'
         cfn_type = config_type = 'AWS::NetworkFirewall::Firewall'
         metrics_namespace = 'AWS/NetworkFirewall'
-        universal_taggable = object()
 
 
 @NetworkFirewall.filter_registry.register('vpc')
@@ -187,16 +186,33 @@ class DeleteNetworkFirewall(BaseAction):
     """
     schema = type_schema('delete',
         force={'type': 'boolean', 'default': False})
-    permissions = ('network-firewall:DeleteFirewall',)
+
+    def get_permissions(self):
+        permissions = ('network-firewall:DeleteFirewall',)
+        if self.data.get('force'):
+            permissions += (
+                UpdateNetworkFirewallDeleteProtection.permissions +
+                UpdateNetworkFirewallLoggingConfiguration.permissions
+            )
+        return permissions
 
     def process(self, resources):
         client = local_session(self.manager.session_factory).client('network-firewall')
         if self.data.get('force', False):
-            del_protection_updater = self.manager.action_registry['update-delete-protection'](
-                {'type': 'update-delete-protection', 'state': False}, self.manager)
+            # To forcibly delete a network firewall, it needs 2 conditions:
+            # 1. DeleteProtection needs to be false.
+            # 2. There should be no logging destination configured.
+            del_protection_updater = UpdateNetworkFirewallDeleteProtection(
+                data={'state': False},
+                manager=self.manager,
+                log_dir=self.log_dir,
+            )
             del_protection_updater.process(resources)
-            logging_updater = self.manager.action_registry['update-logging-config'](
-                {'type': 'update-logging-config', 'enabled': False}, self.manager)
+            logging_updater = UpdateNetworkFirewallLoggingConfiguration(
+                data={'enabled': False},
+                manager=self.manager,
+                log_dir=self.log_dir,
+            )
             logging_updater.process(resources)
         for r in resources:
             try:
@@ -312,28 +328,13 @@ class UpdateNetworkFirewallLoggingConfiguration(BaseAction):
                     FirewallArn=r['FirewallArn'],
                     FirewallName=r['FirewallName'])\
                 .get('LoggingConfiguration', {}).get('LogDestinationConfigs', [])
-                if len(loggingConfigurations) == 1:
+                while loggingConfigurations:
+                    loggingConfigurations.pop()
                     try:
                         client.update_logging_configuration(
                             FirewallName=r['FirewallName'],
                             FirewallArn =r['FirewallArn'],
-                            LoggingConfiguration = { 'LogDestinationConfigs': []}
+                            LoggingConfiguration = { 'LogDestinationConfigs': loggingConfigurations}
                         )
-                    except client.exceptions.ResourceNotFoundException:
-                        continue
-                elif len(loggingConfigurations) == 2:
-                    try:
-                        client.update_logging_configuration(
-                            FirewallName=r['FirewallName'],
-                            FirewallArn =r['FirewallArn'],
-                            LoggingConfiguration = {
-                                'LogDestinationConfigs': [loggingConfigurations[0]]
-                                }
-                            )
-                        client.update_logging_configuration(
-                            FirewallName=r['FirewallName'],
-                            FirewallArn =r['FirewallArn'],
-                            LoggingConfiguration = { 'LogDestinationConfigs': []}
-                            )
                     except client.exceptions.ResourceNotFoundException:
                         continue
