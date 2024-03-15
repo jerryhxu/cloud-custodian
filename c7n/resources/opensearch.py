@@ -29,8 +29,8 @@ class OpensearchServerless(QueryResourceManager):
             r['Tags'] = [{'Key': t['key'], 'Value': t['value']} for t in tags]
             return r
         resources = super().augment(resources)
-        ids = [r["id"] for r in resources]
-        if ids:
+        if resources:
+          ids = [r["id"] for r in resources]
           resources = self.retry(
             client.batch_get_collection, ids=ids).get('collectionDetails')
         return list(map(_augment, resources))
