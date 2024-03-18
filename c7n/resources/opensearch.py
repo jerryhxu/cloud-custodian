@@ -37,7 +37,7 @@ class OpensearchServerless(QueryResourceManager):
 
 
 @OpensearchServerless.filter_registry.register('kms-key')
-class ConnectCampaignKmsFilter(KmsRelatedFilter):
+class OpensearchServerlessKmsFilter(KmsRelatedFilter):
   RelatedIdsExpression = 'kmsKeyArn'
 
 
