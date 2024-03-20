@@ -753,37 +753,3 @@ class SagemakerDomain(QueryResourceManager):
 @SagemakerDomain.filter_registry.register('kms-key')
 class SagemakerKmsFilter(KmsRelatedFilter):
   RelatedIdsExpression = 'KmsKeyId'
-
-
-@SagemakerDomain.action_registry.register('delete')
-class DeleteSagemakerDomain(BaseAction):
-    """Delete a sagemaker domain
-
-    :example:
-
-    .. code-block:: yaml
-
-        policies:
-          - name: sagemaker-domain-delete
-            resource: aws.sagemaker-domain
-            actions:
-              - type: delete
-    """
-
-    schema = type_schema('delete',
-        retain={'type': 'boolean', 'default': False})
-    permissions = ('sagemaker:DeleteDomain',)
-
-    def process(self, resources):
-        client = local_session(self.manager.session_factory).client('sagemaker')
-        retain = self.data.get('retain', False)
-        for r in resources:
-            try:
-                client.delete_domain(
-                    DomainId=r['DomainId'],
-                    RetentionPolicy={
-                        'HomeEfsFileSystem': 'Retain' if retain else 'Delete'
-                    }
-                )
-            except client.exceptions.ResourceNotFoundException:
-              continue
