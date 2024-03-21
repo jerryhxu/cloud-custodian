@@ -745,6 +745,7 @@ class SagemakerDomain(QueryResourceManager):
         arn = 'DomainArn'
         name = 'DomainName'
         cfn_type = 'AWS::SageMaker::Domain'
+        permission_prefix = 'sagemaker'
         universal_taggable = object()
 
     source_mapping = {'describe': SagemakerDomainDescribe}
