@@ -752,5 +752,5 @@ class SagemakerDomain(QueryResourceManager):
 
 
 @SagemakerDomain.filter_registry.register('kms-key')
-class SagemakerKmsFilter(KmsRelatedFilter):
+class SagemakerDomainKmsFilter(KmsRelatedFilter):
   RelatedIdsExpression = 'KmsKeyId'
