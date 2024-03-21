@@ -15,6 +15,9 @@ class OpensearchServerless(QueryResourceManager):
         service = 'opensearchserverless'
         arn_type = 'arn'
         enum_spec = ('list_collections', 'collectionSummaries[]', None)
+        batch_detail_spec = (
+            'batch_get_collection', 'ids', 'id',
+            'collectionDetails', None)
         name = "name"
         id = "id"
         cfn_type = 'AWS::OpenSearchServerless::Collection'
@@ -29,10 +32,6 @@ class OpensearchServerless(QueryResourceManager):
             r['Tags'] = [{'Key': t['key'], 'Value': t['value']} for t in tags]
             return r
         resources = super().augment(resources)
-        if resources:
-          ids = [r["id"] for r in resources]
-          resources = self.retry(
-            client.batch_get_collection, ids=ids).get('collectionDetails')
         return list(map(_augment, resources))
 
 
