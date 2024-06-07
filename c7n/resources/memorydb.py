@@ -86,6 +86,10 @@ class RemoveMemoryDb(RemoveTag):
             client.untag_resource(ResourceArn=r['ARN'], TagKeys=tags)
 
 
+@MemoryDb.action_registry.register('mark-for-op', TagDelayedAction)
+@MemoryDb.filter_registry.register('marked-for-op', TagActionFilter)
+
+
 @MemoryDb.action_registry.register('delete')
 class DeleteMemoryDb(BaseAction):
     """Delete a memorydb cluster
@@ -114,26 +118,3 @@ class DeleteMemoryDb(BaseAction):
                 )
             except client.exceptions.ResourceNotFoundException:
                 continue
-
-
-@MemoryDb.filter_registry.register('marked-for-op', TagActionFilter)
-
-
-@MemoryDb.action_registry.register('mark-for-op')
-class MarkMemoryDbForOp(TagDelayedAction):
-    """Mark memorydb for future actions
-
-    :example:
-
-    .. code-block:: yaml
-
-        policies:
-          - name: memorydb-tag-mark
-            resource: aws.memorydb
-            filters:
-              - "tag:delete": present
-            actions:
-              - type: mark-for-op
-                op: delete
-                days: 1
-    """
