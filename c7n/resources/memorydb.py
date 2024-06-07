@@ -91,7 +91,7 @@ class RemoveMemoryDb(RemoveTag):
 
 
 @MemoryDb.action_registry.register('delete')
-class DeleteMemoryDb(BaseAction):
+class DeleteMemoryDbResource(BaseAction):
     """Delete a memorydb cluster
 
     :example:
