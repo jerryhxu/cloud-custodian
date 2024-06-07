@@ -66,7 +66,7 @@ class TagMemoryDb(Tag):
 
 
 @MemoryDb.action_registry.register('remove-tag')
-class RemoveMemoryDb(RemoveTag):
+class RemoveMemoryDbTag(RemoveTag):
     """Remove tags from a memorydb cluster
     :example:
 
@@ -91,8 +91,8 @@ MemoryDb.filter_registry.register('marked-for-op', TagActionFilter)
 
 
 @MemoryDb.action_registry.register('mark-for-op')
-class MarkNetworkFirewallForOp(TagDelayedAction):
-
+class MemoryDbMarkForOp(TagDelayedAction):
+    pass
 
 @MemoryDb.action_registry.register('delete')
 class DeleteMemoryDbResource(BaseAction):
