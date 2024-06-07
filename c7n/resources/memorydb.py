@@ -86,8 +86,12 @@ class RemoveMemoryDb(RemoveTag):
             client.untag_resource(ResourceArn=r['ARN'], TagKeys=tags)
 
 
-@MemoryDb.action_registry.register('mark-for-op', TagDelayedAction)
-@MemoryDb.filter_registry.register('marked-for-op', TagActionFilter)
+
+MemoryDb.filter_registry.register('marked-for-op', TagActionFilter)
+
+
+@MemoryDb.action_registry.register('mark-for-op')
+class MarkNetworkFirewallForOp(TagDelayedAction):
 
 
 @MemoryDb.action_registry.register('delete')
