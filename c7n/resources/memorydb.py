@@ -93,6 +93,7 @@ class RemoveMemoryDbTag(RemoveTag):
 class MemoryDbMarkForOp(TagDelayedAction):
     pass
 
+
 @MemoryDb.action_registry.register('delete')
 class DeleteMemoryDbResource(BaseAction):
     """Delete a memorydb cluster
