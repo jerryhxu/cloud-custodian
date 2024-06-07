@@ -46,7 +46,7 @@ class MemoryDbTest(BaseTest):
         self.assertEqual(tag, new_tag)
 
     def test_memorydb_mark_for_op(self):
-        session_factory = self.record_flight_data("test_memorydb_mark_for_op")
+        session_factory = self.replay_flight_data("test_memorydb_mark_for_op")
         p = self.load_policy(
             {
                 "name": "memorydb-mark",
