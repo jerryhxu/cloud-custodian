@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 from .common import BaseTest
 
+
 class MemoryDbTest(BaseTest):
 
     def test_memorydb(self):
@@ -86,7 +87,6 @@ class MemoryDbTest(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
         assert resources[0]['Name'] == 'test-cluster'
-
 
     def test_delete_memorydb(self):
         session_factory = self.replay_flight_data("test_delete_memorydb")
