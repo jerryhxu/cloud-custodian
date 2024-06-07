@@ -34,7 +34,7 @@ class MemoryDb(QueryResourceManager):
         service = 'memorydb'
         enum_spec = ('describe_clusters', 'Clusters', None)
         arn = 'ARN'
-        arn_type = 'memorydb'
+        arn_type = 'cluster'
         id = name = 'Name'
         cfn_type = 'AWS::MemoryDB::Cluster'
         permission_prefix = 'memorydb'
