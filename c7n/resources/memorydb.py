@@ -86,8 +86,7 @@ class RemoveMemoryDbTag(RemoveTag):
             client.untag_resource(ResourceArn=r['ARN'], TagKeys=tags)
 
 
-
-MemoryDb.filter_registry.register('marked-for-op', TagActionFilter)
+@MemoryDb.filter_registry.register('marked-for-op', TagActionFilter)
 
 
 @MemoryDb.action_registry.register('mark-for-op')
