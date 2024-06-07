@@ -106,6 +106,7 @@ class DeleteMemoryDbResource(BaseAction):
                 FinalSnapshotName: test-snapshot
     """
     schema = type_schema('delete', FinalSnapshotName={'type': 'string'})
+    permissions = ('memorydb:DeleteCluster',)
 
     def process(self, resources):
         client = local_session(self.manager.session_factory).client('memorydb')
