@@ -1,7 +1,7 @@
 # Copyright The Cloud Custodian Authors.
 # SPDX-License-Identifier: Apache-2.0
 from .common import BaseTest
-
+from unittest.mock import MagicMock
 
 class MemoryDbTest(BaseTest):
 
@@ -104,3 +104,32 @@ class MemoryDbTest(BaseTest):
         resources = p.run()
         self.assertEqual(1, len(resources))
         self.assertEqual(resources[0]["Name"], "test-cluster")
+
+    def test_delete_memorydb_exception(self):
+        factory = self.replay_flight_data("test_delete_memorydb_exception")
+        client = factory().client("memorydb")
+        mock_factory = MagicMock()
+        mock_factory.region = 'us-east-1'
+        mock_factory().client(
+            'memorydb').exceptions.ClusterNotFoundFault = (
+                client.exceptions.ClusterNotFoundFault)
+        mock_factory().client('memorydb').delete_cluster.side_effect = (
+            client.exceptions.ClusterNotFoundFault(
+                {'Error': {'Code': 'xyz'}},
+                operation_name='delete_cluster'))
+        p = self.load_policy({
+            'name': 'delete-memorydb-exception',
+            'resource': 'memorydb',
+            "filters": [{"tag:owner": "policy"}],
+            'actions': [{
+                            "type": "delete",
+                        }],
+            },
+            session_factory=mock_factory)
+
+        try:
+            p.resource_manager.actions[0].process(
+                [{'Name': 'abc'}])
+        except client.exceptions.ClusterNotFoundFault:
+            self.fail('should not raise')
+        mock_factory().client('memorydb').delete_cluster.assert_called_once()

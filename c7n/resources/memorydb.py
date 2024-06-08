@@ -62,7 +62,10 @@ class TagMemoryDb(Tag):
 
     def process_resource_set(self, client, resources, new_tags):
         for r in resources:
-            client.tag_resource(ResourceArn=r["ARN"], Tags=new_tags)
+            try:
+                client.tag_resource(ResourceArn=r["ARN"], Tags=new_tags)
+            except client.exceptions.ClusterNotFoundFault:
+                continue
 
 
 @MemoryDb.action_registry.register('remove-tag')
@@ -83,7 +86,10 @@ class RemoveMemoryDbTag(RemoveTag):
 
     def process_resource_set(self, client, resources, tags):
         for r in resources:
-            client.untag_resource(ResourceArn=r['ARN'], TagKeys=tags)
+            try:
+                client.untag_resource(ResourceArn=r['ARN'], TagKeys=tags)
+            except client.exceptions.ClusterNotFoundFault:
+                continue
 
 
 MemoryDb.filter_registry.register('marked-for-op', TagActionFilter)
@@ -117,5 +123,5 @@ class DeleteMemoryDbResource(BaseAction):
                     ClusterName=r['Name'],
                     FinalSnapshotName=FinalSnapshotName
                 )
-            except client.exceptions.ResourceNotFoundException:
+            except client.exceptions.ClusterNotFoundFault:
                 continue
