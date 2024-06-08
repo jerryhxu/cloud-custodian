@@ -107,7 +107,7 @@ class MemoryDbTest(BaseTest):
         self.assertEqual(resources[0]["Name"], "test-cluster")
 
     def test_delete_memorydb_exception(self):
-        factory = self.replay_flight_data("test_delete_memorydb_exception")
+        factory = self.replay_flight_data("test_delete_memorydb")
         client = factory().client("memorydb")
         mock_factory = MagicMock()
         mock_factory.region = 'us-east-1'
