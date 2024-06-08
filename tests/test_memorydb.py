@@ -3,6 +3,7 @@
 from .common import BaseTest
 from unittest.mock import MagicMock
 
+
 class MemoryDbTest(BaseTest):
 
     def test_memorydb(self):
