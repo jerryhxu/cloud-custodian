@@ -168,3 +168,26 @@ class MemoryDbTest(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
         assert resources[0]['Name'] == 'test-cluster-custodian'
+
+    def test_memorydb_network_location_filter(self):
+        factory = self.replay_flight_data("test_memorydb_network_location_filter")
+
+        p = self.load_policy(
+            {
+                "name": "test_memorydb_network_location_filter",
+                "resource": "memorydb",
+                "filters": [
+                    {
+                        "type": "network-location",
+                        "compare": ["resource", "subnet"],
+                        "key": "tag:ASV",
+                        "match": "equal"
+                    }
+                ]
+            },
+            session_factory=factory
+        )
+
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        assert resources[0]['Name'] == 'test-cluster-custodian'
