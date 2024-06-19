@@ -191,3 +191,22 @@ class MemoryDbTest(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
         assert resources[0]['Name'] == 'test-cluster-custodian'
+
+    def test_memorydb_kms_encryption(self):
+        session_factory = self.replay_flight_data('test_memorydb_kms_encryption')
+        p = self.load_policy(
+            {
+                'name': 'memorydb-kms-encryption',
+                'resource': 'memorydb',
+                'filters': [
+                    {
+                        'type': 'kms-key',
+                        'key': 'c7n:AliasName',
+                        'value': 'alias/tes/pratyush',
+                    }
+                ],
+            }, session_factory=session_factory
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        self.assertEqual(resources[0]['Name'], 'test-cluster-2')
