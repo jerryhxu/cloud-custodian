@@ -201,4 +201,5 @@ class MemoryDbSubnetGroup(QueryResourceManager):
         filter_type = 'scalar'
         cfn_type = 'AWS::MemoryDB::SubnetGroup'
         universal_taggable = object()
+        permissions = ('memorydb:DescribeSubnetGroups',)
     augment = universal_augment
