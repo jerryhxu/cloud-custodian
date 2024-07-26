@@ -479,7 +479,7 @@ class WorkspacesWeb(QueryResourceManager):
 @WorkspacesWeb.filter_registry.register('browser-policy')
 class BrowerPolicyFilter(ValueFilter):
     """
-    Applies value type filter on the  of an SSM Document.
+    Applies value type filter on the browser policy of a workspaces secured browser.
     :example:
     .. code-block:: yaml
             policies:
@@ -487,7 +487,7 @@ class BrowerPolicyFilter(ValueFilter):
                 resource: workspaces-web
                 filters:
                   - type: browser-policy
-                    key: cloudWatchEncryptionEnabled
+                    key: "chromePolicies.AllowDeletingBrowserHistory.value"
                     op: eq
                     value: false
     """
