@@ -485,7 +485,6 @@ class TestWorkspacesWeb(BaseTest):
         self.assertEqual(len(resources), 1)
 
 
-
 class TestWorkspacesBundleDelete(BaseTest):
 
     def test_workspaces_bundle_tag(self):
