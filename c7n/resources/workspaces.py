@@ -481,16 +481,17 @@ class BrowerPolicyFilter(ValueFilter):
     """
     Applies value type filter on the browser policy of a workspaces secured browser.
     :example:
+
     .. code-block:: yaml
 
-          policies:
-            - name: browser-policy-match
-              resource: workspaces-web
-              filters:
-              - type: browser-policy
-                key: chromePolicies.AllowDeletingBrowserHistory.value
-                op: eq
-                value: false
+            policies:
+              - name: browser-policy-match
+                resource: workspaces-web
+                filters:
+                  - type: browser-policy
+                    key: chromePolicies.AllowDeletingBrowserHistory.value
+                    op: eq
+                    value: false
     """
 
     schema = type_schema('browser-policy', rinherit=ValueFilter.schema)
