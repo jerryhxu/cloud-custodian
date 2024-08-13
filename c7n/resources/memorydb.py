@@ -245,7 +245,7 @@ class DeleteMemoryDbSnapshot(BaseAction):
               - type: delete
     """
     schema = type_schema('delete', FinalSnapshotName={'type': 'string'})
-    permissions = ('MemoryDB.DeleteSnapshot',)
+    permissions = ('memorydb:DeleteSnapshot',)
 
     def process(self, resources):
         client = local_session(self.manager.session_factory).client('memorydb')
