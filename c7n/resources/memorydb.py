@@ -58,7 +58,7 @@ class MemoryDbSnapshot(QueryResourceManager):
         service = 'memorydb'
         enum_spec = ('describe_snapshots', 'Snapshots', None)
         arn = 'ARN'
-        arn_type = 'Snapshot'
+        arn_type = 'snapshot'
         filter_name = "Name"
         filter_type = "scalar"
         id = name = 'Name'
