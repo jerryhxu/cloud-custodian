@@ -132,7 +132,10 @@ class TagMemoryDb(Tag):
         for r in resources:
             try:
                 client.tag_resource(ResourceArn=r["ARN"], Tags=new_tags)
-            except client.exceptions.ClusterNotFoundFault:
+            except ( client.exceptions.ClusterNotFoundFault, \
+                     client.exceptions.SnapshotNotFoundFault, \
+                     client.exceptions.UserNotFoundFault, \
+                     client.exceptions.ACLNotFoundFault):
                 continue
 
 
@@ -159,7 +162,10 @@ class RemoveMemoryDbTag(RemoveTag):
         for r in resources:
             try:
                 client.untag_resource(ResourceArn=r['ARN'], TagKeys=tags)
-            except client.exceptions.ClusterNotFoundFault:
+            except ( client.exceptions.ClusterNotFoundFault, \
+                     client.exceptions.SnapshotNotFoundFault, \
+                     client.exceptions.UserNotFoundFault, \
+                     client.exceptions.ACLNotFoundFault):
                 continue
 
 
@@ -168,8 +174,8 @@ MemoryDb.action_registry.register('mark-for-op', TagDelayedAction)
 MemoryDbSnapshot.filter_registry.register('marked-for-op', TagActionFilter)
 MemoryDbSnapshot.action_registry.register('mark-for-op', TagDelayedAction)
 MemoryDbUser.filter_registry.register('marked-for-op', TagActionFilter)
-MemoryDbAcl.action_registry.register('mark-for-op', TagDelayedAction)
-MemoryDbUser.filter_registry.register('marked-for-op', TagActionFilter)
+MemoryDbUser.action_registry.register('mark-for-op', TagDelayedAction)
+MemoryDbAcl.filter_registry.register('marked-for-op', TagActionFilter)
 MemoryDbAcl.action_registry.register('mark-for-op', TagDelayedAction)
 
 
@@ -303,4 +309,60 @@ class DeleteMemoryDbSnapshot(BaseAction):
                     SnapshotName=r['Name'],
                 )
             except client.exceptions.SnapshotNotFoundFault:
+                continue
+
+
+@MemoryDbUser.action_registry.register('delete')
+class DeleteMemoryDbUser(BaseAction):
+    """Delete a memorydb user
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: memorydb-user-delete
+            resource: aws.memorydb-user
+            actions:
+              - type: delete
+    """
+    schema = type_schema('delete',)
+    permissions = ('memorydb:DeleteUser',)
+
+    def process(self, resources):
+        client = local_session(self.manager.session_factory).client('memorydb')
+        for r in resources:
+            try:
+                client.delete_user(
+                    UserName=r['Name'],
+                )
+            except client.exceptions.UserNotFoundFault:
+                continue
+
+
+@MemoryDbAcl.action_registry.register('delete')
+class DeleteMemoryDbAcl(BaseAction):
+    """Delete a memorydb acl
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: memorydb-acl-delete
+            resource: aws.memorydb-acl
+            actions:
+              - type: delete
+    """
+    schema = type_schema('delete',)
+    permissions = ('memorydb:DeleteAcl',)
+
+    def process(self, resources):
+        client = local_session(self.manager.session_factory).client('memorydb')
+        for r in resources:
+            try:
+                client.delete_acl(
+                    ACLName=r['Name'],
+                )
+            except client.exceptions.ACLNotFoundFault:
                 continue
