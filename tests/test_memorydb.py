@@ -4,6 +4,7 @@ from .common import BaseTest
 from unittest.mock import MagicMock
 import time
 
+
 class MemoryDbTest(BaseTest):
 
     def test_memorydb(self):

@@ -132,10 +132,10 @@ class TagMemoryDb(Tag):
         for r in resources:
             try:
                 client.tag_resource(ResourceArn=r["ARN"], Tags=new_tags)
-            except ( client.exceptions.ClusterNotFoundFault, \
-                     client.exceptions.SnapshotNotFoundFault, \
-                     client.exceptions.UserNotFoundFault, \
-                     client.exceptions.ACLNotFoundFault):
+            except (client.exceptions.ClusterNotFoundFault,
+                    client.exceptions.SnapshotNotFoundFault,
+                    client.exceptions.UserNotFoundFault,
+                    client.exceptions.ACLNotFoundFault):
                 continue
 
 
@@ -162,10 +162,10 @@ class RemoveMemoryDbTag(RemoveTag):
         for r in resources:
             try:
                 client.untag_resource(ResourceArn=r['ARN'], TagKeys=tags)
-            except ( client.exceptions.ClusterNotFoundFault, \
-                     client.exceptions.SnapshotNotFoundFault, \
-                     client.exceptions.UserNotFoundFault, \
-                     client.exceptions.ACLNotFoundFault):
+            except (client.exceptions.ClusterNotFoundFault,
+                    client.exceptions.SnapshotNotFoundFault,
+                    client.exceptions.UserNotFoundFault,
+                    client.exceptions.ACLNotFoundFault):
                 continue
 
 
