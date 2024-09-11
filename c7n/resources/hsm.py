@@ -161,7 +161,6 @@ class HasStatementFilter(polstmt_filter.HasStatementFilter):
                         Effect: "Allow"
     """
 
-
     def __init__(self, data, manager=None):
         super().__init__(data, manager)
         self.policy_attribute = 'c7n:Policy'
