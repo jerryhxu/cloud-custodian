@@ -22,10 +22,6 @@
                     {
                         "Key": "owner",
                         "Value": "policy"
-                    },
-                    {
-                        "Key": "custodian_cleanup",
-                        "Value": "Resource does not meet policy: notify@2024/09/12"
                     }
                 ],
                 "HsmType": "hsm1.medium",

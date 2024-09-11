@@ -114,6 +114,13 @@ class HSMClient(QueryResourceManager):
         name = 'Label'
 
 
+class DescribeCloudHSMBackup(DescribeSource):
+
+    def augment(self, resources):
+        for r in resources:
+            r['Tags'] = r.pop('TagList', ())
+        return resources
+
 @resources.register('cloudhsm-backup')
 class CloudHSMBackup(QueryResourceManager):
 
@@ -126,7 +133,9 @@ class CloudHSMBackup(QueryResourceManager):
         universal_taggable = object()
         permissions_augment = ("cloudhsm:ListTagsForResource",)
 
-    augment = universal_augment
+    source_mapping = {
+        'describe': DescribeCloudHSMBackup
+    }
 
 @CloudHSMBackup.filter_registry.register('has-statement')
 class HasStatementFilter(polstmt_filter.HasStatementFilter):
@@ -138,7 +147,7 @@ class HasStatementFilter(polstmt_filter.HasStatementFilter):
     def process(self, resources, event=None):
         resources = [self.policy_annotate(r) for r in resources if r['BackupState'] == 'READY']
         if not self.data.get('statement_ids', []) and not self.data.get('statements', []):
-            return [r for r in resources if r[self.policy_attribute]]
+            return [r for r in resources if r.get(self.policy_attribute) != '{}']
         return super().process(resources, event)
 
     def policy_annotate(self, resource):
@@ -157,5 +166,3 @@ class HasStatementFilter(polstmt_filter.HasStatementFilter):
             'account_id': self.manager.config.account_id,
             'region': self.manager.config.region
         }
-
-
