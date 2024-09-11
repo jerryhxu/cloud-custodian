@@ -125,7 +125,7 @@ class CloudHSMBackup(QueryResourceManager):
 
     class resource_type(TypeInfo):
         service = 'cloudhsmv2'
-        arn_type = 'cluster'
+        arn_type = 'backup'
         permission_prefix = arn_service = 'cloudhsm'
         enum_spec = ('describe_backups', 'Backups', None)
         id = name = 'BackupId'
@@ -138,6 +138,27 @@ class CloudHSMBackup(QueryResourceManager):
 
 @CloudHSMBackup.filter_registry.register('has-statement')
 class HasStatementFilter(polstmt_filter.HasStatementFilter):
+    """Find resources with matching resource policy statements.
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+            - name: cloudhsm-has-backup-poilcy
+              resource: aws.cloudhsm-backup
+              filters:
+                - type: has-statement
+
+            - name: cloudhsm-backup-policy-statement
+              resource: aws.cloudhsm-backup
+              filters:
+                  - type: has-statement
+                    statements:
+                      - Action: "*"
+                        Effect: "Allow"
+    """
+
 
     def __init__(self, data, manager=None):
         super().__init__(data, manager)
