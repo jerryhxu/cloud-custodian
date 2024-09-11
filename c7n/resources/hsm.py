@@ -120,6 +120,7 @@ class DescribeCloudHSMBackup(DescribeSource):
             r['Tags'] = r.pop('TagList', ())
         return resources
 
+
 @resources.register('cloudhsm-backup')
 class CloudHSMBackup(QueryResourceManager):
 
@@ -135,6 +136,7 @@ class CloudHSMBackup(QueryResourceManager):
     source_mapping = {
         'describe': DescribeCloudHSMBackup
     }
+
 
 @CloudHSMBackup.filter_registry.register('has-statement')
 class HasStatementFilter(polstmt_filter.HasStatementFilter):

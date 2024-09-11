@@ -192,4 +192,3 @@ class CloudHSMClusterTest(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
         assert resources[0]['BackupId'] == 'backup-6qjbcmkhcxm'
-
