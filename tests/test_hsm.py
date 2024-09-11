@@ -100,3 +100,25 @@ class CloudHSMClusterTest(BaseTest):
         resources = policy.push(event)
         self.assertEqual(len(resources), 1)
         self.assertEqual(resources[0].get('Tags'), [{"Key": "Owner", "Value": "test"}])
+
+    def test_cloudhsm_backup_has_statement(self):
+        session_factory = self.replay_flight_data(
+            "test_cloudhsm_backup_statement"
+        )
+        p = self.load_policy(
+            {
+                "name": "test_cloudhsm_backup_statement",
+                "resource": "cloudhsm-backup",
+                "filters": [
+                    {
+                        "type": "has-statement"
+                    }
+                ],
+            },
+            session_factory=session_factory,
+            config={'region': 'us-east-1'}
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+        
+

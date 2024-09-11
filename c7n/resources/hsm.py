@@ -6,6 +6,8 @@ from c7n.query import QueryResourceManager, TypeInfo, DescribeSource
 import c7n.filters.vpc as net_filters
 from c7n.actions import BaseAction
 from c7n.utils import local_session, type_schema
+from c7n.tags import universal_augment
+import c7n.filters.policystatement as polstmt_filter
 
 
 class DescribeCloudHSMCluster(DescribeSource):
@@ -110,3 +112,50 @@ class HSMClient(QueryResourceManager):
         detail_spec = ('describe_luna_client', 'ClientArn', None, None)
         arn = id = 'ClientArn'
         name = 'Label'
+
+
+@resources.register('cloudhsm-backup')
+class CloudHSMBackup(QueryResourceManager):
+
+    class resource_type(TypeInfo):
+        service = 'cloudhsmv2'
+        arn_type = 'cluster'
+        permission_prefix = arn_service = 'cloudhsm'
+        enum_spec = ('describe_backups', 'Backups', None)
+        id = name = 'BackupId'
+        universal_taggable = object()
+        permissions_augment = ("cloudhsm:ListTagsForResource",)
+
+    augment = universal_augment
+
+@CloudHSMBackup.filter_registry.register('has-statement')
+class HasStatementFilter(polstmt_filter.HasStatementFilter):
+
+    def __init__(self, data, manager=None):
+        super().__init__(data, manager)
+        self.policy_attribute = 'c7n:Policy'
+
+    def process(self, resources, event=None):
+        resources = [self.policy_annotate(r) for r in resources if r['BackupState'] == 'READY']
+        if not self.data.get('statement_ids', []) and not self.data.get('statements', []):
+            return [r for r in resources if r[self.policy_attribute]]
+        return super().process(resources, event)
+
+    def policy_annotate(self, resource):
+        client = local_session(self.manager.session_factory).client('cloudhsmv2')
+        if self.policy_attribute in resource:
+            return resource
+        result = client.get_resource_policy(
+                ResourceArn=resource['BackupArn']
+            )
+        resource[self.policy_attribute] = result['Policy']
+        return resource
+    
+    def get_std_format_args(self, cloudhsm_backup):
+        return {
+            'backup_arn': cloudhsm_backup['BackupArn'],
+            'account_id': self.manager.config.account_id,
+            'region': self.manager.config.region
+        }
+
+
