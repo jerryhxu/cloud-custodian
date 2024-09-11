@@ -121,6 +121,30 @@ class CloudHSMClusterTest(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
 
+    def test_cloudhsm_has_allow_statement(self):
+        factory = self.replay_flight_data("test_cloudhsm_has_allow_statement")
+        p = self.load_policy(
+            {
+                "name": "cloudhsm-has-statement-allow",
+                "resource": "cloudhsm-backup",
+                "filters": [
+                    {
+                        "type": "has-statement",
+                        "statements": [
+                            {
+                                "Effect": "Allow",
+                                "Action": "cloudhsm:DescribeBackups",
+                                "Resource": "{backup_arn}"
+                            }
+                        ]
+                    }
+                ],
+            },
+            session_factory=factory,
+        )
+        resources = p.run()
+        self.assertEqual(len(resources), 1)
+
     def test_cloudhsm_backup_tag_untag(self):
         session_factory = self.replay_flight_data('test_cloudhsm_backup_tag_untag')
         tag = {'env': 'dev'}
