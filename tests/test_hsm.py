@@ -120,7 +120,7 @@ class CloudHSMClusterTest(BaseTest):
         )
         resources = p.run()
         self.assertEqual(len(resources), 1)
-        
+
     def test_cloudhsm_backup_tag_untag(self):
         session_factory = self.replay_flight_data('test_cloudhsm_backup_tag_untag')
         tag = {'env': 'dev'}

@@ -6,7 +6,6 @@ from c7n.query import QueryResourceManager, TypeInfo, DescribeSource
 import c7n.filters.vpc as net_filters
 from c7n.actions import BaseAction
 from c7n.utils import local_session, type_schema
-from c7n.tags import universal_augment
 import c7n.filters.policystatement as polstmt_filter
 
 
@@ -159,7 +158,7 @@ class HasStatementFilter(polstmt_filter.HasStatementFilter):
             )
         resource[self.policy_attribute] = result['Policy']
         return resource
-    
+
     def get_std_format_args(self, cloudhsm_backup):
         return {
             'backup_arn': cloudhsm_backup['BackupArn'],
