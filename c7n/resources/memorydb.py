@@ -79,7 +79,7 @@ class MemoryDbUser(QueryResourceManager):
         service = 'memorydb'
         enum_spec = ('describe_users', 'Users', None)
         arn = 'ARN'
-        arn_type = 'cluster'
+        arn_type = 'user'
         id = name = 'Name'
         cfn_type = 'AWS::MemoryDB::User'
         permission_prefix = 'memorydb'
@@ -99,7 +99,7 @@ class MemoryDbAcl(QueryResourceManager):
         service = 'memorydb'
         enum_spec = ('describe_acls', 'ACLs', None)
         arn = 'ARN'
-        arn_type = 'cluster'
+        arn_type = 'acl'
         id = name = 'Name'
         cfn_type = 'AWS::MemoryDB::ACL'
         permission_prefix = 'memorydb'
