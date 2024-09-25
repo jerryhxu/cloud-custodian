@@ -51,7 +51,7 @@ class GlobalAccelerator(QueryResourceManager):
             .client('globalaccelerator', region_name=GlobalAccelerator_REGION)
 
 
-# When taggingresource api is used in tagging operation, got the error: 
+# When taggingresource api is used in tagging operation, got the error:
 # Invocation of TagResources for this resource is not supported in this region.
 # This region is us-west-2 since global accelerator is a global service and us-west-2 must be used.
 # Therefore additional tag and remove-tag functions are implemented.
