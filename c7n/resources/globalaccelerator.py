@@ -32,7 +32,7 @@ class GlobalAccelerator(QueryResourceManager):
         arn = id = 'AcceleratorArn'
         name = 'Name'
         date = 'CreationTime'
-        arn_type = 'globalaccelerator'
+        arn_type = 'accelerator'
         cfn_type = 'AWS::GlobalAccelerator::Accelerator'
         permission_prefix = 'globalaccelerator'
 
