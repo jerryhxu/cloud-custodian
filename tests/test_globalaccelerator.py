@@ -48,7 +48,7 @@ class GlobalAcceleratorTest(BaseTest):
                     {
                         "type": "mark-for-op",
                         "tag": "custodian_cleanup",
-                        "op": "delete",
+                        "op": "notify",
                         "days": 1,
                     }
                 ],
@@ -66,7 +66,7 @@ class GlobalAcceleratorTest(BaseTest):
                     {
                         "type": "marked-for-op",
                         "tag": "custodian_cleanup",
-                        "op": "delete",
+                        "op": "notify",
                         "skew": 3,
                     }
                 ],

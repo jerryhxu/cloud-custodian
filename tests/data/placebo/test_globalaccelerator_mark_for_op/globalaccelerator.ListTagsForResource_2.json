@@ -4,7 +4,11 @@
         "Tags": [
             {
                 "Key": "owner",
-                "Value": "delete"
+                "Value": "policy"
+            },
+            {
+                "Key": "custodian_cleanup",
+                "Value": "Resource does not meet policy: delete@2024/09/25"
             }
         ],
         "ResponseMetadata": {}

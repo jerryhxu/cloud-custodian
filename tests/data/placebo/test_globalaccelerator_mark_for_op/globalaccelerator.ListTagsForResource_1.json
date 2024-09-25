@@ -4,7 +4,7 @@
         "Tags": [
             {
                 "Key": "owner",
-                "Value": "policy"
+                "Value": "delete"
             }
         ],
         "ResponseMetadata": {}
