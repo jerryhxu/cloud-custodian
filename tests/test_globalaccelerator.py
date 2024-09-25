@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 from .common import BaseTest
 
+
 class GlobalAcceleratorTest(BaseTest):
 
     def test_globalaccelerator_tag_untag(self):
