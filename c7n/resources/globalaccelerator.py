@@ -8,6 +8,11 @@ from c7n.utils import local_session
 from c7n.tags import RemoveTag, Tag, TagActionFilter, TagDelayedAction
 from c7n.resources.shield import IsShieldProtected
 
+
+# Global accelerator is a AWS global service.US West (N. California) Region
+# must be specified in global accelerator api call.
+# Please reference this AWS document:
+# https://docs.aws.amazon.com/global-accelerator/latest/dg/preserve-client-ip-address.regions.html
 GlobalAccelerator_REGION = 'us-west-2'
 
 
