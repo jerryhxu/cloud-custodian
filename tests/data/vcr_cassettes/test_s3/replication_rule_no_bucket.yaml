@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQwOTI2
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9ZjQ3M2VmODY0Y2FkOTA4MDcyYzg1YjI5
+        MWZiM2U2MWExZGQ5MDEwNzY3OWFhMDJmN2MxMmZiM2EzMGMyZDk1MA==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDA5MjZUMDEzMjE5Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZjRmODM1NjgtZjMyOS00YTU2LWE4NTEtNTIyYTQ1NzMyM2I4
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: HEAD
+    uri: https://c1-replication-west.s3.amazonaws.com/
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Thu, 26 Sep 2024 01:32:19 GMT
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - jATIv4QDdulyRRtTE/Thl8AOn7Y0cZD2vinPadlKBq2dFCavRSoi7nrC/g+UyKygwZJC83er3pGvqq8Ljmr+DMMETgXt4hDx
+      x-amz-request-id:
+      - Z5E046B9BRCM7N5G
+    status:
+      code: 404
+      message: Not Found
+version: 1

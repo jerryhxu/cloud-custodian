@@ -3870,8 +3870,15 @@ class BucketReplication(ListItemFilter):
 
     def augment_bucket_replication(self, b, replication, client):
         destination_bucket = replication.get('Destination').get('Bucket').split(':')[5]
+        # Ensure bucket exists
+        try:
+            client.head_bucket(Bucket=destination_bucket)
+        except ClientError:
+            replication['DestinationBucketAvailable'] = False
+            return
         destination_region = inspect_bucket_region(destination_bucket, client.meta.endpoint_url)
         source_region = get_region(b)
+        replication['DestinationBucketAvailable'] = True
         replication['DestinationRegion'] = destination_region
         replication['CrossRegion'] = destination_region != source_region
 
