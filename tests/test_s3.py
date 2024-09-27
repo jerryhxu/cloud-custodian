@@ -4493,7 +4493,6 @@ class BucketReplication(BaseTest):
             self.assertTrue("Replication" in resources[0])
             self.assertEqual(len(resources[0].get("c7n:ListItemMatches")), 1)
 
-
     def test_s3_bucket_key_enabled(self):
         self.patch(s3.S3, "executor_factory", MainThreadExecutor)
         self.patch(s3.BucketEncryption, "executor_factory", MainThreadExecutor)
