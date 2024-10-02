@@ -3872,7 +3872,7 @@ class BucketReplication(ListItemFilter):
         destination_bucket = replication.get('Destination').get('Bucket').split(':')[5]
         try:
             destination_region = inspect_bucket_region(destination_bucket, client.meta.endpoint_url)
-        except ValueError as e:
+        except ValueError:
             replication['DestinationBucketAvailable'] = False
             return
         source_region = get_region(b)
