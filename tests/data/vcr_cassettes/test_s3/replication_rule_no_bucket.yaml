@@ -4,10 +4,10 @@ interactions:
     headers:
       Authorization:
       - !!binary |
-        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQwOTI2
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
         L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
-        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9ZjQ3M2VmODY0Y2FkOTA4MDcyYzg1YjI5
-        MWZiM2U2MWExZGQ5MDEwNzY3OWFhMDJmN2MxMmZiM2EzMGMyZDk1MA==
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9MzAyNTBhNTg3ZTNlNjU3ZGY5ZTVhMjM4
+        YzdhNDdmYTViNzdiYzFjMWY2MjQ0YWYyYmQxMDQ4ZGI1YzdkNzMxYg==
       User-Agent:
       - !!binary |
         Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
@@ -19,30 +19,2400 @@ interactions:
         ODUyYjg1NQ==
       X-Amz-Date:
       - !!binary |
-        MjAyNDA5MjZUMDEzMjE5Wg==
+        MjAyNDEwMDJUMDE0MzI1Wg==
       amz-sdk-invocation-id:
       - !!binary |
-        ZjRmODM1NjgtZjMyOS00YTU2LWE4NTEtNTIyYTQ1NzMyM2I4
+        ZDhkYjI1OGYtZDVmOS00MGYwLTgwNzgtNjE5YTIzMWE5YmVj
       amz-sdk-request:
       - !!binary |
         YXR0ZW1wdD0x
-    method: HEAD
-    uri: https://c1-replication-west.s3.amazonaws.com/
+    method: GET
+    uri: https://s3.amazonaws.com/
   response:
     body:
-      string: ''
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListAllMyBucketsResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Owner><ID>e7c8bb65a5fc49cf906715eae09de9e4bb7861a96361ba79b833aa45f6833b15</ID><DisplayName>mandeep.bal</DisplayName></Owner><Buckets><Bucket><Name>amazon-connect-8a3e671ac44f</Name><CreationDate>2023-09-18T15:35:45.000Z</CreationDate></Bucket><Bucket><Name>amazon-connect-f279b3cef1e4</Name><CreationDate>2023-09-11T19:33:15.000Z</CreationDate></Bucket><Bucket><Name>amazon-connect-f42013f3d380</Name><CreationDate>2023-08-15T21:07:53.000Z</CreationDate></Bucket><Bucket><Name>c1-rep-1</Name><CreationDate>2024-09-26T00:25:29.000Z</CreationDate></Bucket><Bucket><Name>c1-replication</Name><CreationDate>2024-09-25T15:49:20.000Z</CreationDate></Bucket><Bucket><Name>c1-stacklet</Name><CreationDate>2024-06-24T04:49:11.000Z</CreationDate></Bucket><Bucket><Name>c7n-cloudhsm-test</Name><CreationDate>2024-09-09T02:00:03.000Z</CreationDate></Bucket><Bucket><Name>c7n-s3-orgid</Name><CreationDate>2018-09-05T16:34:08.000Z</CreationDate></Bucket><Bucket><Name>c7n-ssm</Name><CreationDate>2018-03-30T10:21:42.000Z</CreationDate></Bucket><Bucket><Name>c7n-ssm-build</Name><CreationDate>2018-04-20T13:47:24.000Z</CreationDate></Bucket><Bucket><Name>c7n-test-1</Name><CreationDate>2021-02-02T04:47:57.000Z</CreationDate></Bucket><Bucket><Name>c7n-test-glue</Name><CreationDate>2020-03-23T15:59:05.000Z</CreationDate></Bucket><Bucket><Name>c7n-test-s3-bucket</Name><CreationDate>2023-08-22T13:27:29.000Z</CreationDate></Bucket><Bucket><Name>c7n-test-s3-bucket-bucket-key-disabled</Name><CreationDate>2023-08-22T13:29:11.000Z</CreationDate></Bucket><Bucket><Name>c7n-test-s3-bucket-copy</Name><CreationDate>2024-02-24T23:17:31.000Z</CreationDate></Bucket><Bucket><Name>c7n-vpc-flow-logs</Name><CreationDate>2018-10-30T18:20:39.000Z</CreationDate></Bucket><Bucket><Name>cdk-hnb659fds-assets-644160558196-us-east-1</Name><CreationDate>2022-04-07T13:51:00.000Z</CreationDate></Bucket><Bucket><Name>cf-templates-9c4kee3xbart-us-east-1</Name><CreationDate>2023-08-21T14:20:39.000Z</CreationDate></Bucket><Bucket><Name>codepipeline-us-east-1-277621794805</Name><CreationDate>2024-08-06T16:15:19.000Z</CreationDate></Bucket><Bucket><Name>cof-c7n-serverless</Name><CreationDate>2019-08-21T14:04:47.000Z</CreationDate></Bucket><Bucket><Name>config-bucket-644160558196</Name><CreationDate>2017-09-05T17:26:39.000Z</CreationDate></Bucket><Bucket><Name>config-rule-code-bucket-644160558196-us-east-1</Name><CreationDate>2020-03-31T12:11:46.000Z</CreationDate></Bucket><Bucket><Name>cur-file-stacklet</Name><CreationDate>2024-09-18T16:34:47.000Z</CreationDate></Bucket><Bucket><Name>custodian-skunk-trails</Name><CreationDate>2017-09-05T17:26:56.000Z</CreationDate></Bucket><Bucket><Name>data-sync-destination-bucket</Name><CreationDate>2021-04-08T15:49:29.000Z</CreationDate></Bucket><Bucket><Name>demo-pratyush-s3-bucket-2022</Name><CreationDate>2022-03-28T01:03:17.000Z</CreationDate></Bucket><Bucket><Name>elasticbeanstalk-us-east-1-644160558196</Name><CreationDate>2018-07-12T14:46:15.000Z</CreationDate></Bucket><Bucket><Name>example-abc-123</Name><CreationDate>2020-10-17T13:24:10.000Z</CreationDate></Bucket><Bucket><Name>hyperpod-lifecycle-scripts-test</Name><CreationDate>2024-03-27T17:58:08.000Z</CreationDate></Bucket><Bucket><Name>mwaa-ose-testing</Name><CreationDate>2023-04-25T14:06:12.000Z</CreationDate></Bucket><Bucket><Name>sagemaker-automated-execution-644160558196-us-east-1</Name><CreationDate>2024-04-23T15:28:25.000Z</CreationDate></Bucket><Bucket><Name>sagemaker-labeler-kms</Name><CreationDate>2020-05-24T23:30:30.000Z</CreationDate></Bucket><Bucket><Name>sagemaker-studio-644160558196-evyowy1z6as</Name><CreationDate>2024-04-17T19:44:05.000Z</CreationDate></Bucket><Bucket><Name>sagemaker-us-east-1-644160558196</Name><CreationDate>2024-04-17T19:44:07.000Z</CreationDate></Bucket><Bucket><Name>test-bedrock-1</Name><CreationDate>2024-01-18T22:20:45.000Z</CreationDate></Bucket><Bucket><Name>test-c7n-firehose</Name><CreationDate>2023-07-05T20:11:53.000Z</CreationDate></Bucket><Bucket><Name>test-kms-key-123</Name><CreationDate>2023-09-19T16:03:13.000Z</CreationDate></Bucket><Bucket><Name>test-policy-firewall</Name><CreationDate>2024-04-22T21:00:06.000Z</CreationDate></Bucket><Bucket><Name>test-sagemaker-model-bias-job</Name><CreationDate>2024-04-24T02:56:14.000Z</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>'
     headers:
       Content-Type:
       - application/xml
       Date:
-      - Thu, 26 Sep 2024 01:32:19 GMT
+      - Wed, 02 Oct 2024 01:43:26 GMT
       Server:
       - AmazonS3
+      Transfer-Encoding:
+      - chunked
       x-amz-id-2:
-      - jATIv4QDdulyRRtTE/Thl8AOn7Y0cZD2vinPadlKBq2dFCavRSoi7nrC/g+UyKygwZJC83er3pGvqq8Ljmr+DMMETgXt4hDx
+      - WpqToFrSMv+C3k9YQI941eeiURNVXwj/Ez+a2t7eBNpMJB5CrUYfHLY7H2FkRG/X8kOck1ckjtfBYVzXDeisFDI3v0UlGvLbD3GQx+OL6Is=
       x-amz-request-id:
-      - Z5E046B9BRCM7N5G
+      - T0PKWDTEXCQF2GEC
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NTAwMjQ5N2E2NDhjYzAzYjQzNDU2ZjI1
+        YWIwMThjZDExNDQxZWQ4NTlmYjc2YjBjOTdhMThlMTdkMjIxMjE4Yg==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI1Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        ODNiZWQwMjgtNjM2MS00ZjdhLWFlZWEtYzA2ZThmOTAxMjNl
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://amazon-connect-8a3e671ac44f.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AuthorizationHeaderMalformed</Code><Message>The authorization
+        header is malformed; the region ''us-east-1'' is wrong; expecting ''us-west-2''</Message><Region>us-west-2</Region><RequestId>4AVD5WR8WDQK598E</RequestId><HostId>vhe9vHFea7Rx6zHeHm2PAxbIOqZrqmNfr8qCePg+mL35G5X8HlT6KP2ogF05wK7d1AKmpjI3KO4=</HostId></Error>'
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:25 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - vhe9vHFea7Rx6zHeHm2PAxbIOqZrqmNfr8qCePg+mL35G5X8HlT6KP2ogF05wK7d1AKmpjI3KO4=
+      x-amz-request-id:
+      - 4AVD5WR8WDQK598E
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLXdlc3QtMi9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9ZTg0OTE4MjBmZTI0YjZlZTNmZjBhYTk4
+        ZDBjNzhhYTBjNzcwNmE2ZTAxZDQ2ODAxYTg0NzQwMjI3MDQyM2E3Mg==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI2Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        ODNiZWQwMjgtNjM2MS00ZjdhLWFlZWEtYzA2ZThmOTAxMjNl
+      amz-sdk-request:
+      - !!binary |
+        dHRsPTIwMjQxMDAyVDAxNDQyNVo7IGF0dGVtcHQ9MjsgbWF4PTU=
+    method: GET
+    uri: https://amazon-connect-8a3e671ac44f.s3.us-west-2.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>amazon-connect-8a3e671ac44f</BucketName><RequestId>4AVFHZTT8HK693H8</RequestId><HostId>gFOdz5EyY7Bgq4fH4giGOmQjLPy40MMKCO3IUxC/DyF77EpG56iBynzq7b8sEWaEXIexYy6YV3s0CDqvpnJIMw==</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:26 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - gFOdz5EyY7Bgq4fH4giGOmQjLPy40MMKCO3IUxC/DyF77EpG56iBynzq7b8sEWaEXIexYy6YV3s0CDqvpnJIMw==
+      x-amz-request-id:
+      - 4AVFHZTT8HK693H8
     status:
       code: 404
       message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NmUyNTM0NDRmYjdjNWNlZTQ2ZGI3MzY5
+        MDU5ZmIwYjU4OTM3M2MyNDMxOGE0Yjg2ODFiN2MzYzNhNDljZDU3Nw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI2Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZTU2ODBlNjAtMzdlMi00NzhhLTg2MTMtODMxYjdjMTM5ZDU4
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://amazon-connect-f279b3cef1e4.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AuthorizationHeaderMalformed</Code><Message>The authorization
+        header is malformed; the region ''us-east-1'' is wrong; expecting ''us-west-2''</Message><Region>us-west-2</Region><RequestId>4AV3MR5EPTC9DNBG</RequestId><HostId>i93bsHObnuyz3KeLcC89KPf8jMUnFCG/hbILJ9ygEV4MlzPhdPlFHyMzH+/ckwzFkh7MOuTcbQ0=</HostId></Error>'
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:26 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - i93bsHObnuyz3KeLcC89KPf8jMUnFCG/hbILJ9ygEV4MlzPhdPlFHyMzH+/ckwzFkh7MOuTcbQ0=
+      x-amz-request-id:
+      - 4AV3MR5EPTC9DNBG
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLXdlc3QtMi9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9Mzk1YTZiMzZhNTdiMTM3YzM2OGJjZjQ4
+        ZGQzYjA4MGMxMzE0ODFmOGY1MGU0ZmNlZTRhOTg3NTYyZGM3OTEwMA==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI2Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZTU2ODBlNjAtMzdlMi00NzhhLTg2MTMtODMxYjdjMTM5ZDU4
+      amz-sdk-request:
+      - !!binary |
+        dHRsPTIwMjQxMDAyVDAxNDQyNlo7IGF0dGVtcHQ9MjsgbWF4PTU=
+    method: GET
+    uri: https://amazon-connect-f279b3cef1e4.s3.us-west-2.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>amazon-connect-f279b3cef1e4</BucketName><RequestId>WTDTRRVFC1T4KATN</RequestId><HostId>D1Urd6cyONShhSVwWyhZwDsWZYhpxSzK6/9vXqFED9GgiNfuZuQaZAUe3nCd1Ayck/OaGt2VxSE=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:26 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - D1Urd6cyONShhSVwWyhZwDsWZYhpxSzK6/9vXqFED9GgiNfuZuQaZAUe3nCd1Ayck/OaGt2VxSE=
+      x-amz-request-id:
+      - WTDTRRVFC1T4KATN
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NjI2YmRmMDBkMzIwMTRhOTIwYWQyZDI3
+        NTkyMzMyMGNkMGM4ZDAwZmI1NTUzOWRhMWIyMzAxYzczZmZjZGM3Yw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI3Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        N2EyODljMDAtMTFjMS00MDJjLWE2MGUtMTVjYzMwNDdkMzUx
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://amazon-connect-f42013f3d380.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AuthorizationHeaderMalformed</Code><Message>The authorization
+        header is malformed; the region ''us-east-1'' is wrong; expecting ''us-west-2''</Message><Region>us-west-2</Region><RequestId>WTDGQEDCFJBJE0KT</RequestId><HostId>/GCAEkePcZ4ki9qj3sTPUzST8h/HCyjEEpJ8q9/vxG5VHieVv1s75MScyw2M3MMrHdlEG0CjM+w=</HostId></Error>'
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:27 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - /GCAEkePcZ4ki9qj3sTPUzST8h/HCyjEEpJ8q9/vxG5VHieVv1s75MScyw2M3MMrHdlEG0CjM+w=
+      x-amz-request-id:
+      - WTDGQEDCFJBJE0KT
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLXdlc3QtMi9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9YjllMTc4MmEzYzM4ZmQxYTRkODE5MGM0
+        ZmI3NmI4NTYxYzdiYTM2YTcyYmY3MDA2NDU3ZTQzMmY1MDg1YTc4NQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI3Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        N2EyODljMDAtMTFjMS00MDJjLWE2MGUtMTVjYzMwNDdkMzUx
+      amz-sdk-request:
+      - !!binary |
+        dHRsPTIwMjQxMDAyVDAxNDQyN1o7IGF0dGVtcHQ9MjsgbWF4PTU=
+    method: GET
+    uri: https://amazon-connect-f42013f3d380.s3.us-west-2.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>amazon-connect-f42013f3d380</BucketName><RequestId>WTDW3HGSDTBMJDNW</RequestId><HostId>WEn2alNrKNy96CRdPg5yv3M5ivoX+v9E9pHPmOxJdkmE6phGSAj73/PPRjVuhxNocxxm7lVjfDcWoJ9JIeKWqA==</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:27 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - WEn2alNrKNy96CRdPg5yv3M5ivoX+v9E9pHPmOxJdkmE6phGSAj73/PPRjVuhxNocxxm7lVjfDcWoJ9JIeKWqA==
+      x-amz-request-id:
+      - WTDW3HGSDTBMJDNW
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9ZWZmZWJiNDk1YjE4ZmVkMmQ0ZGUzNTc3
+        ZDMzYTM4Mjk3OTJkNDZiMzI0OWY2N2FmNjc4ODFjYTBiM2U4MmEyMQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI3Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MmQ5NTdlODYtMTcyZS00Y2Q4LTkyMmMtNDhjMTk1MWY2Mjhi
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c1-rep-1.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>c1-rep-1</BucketName><RequestId>KBVPJK0K23V6PNKT</RequestId><HostId>nd6nP1ZuxSUEohM7RRMiEpbqLNbYc74aQ9m84Mu3NHCA5Xi24eFhqtxXkjFuPTabxKERAR0nB7A=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:28 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - nd6nP1ZuxSUEohM7RRMiEpbqLNbYc74aQ9m84Mu3NHCA5Xi24eFhqtxXkjFuPTabxKERAR0nB7A=
+      x-amz-request-id:
+      - KBVPJK0K23V6PNKT
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9ZmE5OWYzMmJhMTUyNDQ5ODRlODk0NWJi
+        ZTdlMjkzMWU2YTFjZDMxNjNkOGEyYmQyMGRlZDdlYTAwMmVkZjk5MQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI4Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        NmMwZTUxNzYtOTJjZS00MmExLTlkZmUtMjdjMjgwNzIwZjFm
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c1-replication.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ReplicationConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Rule><ID>rule-1</ID><Priority>0</Priority><Status>Enabled</Status><DeleteMarkerReplication><Status>Disabled</Status></DeleteMarkerReplication><Filter><Prefix>test</Prefix></Filter><Destination><Bucket>arn:aws:s3:::c1-replication-west</Bucket></Destination></Rule><Role>arn:aws:iam::644160558196:role/s3-replication</Role></ReplicationConfiguration>'
+    headers:
+      Date:
+      - Wed, 02 Oct 2024 01:43:29 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - 2U38xEcOrYg/WIp3kqFhrgp4Zubd4LbJilPbAt89JUQuodnOM9c0hprHvgs8ZCYZcYX+53xJQe4=
+      x-amz-request-id:
+      - KBVNMMYAWWQ7WCDW
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9OTliMTg1NzRiMTU3YjJhNTEyZmU5MjY3
+        M2EyNmM2MWJiZTlhNmU5ZGE2MmFjYjczYTI1YzkzNTY2NTYyZWJjYQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI4Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MWI1NGNmN2YtYzU2Yy00Y2JmLWExZjQtOGY2N2I0OGFjYjk4
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c1-stacklet.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>c1-stacklet</BucketName><RequestId>KBVRDDCXH0VC1RJS</RequestId><HostId>YJQfL2a1JR6VrVboqY/i+RNi8HZu+AVKZWdVs440aIojpiqtZ7aMD7TObvMudQzKcDO/3CMVgBM=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:28 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - YJQfL2a1JR6VrVboqY/i+RNi8HZu+AVKZWdVs440aIojpiqtZ7aMD7TObvMudQzKcDO/3CMVgBM=
+      x-amz-request-id:
+      - KBVRDDCXH0VC1RJS
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9OTgzMjkyNjlmNTlkMGU3YzdjNmUwMmZl
+        OTlmODlhNjk3ZWJhMzhjYTU0ZmRmY2NhMzhmODc1ZWM2ZDkwMzU4MA==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI4Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        OTkzNzg1Y2EtZmJmYS00MTEwLTg5NDQtZDhhNDI3MTkyNjBm
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c7n-cloudhsm-test.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>c7n-cloudhsm-test</BucketName><RequestId>KBVGJ7SGZKZ6F9FM</RequestId><HostId>jBF0WHqhJ80vewkt5v1hys5S+sePFL74xEOqllFgoQrlpe+IJybbb9hS3RaXSz0EfaQI8mROGD4=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:28 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - jBF0WHqhJ80vewkt5v1hys5S+sePFL74xEOqllFgoQrlpe+IJybbb9hS3RaXSz0EfaQI8mROGD4=
+      x-amz-request-id:
+      - KBVGJ7SGZKZ6F9FM
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9N2JlMDU2OTcwZTcyZTJkZWQzMjY2Yjhh
+        ZDFlZTY2OGJmMDAzMzAwZTVlZGIwMGM3YmEyZTliOTdmNzhlNGZiOQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI4Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MzVhYzJhYmQtOTBhZC00NjY2LTk0ZGUtMTIyZjRjZDA4MjRi
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c7n-s3-orgid.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AccessDenied</Code><Message>User: arn:aws:iam::644160558196:user/Jerry
+        is not authorized to perform: s3:GetReplicationConfiguration on resource:
+        "arn:aws:s3:::c7n-s3-orgid" with an explicit deny in a resource-based policy</Message><RequestId>KBVKV7BZYQN56VCV</RequestId><HostId>JaDFAnP9gyfsHA/CUDHfVhG4ITfE1OHGwhGnkhWDvbOyUm/U07okBeuYXI0RgWjOuM+tUHo2m1Y=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:28 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - JaDFAnP9gyfsHA/CUDHfVhG4ITfE1OHGwhGnkhWDvbOyUm/U07okBeuYXI0RgWjOuM+tUHo2m1Y=
+      x-amz-request-id:
+      - KBVKV7BZYQN56VCV
+    status:
+      code: 403
+      message: Forbidden
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9MzE2YmJkZWMzY2VkZDdkYmU0YTA5NDY4
+        NTBjOThkOWFhMDQyMjJkMzM1NzkxMmVhOWNkYjk2NzVmOWJhMDUyMg==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI4Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZjZmZmUwYTItZjM3OC00MWE2LWFiYzktNTNkMjVkNGYzNjZk
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c7n-ssm.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>c7n-ssm</BucketName><RequestId>DNBPC2ZEG334Y5BW</RequestId><HostId>zA8HfQu31vvSgy8htb7dYn88rs/4IRcFFkR3deRKzK3xGLuIxDaEZJN7SqZWZfZAegXxu5kH3Jg=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:28 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - zA8HfQu31vvSgy8htb7dYn88rs/4IRcFFkR3deRKzK3xGLuIxDaEZJN7SqZWZfZAegXxu5kH3Jg=
+      x-amz-request-id:
+      - DNBPC2ZEG334Y5BW
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NTRhYjU2ZjM4ZTE3YTY1NTM0NjQxODlh
+        N2U4NDRkYjAwNDY3ZmEzY2FmYmMyNmQyNWYzZjU4NTVlOTg4NjM5NQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI5Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        NWE1ZjA0YTktZGUxNy00ZDM0LWE3ODAtNmY3NGRhNTkyY2Q3
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c7n-ssm-build.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AuthorizationHeaderMalformed</Code><Message>The authorization
+        header is malformed; the region ''us-east-1'' is wrong; expecting ''us-east-2''</Message><Region>us-east-2</Region><RequestId>DNBSRTFRHWGCZMKR</RequestId><HostId>qTRQ2T4td+Z3Wpmg92kZVM/CB0R7UuAnCN27XrbhgcJkiZfatLqhGlOENtUCUb8v8OU7ZzylU60=</HostId></Error>'
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:29 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - qTRQ2T4td+Z3Wpmg92kZVM/CB0R7UuAnCN27XrbhgcJkiZfatLqhGlOENtUCUb8v8OU7ZzylU60=
+      x-amz-request-id:
+      - DNBSRTFRHWGCZMKR
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMi9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9MzFhYmExYjE0YTk3MDA2YjEyM2I3MWIy
+        NGMyMjUxY2Q4ZGNiZDNmNThmMDk2YTQzZTAyYjA1NjFjOTY2ZjEzZQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI5Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        NWE1ZjA0YTktZGUxNy00ZDM0LWE3ODAtNmY3NGRhNTkyY2Q3
+      amz-sdk-request:
+      - !!binary |
+        dHRsPTIwMjQxMDAyVDAxNDQyOVo7IGF0dGVtcHQ9MjsgbWF4PTU=
+    method: GET
+    uri: https://c7n-ssm-build.s3.us-east-2.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>c7n-ssm-build</BucketName><RequestId>DNBQX8E2HB5X7F98</RequestId><HostId>ba+8u2lmgqsyAqKG3R7Fg9zRSLmQt8eX8p8fa8GV4Myni0aBNWmt6hd42lFzUZvG4UgXFl3A/jMXmFPA8Fg4h8TgPXlL42hgauGY53L0s8w=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:29 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - ba+8u2lmgqsyAqKG3R7Fg9zRSLmQt8eX8p8fa8GV4Myni0aBNWmt6hd42lFzUZvG4UgXFl3A/jMXmFPA8Fg4h8TgPXlL42hgauGY53L0s8w=
+      x-amz-request-id:
+      - DNBQX8E2HB5X7F98
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NGUzYzI0OTM2ZjFmZTNjZjQ1YmI0Y2I5
+        Y2M3NzY2MDAxNTk3ZjY1N2Q3ZjZlNmVjMzE4YWM1ZDc2NzNhNTBiZg==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI5Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        OTExYjI0ZTktNjcwMS00N2IzLTliMmItNWM2OGViMDVlODFj
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c7n-test-1.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AccessDenied</Code><Message>User: arn:aws:iam::644160558196:user/Jerry
+        is not authorized to perform: s3:GetReplicationConfiguration on resource:
+        "arn:aws:s3:::c7n-test-1" with an explicit deny in a resource-based policy</Message><RequestId>DNBNY7JYT0SEBSMN</RequestId><HostId>D5pToCkgyewGyHkEF9YS4COTyMN1S+rBPN2pLG2/qbrnG5UkrbCheWbr1irg/cr67OUSPrx9znA=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:28 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - D5pToCkgyewGyHkEF9YS4COTyMN1S+rBPN2pLG2/qbrnG5UkrbCheWbr1irg/cr67OUSPrx9znA=
+      x-amz-request-id:
+      - DNBNY7JYT0SEBSMN
+    status:
+      code: 403
+      message: Forbidden
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9YWZhOGFmNGIyN2JjODlkZjA4NzhlYjA2
+        ZGQ2MjQ0ZTk5NmI5NDAyYzhlZGNlY2EyODJmZTg0YWRkMGUwZTRlNw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI5Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        NWUzZjk0YjQtNDBmZC00YTg0LTlhM2QtZWU4YjljZmVjNGNj
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c7n-test-glue.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AccessDenied</Code><Message>User: arn:aws:iam::644160558196:user/Jerry
+        is not authorized to perform: s3:GetReplicationConfiguration on resource:
+        "arn:aws:s3:::c7n-test-glue" with an explicit deny in a resource-based policy</Message><RequestId>DNBRCWK8C7723AWP</RequestId><HostId>NlbNtgmHUvfdp/ZXV6+qhCQ7LV1p7YnhwodrQq1JyPCPA3Fs7u9R1yP0oLyWIocgZtIsNzuAFOw=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:29 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - NlbNtgmHUvfdp/ZXV6+qhCQ7LV1p7YnhwodrQq1JyPCPA3Fs7u9R1yP0oLyWIocgZtIsNzuAFOw=
+      x-amz-request-id:
+      - DNBRCWK8C7723AWP
+    status:
+      code: 403
+      message: Forbidden
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9ODk5MmY2MzM0ZmQxYWFhNDNhZDQ2ZDUw
+        M2IwMmNjOGI1ZDNhOTkwMjBhNWIwMzE5OTBkNjg2YzI0OWRjMjllOQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI5Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        NDhkODE3OTYtOTQyNS00ZjUzLTg0NjMtYjVlYzg4Yzg4MWRm
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c7n-test-s3-bucket.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ReplicationConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Rule><ID>abc</ID><Priority>0</Priority><Status>Enabled</Status><DeleteMarkerReplication><Status>Disabled</Status></DeleteMarkerReplication><Filter><Prefix>abc</Prefix></Filter><Destination><Bucket>arn:aws:s3:::c7n-test-s3-bucket-copy</Bucket></Destination></Rule><Role>arn:aws:iam::644160558196:role/AmazonBedrockExecutionRoleForAgents_c7n_test1</Role></ReplicationConfiguration>'
+    headers:
+      Date:
+      - Wed, 02 Oct 2024 01:43:30 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - nRGGj7srKf2+v7rErJ/ifPC2atoPHDKDZvAROEx6O4DYjz3TgDlNC9uLNy6qJcgFVAF+PRMCUxA=
+      x-amz-request-id:
+      - DNBZAPB377Z4QJTR
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NTkxNzhjNmQ1Mzg4NjkwNGE2YTA1ZTdk
+        NDE2NDNmZjEyMThmMTM2ZDI0NDBiMjIwNTlkZTNkZjE1MTdkZTIyNg==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzI5Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MjZjZTFkY2QtYmNhNS00N2QwLWFjYjItYjMzNDJmYzdiOWRj
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c7n-test-s3-bucket-bucket-key-disabled.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>c7n-test-s3-bucket-bucket-key-disabled</BucketName><RequestId>GQKJWAWDA0A92PM6</RequestId><HostId>vRGclPAXG7q5BxiQOSAu1EDMZIy8Oyth/JaaKKQcTF04aOdTz0cqzAZ40d7B5a6Z6UoCnjER83A=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:29 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - vRGclPAXG7q5BxiQOSAu1EDMZIy8Oyth/JaaKKQcTF04aOdTz0cqzAZ40d7B5a6Z6UoCnjER83A=
+      x-amz-request-id:
+      - GQKJWAWDA0A92PM6
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9MWRmZWNlOGE3YjNjYTQyMzBkNGNhZTAy
+        ZTc3YTY0NDBkODVkNTZkM2Q0YTA0ZDY4MWFhMzkwY2VjOWRlYTI0Zg==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMwWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MDYwMTg2ODItYzZkNS00MGI2LTllZjEtMTMwODJjMjc3MjYz
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c7n-test-s3-bucket-copy.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>c7n-test-s3-bucket-copy</BucketName><RequestId>GQKN016VZ9V0W09M</RequestId><HostId>AIWLzNZ/LOfK62qzg4F5dbEr+7WtMpvFHz9OC9ifv80O4dxSppaHpkpFQpgYCJjV1gg1q2wrcts=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:30 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - AIWLzNZ/LOfK62qzg4F5dbEr+7WtMpvFHz9OC9ifv80O4dxSppaHpkpFQpgYCJjV1gg1q2wrcts=
+      x-amz-request-id:
+      - GQKN016VZ9V0W09M
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NTc1NTdiMTM2OTVjYWZlMjMzMTAxOTlk
+        ZTU1MzI1MTRhNzA2Y2Y3NWM4MGVmYzQ0NjMzNjVhYTAzOGJhMmE0MA==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMwWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZjU4NTFiNmQtZjQwOS00MTQzLWEyOTEtNzAwZmZkZjZiNWM1
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://c7n-vpc-flow-logs.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>c7n-vpc-flow-logs</BucketName><RequestId>GQKWRZXVA0EJY43P</RequestId><HostId>lGKjh3aHTyV/WgcDyZpmrwoyEksQV4rnk9JgqnxbHDwl1cTCoO6UeH7XPPHox/Ddm3exxFOqGFk=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:30 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - lGKjh3aHTyV/WgcDyZpmrwoyEksQV4rnk9JgqnxbHDwl1cTCoO6UeH7XPPHox/Ddm3exxFOqGFk=
+      x-amz-request-id:
+      - GQKWRZXVA0EJY43P
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9YjlkNjY5OWRkOTVhOTAxMmU0YzliNjZm
+        ZWJiN2M5NTA5YTYzNDgzNGFjZjU2ZDIxNDc5MGRmMmNmMmU4NTMwMw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMwWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        NzlmZTZmYzgtYTkwZi00MTc3LTkyOTgtMjkyNjBmNTE2ZWY2
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://cdk-hnb659fds-assets-644160558196-us-east-1.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>cdk-hnb659fds-assets-644160558196-us-east-1</BucketName><RequestId>GQKKC2T8Z9DXPRXH</RequestId><HostId>kDs9K17Jsede4HvR4wFGmojAOCBSAsA5zb9YRr/3NkqqwbREyJz/1Dj1P8t8K8NVx3m8CbvH6ag=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:30 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - kDs9K17Jsede4HvR4wFGmojAOCBSAsA5zb9YRr/3NkqqwbREyJz/1Dj1P8t8K8NVx3m8CbvH6ag=
+      x-amz-request-id:
+      - GQKKC2T8Z9DXPRXH
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9MThkZjk4ZmYwZjlkMzI4YTNkMGNhNDdk
+        ODA3OWZiYTJhNTE2ODQ0ZTNiYTkzZmNmMTc1ZGZmMWRiM2E2ZjllNg==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMwWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        YTkwN2RkZTYtZWRjZC00OTJjLThlMmMtZjUyOTA4YTZmZTU5
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://cf-templates-9c4kee3xbart-us-east-1.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>cf-templates-9c4kee3xbart-us-east-1</BucketName><RequestId>GQKZPA1S0DSM4FHC</RequestId><HostId>pr3T45JVvj15xFLmB6Sy3UoqGaDPoGCqgUunjk372vbA8D0aUJidowdV3yChpFsfIZN+DUU9O0X4GRYBEv1zlg==</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:30 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - pr3T45JVvj15xFLmB6Sy3UoqGaDPoGCqgUunjk372vbA8D0aUJidowdV3yChpFsfIZN+DUU9O0X4GRYBEv1zlg==
+      x-amz-request-id:
+      - GQKZPA1S0DSM4FHC
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9ZTE5MWIwMDg0NDgyOGQ1MjFiMTllNjIx
+        OTZhMDlhZGFlODhjN2ZkZmJiY2Q2ZjA2NDE5ODM5MjdmMDczMDAzZA==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMwWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZmJmMDBjNTAtNThlMi00NzRlLWFhZjMtNzJjYjY1OWJmMTY4
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://codepipeline-us-east-1-277621794805.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>codepipeline-us-east-1-277621794805</BucketName><RequestId>GQKVDVCMMYCD3MZ6</RequestId><HostId>9mr7e7WcY8ROx8zLKAtn62kzrThtNDTWFV0EeEyzQ/dO6TEzWW/iBMKTqv5kiHPFPRpcZYbPlxqrUHrEQjA+Yg==</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:30 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - 9mr7e7WcY8ROx8zLKAtn62kzrThtNDTWFV0EeEyzQ/dO6TEzWW/iBMKTqv5kiHPFPRpcZYbPlxqrUHrEQjA+Yg==
+      x-amz-request-id:
+      - GQKVDVCMMYCD3MZ6
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9Zjc5MDRlMWVhZjViZGJlM2QwN2FiMjc1
+        NzQ5OWJkNjhiOTIyYTYyZTY0ZDZhOTA0ZTM1MTgzNWQ2MWYwMTMwNQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMwWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MWZlNzZhZTUtYjQ4OC00MjdmLWE4NDAtMGRjZGQ5ZmJlNTc1
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://cof-c7n-serverless.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>cof-c7n-serverless</BucketName><RequestId>GQKJDVWM63NJ39RK</RequestId><HostId>jJcGpc8PDJ1sot2ogC7i9qy5wwBcGhxv6LIPIOUsMIOrwS8MupSorkyniMjZsAqEInaVM0M0L34RpITEf3TK3Q==</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:30 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - jJcGpc8PDJ1sot2ogC7i9qy5wwBcGhxv6LIPIOUsMIOrwS8MupSorkyniMjZsAqEInaVM0M0L34RpITEf3TK3Q==
+      x-amz-request-id:
+      - GQKJDVWM63NJ39RK
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9YmM3MDQwOGEzNGIxYTk5YmFjODk5NTRi
+        MjkwZjgzY2ZjYTg5MTE4YzgwMDcyZGU4MTc1YzIyODBjOThiYWRkMQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMwWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        Y2Q1OTY4Y2EtMDZiNi00MTNlLTg1MjEtYWM5ZDc3NzlhZDFl
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://config-bucket-644160558196.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>config-bucket-644160558196</BucketName><RequestId>27G3XZHT2J9XFRME</RequestId><HostId>7lY3Rdx4/2J84Vlh3nKxvOcpk8I0dJW2VusSx4roYhMI2ZS+k8hdb1o5YRAGXu57z060CmqFSn0u64GXR2soqw==</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:30 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - 7lY3Rdx4/2J84Vlh3nKxvOcpk8I0dJW2VusSx4roYhMI2ZS+k8hdb1o5YRAGXu57z060CmqFSn0u64GXR2soqw==
+      x-amz-request-id:
+      - 27G3XZHT2J9XFRME
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NzA0NmViZmNjMzEzMjFmY2FiNzEwZDI5
+        NTFhZTVkZDUyMzUyZTgzOTI0MWM4MzBiMjIyYTgwZDBkODkyNTdjYw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMxWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        YWQ3ODgzZGMtOWJlNS00YWZiLWE0ZjEtOWRmM2I0NTIyMDAx
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://config-rule-code-bucket-644160558196-us-east-1.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>config-rule-code-bucket-644160558196-us-east-1</BucketName><RequestId>27GF6WS6MA3YGKAE</RequestId><HostId>XdK0a8/02Y9usXAh/S33m55ruH6IEDmp3B3OBRHRkrMsjg3bgfTfyXDA2uP8lDfcFLobj9CPP0RHVMHSrDV/Yg==</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:31 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - XdK0a8/02Y9usXAh/S33m55ruH6IEDmp3B3OBRHRkrMsjg3bgfTfyXDA2uP8lDfcFLobj9CPP0RHVMHSrDV/Yg==
+      x-amz-request-id:
+      - 27GF6WS6MA3YGKAE
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9ZDk1ODI5MTZiMThkODllNmNhMmNiNWY3
+        YWQxZjYyMWMyMzE5N2RiNGNhZWU2OGFhYTNiMDQwMWY3NzUxOTVjOQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMxWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        YWViZmEzYTMtNGEzYi00Nzg2LWFiODQtMjVjODg3ZjUxM2Mx
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://cur-file-stacklet.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>cur-file-stacklet</BucketName><RequestId>27G5HB6J2MJY1F07</RequestId><HostId>/ZRsO9e44WhogL0ZwQK91HVEFAgLuPRMEgFdKHYgr2JRj87Vko6kyIEv9ubWctwKhK8P+oZeCrmEITxKMAijhQ==</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:31 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - /ZRsO9e44WhogL0ZwQK91HVEFAgLuPRMEgFdKHYgr2JRj87Vko6kyIEv9ubWctwKhK8P+oZeCrmEITxKMAijhQ==
+      x-amz-request-id:
+      - 27G5HB6J2MJY1F07
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9Yjk5NjBkZDc2ZDE5MGRmZjZiOGFhNzk1
+        MWFjNGFjODMwYzZhMGNiNmZjZmJhZmRlNWMwMWI4YzU5MWYzMGFmNA==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMxWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        N2Q1NzA5NjQtMTQxZC00Y2RlLWEzZDEtMjA4OWIwZTVhNGY4
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://custodian-skunk-trails.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>custodian-skunk-trails</BucketName><RequestId>27GF8ZCSFCMV040H</RequestId><HostId>EPJI3OkWAkhqnFMBVC3t+Yj6Cm+yw483aF3miZAt/weU0Kx3uaFHXEvWNIzijmz9YTwD9qV7+hUK4ca4aAw8VA==</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:30 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - EPJI3OkWAkhqnFMBVC3t+Yj6Cm+yw483aF3miZAt/weU0Kx3uaFHXEvWNIzijmz9YTwD9qV7+hUK4ca4aAw8VA==
+      x-amz-request-id:
+      - 27GF8ZCSFCMV040H
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9MjIyNzIyOTMyOTI2MmVhNDVmZjU0Yzg0
+        MjY5YWUyOTY1ZTA2ZDY0NTU2Njc0MWUwNjdmYTA0M2Y5MmRhMzJjOA==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMxWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MGY0MWIzNzItZWJjOS00M2EzLTkyNjctZTVjZWUxMTJjYjQw
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://data-sync-destination-bucket.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>data-sync-destination-bucket</BucketName><RequestId>27GA8PWGDTAFY1G2</RequestId><HostId>JRCgzi1bP84JUf/RJDyZNU4mmbyWu8FcXNuR9wJJH6A0lqgBV4iV7NwH+PO7+J/B/JSfofEzQvk=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:31 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - JRCgzi1bP84JUf/RJDyZNU4mmbyWu8FcXNuR9wJJH6A0lqgBV4iV7NwH+PO7+J/B/JSfofEzQvk=
+      x-amz-request-id:
+      - 27GA8PWGDTAFY1G2
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9ZTQ0ZjEwNmJjOTM1NDRkZWNhMjExMTUz
+        ZWJkYTJlYTU0ZmNjMTQzNTM2YjI0M2ZlNWFmMTMxMWRhNDFjNjdmOQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMxWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MzA1ZGE2YjEtNjkyMi00MzQ2LTk1ZWEtYjY4MjM4ZTdlYzBm
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://demo-pratyush-s3-bucket-2022.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>demo-pratyush-s3-bucket-2022</BucketName><RequestId>27GF8QHZCHEKQHKB</RequestId><HostId>Pqi/jGcBG6HAqVn1d15cpz+B3zehXx27/AwnFxQUwUW/znJyv8Z1IXhXNbs/4rgRvrq8691Hwnc=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:31 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - Pqi/jGcBG6HAqVn1d15cpz+B3zehXx27/AwnFxQUwUW/znJyv8Z1IXhXNbs/4rgRvrq8691Hwnc=
+      x-amz-request-id:
+      - 27GF8QHZCHEKQHKB
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9MjRiZjc3ZjI1YjVjNWE4MTJmMjMyMzVj
+        OGU1OTAzNGMxYzkwNDQyYjhjMGQxNjllZDBmMzczOGFlZjliYjVhZQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMxWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        YzYxOWIwMTktNTVlYi00NTFiLWFmODUtMDU4M2JjZjZmODQ3
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://elasticbeanstalk-us-east-1-644160558196.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>elasticbeanstalk-us-east-1-644160558196</BucketName><RequestId>GEDV14A4WZBS5DW0</RequestId><HostId>40U2Bfphfcz8jSCFWuhVEZo9aifbd0Zr9wR8HjTjcUsLcs96bIY31wv3Vyx+lAu5wcMn2myJ0v0=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:31 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - 40U2Bfphfcz8jSCFWuhVEZo9aifbd0Zr9wR8HjTjcUsLcs96bIY31wv3Vyx+lAu5wcMn2myJ0v0=
+      x-amz-request-id:
+      - GEDV14A4WZBS5DW0
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9YzI0NDA3OGQzYTU0ZDRjMjUxNjM0ODg1
+        YjJjMjMyMmQwMTNjMDFiZWI5ZjJiY2M0MjgzOTkxZTc3ODY2ZjI4Mw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMyWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        OGQwYTgzNTQtNmNjNC00NThmLTg1NmMtMTBkMGYxMGI4MTU0
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://example-abc-123.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>example-abc-123</BucketName><RequestId>GEDNGY9M5YVVQN1A</RequestId><HostId>vqcBubrgGDKbNmDekEg4RDXqijOleNKdxoHqKREZp5x9G0X/LLA+jnWEd0gDT+DYAvHo1Y1StFY=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:32 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - vqcBubrgGDKbNmDekEg4RDXqijOleNKdxoHqKREZp5x9G0X/LLA+jnWEd0gDT+DYAvHo1Y1StFY=
+      x-amz-request-id:
+      - GEDNGY9M5YVVQN1A
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9ZDJlZmUzODdlZjg1YWU5NzYyMWY4MmY1
+        MTYyYWJkNDZiZjgxNzc3N2VkNDlkOGQ4OWUyZGFkNTJlYTBmNTZmZA==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMyWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZmVlMGU3ZDQtNzMwYi00OGRiLTgxYTItNTgyNGM2MTYyZWYx
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://hyperpod-lifecycle-scripts-test.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>hyperpod-lifecycle-scripts-test</BucketName><RequestId>GEDHCWMAQ6X3RKWB</RequestId><HostId>0NoutTp6pusWODS+ivhwo9UCDQbpAnF4Ws1Ty39iWkGBb5HqVMIG4qiA7S/S4Vtz5Q1g8hKiE0I=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:31 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - 0NoutTp6pusWODS+ivhwo9UCDQbpAnF4Ws1Ty39iWkGBb5HqVMIG4qiA7S/S4Vtz5Q1g8hKiE0I=
+      x-amz-request-id:
+      - GEDHCWMAQ6X3RKWB
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9YjhhNDE3ZGYyMGU3NWQ4MWJiNGY0YzM2
+        YTg0MDUwNjM5Yjc1ZTM4NDA0MjFkNGMyZGY0OTUxOGZjOWY0YjllMg==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMyWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        OTYxNjE3ZGMtMzM2NS00NDg2LTkxODEtYzUxNGM1ZmFiZjY2
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://mwaa-ose-testing.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>mwaa-ose-testing</BucketName><RequestId>GEDQP70ZGV7Q8BJB</RequestId><HostId>/iVrkvacyyHPCp+UActGusspv9c4BCMBHORKk+/Wxs71zHfriYtF08jbQaU8qqIH3/Gl0YMnQps=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:31 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - /iVrkvacyyHPCp+UActGusspv9c4BCMBHORKk+/Wxs71zHfriYtF08jbQaU8qqIH3/Gl0YMnQps=
+      x-amz-request-id:
+      - GEDQP70ZGV7Q8BJB
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9YTVhODA3MzRjZmViMDI2Yjc5YWZkNTcw
+        N2U0ZWQxYzQzMzQ3ODFhYjkxNWNkOTNjYWRkZTYxZTAxYmE1MmQyOQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMyWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MWQwMzYxZTYtYjQyZS00YTMwLTk4NDAtOTVhZmVjMDJhMmQx
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://sagemaker-automated-execution-644160558196-us-east-1.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>sagemaker-automated-execution-644160558196-us-east-1</BucketName><RequestId>GEDPSZJRWHYBBNEP</RequestId><HostId>9j3irUsARTX3Tz4L42UoZMzEed3dlcngJyuM/3jMKaN4TcGKQFgG898jOOI4MPJvH2mpqiIum+I=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:31 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - 9j3irUsARTX3Tz4L42UoZMzEed3dlcngJyuM/3jMKaN4TcGKQFgG898jOOI4MPJvH2mpqiIum+I=
+      x-amz-request-id:
+      - GEDPSZJRWHYBBNEP
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9Nzc5ZDVhODBjYzY4YjAxMDMyZmIxZGM5
+        OTQyNzljYzJhOTg4NDI0ZWFiYjUzOGYzNjFmYzdhNTA0MzNiZDRkNw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMyWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZmNlMjI1OWMtZGJlYS00ODg5LWIzYjQtZGIzMDMzNzVmOThi
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://sagemaker-labeler-kms.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>sagemaker-labeler-kms</BucketName><RequestId>GEDRCSG4ZR95M92Y</RequestId><HostId>PSciTPprOSMO9LzJ3jWkcEF2tbhy6XVoc4CXk+WkItSSrRXAeYOG4PX70/l28uLUFUjcoQAhEqs=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:31 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - PSciTPprOSMO9LzJ3jWkcEF2tbhy6XVoc4CXk+WkItSSrRXAeYOG4PX70/l28uLUFUjcoQAhEqs=
+      x-amz-request-id:
+      - GEDRCSG4ZR95M92Y
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9Njc2OTNmOTFjNWFiZDRmM2FmOWVhNzg5
+        MDkwYmE5ZjU5OTI0NDM0MjA2YzM5OGVlZjY2MzVkYTI0ZGFkZjE0Yw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMyWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        YmUxZjg2NmUtZjhmNy00NTM5LTg4MTctN2IwMDEzYmM0NjY3
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://sagemaker-studio-644160558196-evyowy1z6as.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>sagemaker-studio-644160558196-evyowy1z6as</BucketName><RequestId>GEDM25QJ4TJ9NCDG</RequestId><HostId>BlftEFah+LzF4KestIvkS3mlqV9wwyjZwM7sd0CLx49JBcjXy0SEZxJ3chWIW/iH3CUqz8hKlZs=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:32 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - BlftEFah+LzF4KestIvkS3mlqV9wwyjZwM7sd0CLx49JBcjXy0SEZxJ3chWIW/iH3CUqz8hKlZs=
+      x-amz-request-id:
+      - GEDM25QJ4TJ9NCDG
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9MDcxODIxYjU0NWRkNmQ2ZThmYjUzNjNi
+        YzQyMWUzZmY0ZjMxYzhkMGYzYzZlMzVkNzk3ZGEwMTcxMGQxYjY0OA==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMyWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MmFkMDYxOGItM2Q5NC00ZjRkLWE2YzEtOGFmZmMxYTliZjJm
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://sagemaker-us-east-1-644160558196.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>sagemaker-us-east-1-644160558196</BucketName><RequestId>MHQ4Q47QXTT1YBNR</RequestId><HostId>7m7Mcmx3gBBebjsv7ffv5CcD9QkSPlGhWrmunvPoWNzX55/FxU9tY+LWbdRrX9rxbK19x9TQwyU=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:32 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - 7m7Mcmx3gBBebjsv7ffv5CcD9QkSPlGhWrmunvPoWNzX55/FxU9tY+LWbdRrX9rxbK19x9TQwyU=
+      x-amz-request-id:
+      - MHQ4Q47QXTT1YBNR
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9YWMwZjI0ZDhkY2ZhNTE0ODQzYThhYjUw
+        MDBkYjQyNTQ2ZDUxZjNmYTBiN2Q0MWUwOTE1ZDE4NzEzNGMzYzgxMw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMzWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZmM2ZTg5NjctNzgyZC00MzY1LWEzNDgtNjRlYTliZTc0MWE1
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://test-bedrock-1.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>test-bedrock-1</BucketName><RequestId>MHQC47GFFPRVH041</RequestId><HostId>jlqx7QEfcH8Uk9+wN2uGMPvQjQnLmS3esxLINj9YX60lEtpdCFllaFTU4aNIv4tCx6K+S2HjbP4=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:32 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - jlqx7QEfcH8Uk9+wN2uGMPvQjQnLmS3esxLINj9YX60lEtpdCFllaFTU4aNIv4tCx6K+S2HjbP4=
+      x-amz-request-id:
+      - MHQC47GFFPRVH041
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NGRmZTQ3ZjNiOWE0M2UyM2E3NzA2MDc0
+        Yjc3MzM4NzY4NDY5ODM2NjhlZWMwNmU5MzViNDkxZmM3NjBhOTM5Yw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMzWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        NGY2NjZhOGQtNzc2Zi00YTg2LWFmMjMtZWRkZGE0MDk2NzNk
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://test-c7n-firehose.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AuthorizationHeaderMalformed</Code><Message>The authorization
+        header is malformed; the region ''us-east-1'' is wrong; expecting ''us-west-2''</Message><Region>us-west-2</Region><RequestId>MHQ12CDKY60PBWW8</RequestId><HostId>7YM8fNcfXW3Ayv3HAVWbfXYhyu1wgS4bQhRLpUN1AK5R6Wh/tTz7gEFhBfcnjumIVRIk9FceFjo=</HostId></Error>'
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:33 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - 7YM8fNcfXW3Ayv3HAVWbfXYhyu1wgS4bQhRLpUN1AK5R6Wh/tTz7gEFhBfcnjumIVRIk9FceFjo=
+      x-amz-request-id:
+      - MHQ12CDKY60PBWW8
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLXdlc3QtMi9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9Y2MzNzljODVmYjA1N2FhMTlkNGM0MWI1
+        YjY5Y2U2NTc2ZTkwMzQxOTc5YjVmMWFkZWM1NjM0Nzg0YzBjY2NlOQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzMzWg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        NGY2NjZhOGQtNzc2Zi00YTg2LWFmMjMtZWRkZGE0MDk2NzNk
+      amz-sdk-request:
+      - !!binary |
+        dHRsPTIwMjQxMDAyVDAxNDQzM1o7IGF0dGVtcHQ9MjsgbWF4PTU=
+    method: GET
+    uri: https://test-c7n-firehose.s3.us-west-2.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>test-c7n-firehose</BucketName><RequestId>MHQ49CYC1985VTW6</RequestId><HostId>avPugcmoCOidAHknzDRIozItwY+W12TiKG+W91I35xT/NtOcq4M+Pqju1JiKt756VZF5HxfFQUg=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:33 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - avPugcmoCOidAHknzDRIozItwY+W12TiKG+W91I35xT/NtOcq4M+Pqju1JiKt756VZF5HxfFQUg=
+      x-amz-request-id:
+      - MHQ49CYC1985VTW6
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NGUxN2RhYWZjMDNkYjA2NTBhNTA1N2Fh
+        YTEyMTM3YjgxZWEzOGYwOGFmODBmZjQ2YTEwM2U0YWEwZmI0OTlhOQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzM0Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MjMzYTYyNzAtYTkwOC00YjA5LTg2NmMtMDJkZWU1NDI2ZTli
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://test-kms-key-123.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AuthorizationHeaderMalformed</Code><Message>The authorization
+        header is malformed; the region ''us-east-1'' is wrong; expecting ''us-west-2''</Message><Region>us-west-2</Region><RequestId>QHTXGB61CA48P44C</RequestId><HostId>rkiSxtbzBUnNTVvCuk5nzoWVDB8v+RstmAF/2vidEn3jMh7S/D/SiOWz699OqliJRE3Sd680oNM=</HostId></Error>'
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:33 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - rkiSxtbzBUnNTVvCuk5nzoWVDB8v+RstmAF/2vidEn3jMh7S/D/SiOWz699OqliJRE3Sd680oNM=
+      x-amz-request-id:
+      - QHTXGB61CA48P44C
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLXdlc3QtMi9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NDdmMzg2MDIyZDQ5NzJjMGIyMjVmMWFi
+        OWJhM2NkZTZkZDFjZjlhNjNmYzAyYzg5NDU3ZGExNTg1MzRlNWZmMg==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzM0Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MjMzYTYyNzAtYTkwOC00YjA5LTg2NmMtMDJkZWU1NDI2ZTli
+      amz-sdk-request:
+      - !!binary |
+        dHRsPTIwMjQxMDAyVDAxNDQzM1o7IGF0dGVtcHQ9MjsgbWF4PTU=
+    method: GET
+    uri: https://test-kms-key-123.s3.us-west-2.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>test-kms-key-123</BucketName><RequestId>QHTGWXACCPHAD0H4</RequestId><HostId>mpQhTWtrQY38wyo0sn84M4wTscZFR16kHlDsVpeypMPMGHrWz50SxRe0g2usQ2MoGIITSYxl7do=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:34 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - mpQhTWtrQY38wyo0sn84M4wTscZFR16kHlDsVpeypMPMGHrWz50SxRe0g2usQ2MoGIITSYxl7do=
+      x-amz-request-id:
+      - QHTGWXACCPHAD0H4
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9MDNkNmViMTE1MGU2MjVhN2FiMmExYzll
+        NDhmOTY4YTM1ZThkMDNhMjc4M2RiZWFkMzBhOTE3NGVhM2Q1MDFkYQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzM0Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        NmQ3NmRlYWQtMzRlMi00NWMwLWE3OWYtYWVmNzY0OWUyOWJj
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://test-policy-firewall.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>test-policy-firewall</BucketName><RequestId>QHTJ4G9G2YTS1G52</RequestId><HostId>0vT4ZM9pjTzEJcvODDCRJv3BJiZQ4DWP5seaaGktFpcGRWR4vfv/gfYTeQ2maU718HDJQ+9xCdD2Axx0s4FfthQqLgmdvfAhHKlC/pAYp6g=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:34 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - 0vT4ZM9pjTzEJcvODDCRJv3BJiZQ4DWP5seaaGktFpcGRWR4vfv/gfYTeQ2maU718HDJQ+9xCdD2Axx0s4FfthQqLgmdvfAhHKlC/pAYp6g=
+      x-amz-request-id:
+      - QHTJ4G9G2YTS1G52
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUFaTDZYV0NSMkhVQVVWRk8yLzIwMjQxMDAy
+        L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9ZmJkNzYxNjk2MWFmNjY0OTgxYWQwNTBj
+        OTI5NzVjMzY0YTIwMjRiODAzMjlmYjlhYzdhOTAyZDk3YzVlZDBmYw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS4xNiBtZC9Cb3RvY29yZSMxLjM1LjE2IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjExLjYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuMTY=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyNDEwMDJUMDE0MzM0Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        YTg1ZjNkM2QtZDAwYy00YjY0LWE2NDEtMmFiNDhiNmM0MDgy
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://test-sagemaker-model-bias-job.s3.amazonaws.com/?replication
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>ReplicationConfigurationNotFoundError</Code><Message>The replication
+        configuration was not found</Message><BucketName>test-sagemaker-model-bias-job</BucketName><RequestId>XEH9KJ0ZJC1JPQ7V</RequestId><HostId>bedW8kATGiHE2+ZxcvZFU/8T84behOMp1eiDV/FZvpUD0MIHnIL1VFhVgoOPuEHgOtGXvTF5562kTTAkjLaTMQ==</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:34 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - bedW8kATGiHE2+ZxcvZFU/8T84behOMp1eiDV/FZvpUD0MIHnIL1VFhVgoOPuEHgOtGXvTF5562kTTAkjLaTMQ==
+      x-amz-request-id:
+      - XEH9KJ0ZJC1JPQ7V
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - s3.amazonaws.com
+      User-Agent:
+      - Python-urllib/3.11
+    method: HEAD
+    uri: https://s3.amazonaws.com/c1-replication-west
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:34 GMT
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - kwBD2QO20lzFFdV6bqlWc+OtFWrPUxrfAvl3Sop9VETLjyc/GCiHNaDUGQW0GQpQ6FWUjQP1zRQ=
+      x-amz-request-id:
+      - XEH8HKQ7GF91KDAY
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - s3.amazonaws.com
+      User-Agent:
+      - Python-urllib/3.11
+    method: HEAD
+    uri: https://s3.amazonaws.com/c7n-test-s3-bucket-copy
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 02 Oct 2024 01:43:35 GMT
+      Server:
+      - AmazonS3
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - PUfr01sATkn+8sEAksTw1BhUvPaJpDNliAxa+Ahcyw3Q9ayHYYJV3fEIRWg8XdokTXswQ1oQA7c=
+      x-amz-request-id:
+      - XEH4SM383J3DSH34
+    status:
+      code: 403
+      message: Forbidden
 version: 1
