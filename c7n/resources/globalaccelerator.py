@@ -154,7 +154,6 @@ class GlobalAcceleratorLoggingFilter(ValueFilter):
     permissions = ('globalaccelerator:DescribeAcceleratorAttributes', )
     annotation_key = 'c7n:GlobalAcceleratorFlowLogs'
 
-
     def get_client(self):
         return self.manager.get_client()
 
