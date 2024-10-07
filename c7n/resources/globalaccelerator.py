@@ -146,7 +146,7 @@ class GlobalAcceleratorLoggingFilter(ValueFilter):
                   - type: flow-logs
                     key: FlowLogsEnabled
                     value: True
-    """ 
+    """
     schema = type_schema('flow-logs', rinherit=ValueFilter.schema)
     permissions = ('globalaccelerator:DescribeAcceleratorAttributes', )
     annotation_key = 'c7n:GlobalAcceleratorFlowLogs'
