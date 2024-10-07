@@ -129,6 +129,7 @@ class MarkedForOpReadinessCheck(TagActionFilter):
 
 GlobalAccelerator.filter_registry.register('shield-enabled', IsShieldProtected)
 
+
 @GlobalAccelerator.filter_registry.register('flow-logs')
 class GlobalAcceleratorLoggingFilter(ValueFilter):
     """
