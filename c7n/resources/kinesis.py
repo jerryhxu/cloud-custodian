@@ -465,23 +465,25 @@ class VideoStreamRemoveTag(RemoveTag):
 
 @KinesisStream.filter_registry.register('cross-account')
 class KinesisStreamCrossAccount(CrossAccountAccessFilter):
-    """Filter all accounts that allow access to non-whitelisted accounts
-    """
-    permissions = ('redshift:DescribeClusterSnapshots',)
-    schema = type_schema(
-        'cross-account',
-        whitelist={'type': 'array', 'items': {'type': 'string'}},
-        whitelist_from=ValuesFrom.schema)
+    """Filters all Kinesis Data Streams with cross-account access
 
-    def process(self, snapshots, event=None):
-        accounts = self.get_accounts()
-        snapshots = [s for s in snapshots if s.get('AccountsWithRestoreAccess')]
-        results = []
-        for s in snapshots:
-            s_accounts = {a.get('AccountId') for a in s[
-                'AccountsWithRestoreAccess']}
-            delta_accounts = s_accounts.difference(accounts)
-            if delta_accounts:
-                s['c7n:CrossAccountViolations'] = list(delta_accounts)
-                results.append(s)
-        return results
+    :example:
+
+    .. code-block:: yaml
+
+            policies:
+              - name: kinesis-cross-account
+                resource: kinesis
+                filters:
+                  - type: cross-account
+                    whitelist_from:
+                      expr: "accounts.*.accountNumber"
+                      url: accounts_url
+    """
+
+    permissions = ('kinesis:GetResourcePolicy',)
+ 
+    def get_resource_policy(self, r):
+        client = local_session(self.manager.session_factory).client('kinesis')
+        policy = client.get_resource_policy(ResourceARN=r['StreamARN'])
+        return policy.get(self.policy_attribute, None) 
