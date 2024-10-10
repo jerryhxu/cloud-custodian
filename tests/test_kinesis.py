@@ -85,7 +85,6 @@ class Kinesis(BaseTest):
             resources[0]['CrossAccountViolations'][0]['Resource'],
             'arn:aws:kinesis:us-east-1:644160558196:stream/test-stream-2')
 
-
     def test_hose_query(self):
         factory = self.replay_flight_data("test_kinesis_hose_query")
         p = self.load_policy(
