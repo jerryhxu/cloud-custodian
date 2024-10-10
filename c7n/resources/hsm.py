@@ -34,7 +34,7 @@ class CloudHSMCluster(QueryResourceManager):
         enum_spec = ('describe_clusters', 'Clusters', None)
         id = name = 'ClusterId'
         universal_taggable = object()
-        permissions_augment = ("cloudhsm:ListTagsForResource",)
+        permissions_augment = ("cloudhsm:ListTags",)
 
     source_mapping = {
         'describe': DescribeCloudHSMCluster
