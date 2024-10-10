@@ -3,7 +3,7 @@
 
 from c7n.actions import Action
 from c7n.manager import resources
-from c7n.filters.kms import KmsRelatedFilter 
+from c7n.filters.kms import KmsRelatedFilter
 from c7n.filters import CrossAccountAccessFilter
 from c7n.query import (
     ConfigSource,
@@ -12,7 +12,6 @@ from c7n.filters.vpc import SubnetFilter
 from c7n.utils import local_session, type_schema, get_retry, jmespath_search
 from c7n.tags import (
     TagDelayedAction, RemoveTag, TagActionFilter, Tag)
-from c7n.resolver import ValuesFrom
 
 
 class ConfigStream(ConfigSource):
@@ -482,8 +481,8 @@ class KinesisStreamCrossAccount(CrossAccountAccessFilter):
     """
 
     permissions = ('kinesis:GetResourcePolicy',)
- 
+
     def get_resource_policy(self, r):
         client = local_session(self.manager.session_factory).client('kinesis')
         policy = client.get_resource_policy(ResourceARN=r['StreamARN'])
-        return policy.get(self.policy_attribute, None) 
+        return policy.get(self.policy_attribute, None)
