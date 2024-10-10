@@ -128,8 +128,7 @@ class CloudHSMBackup(QueryResourceManager):
         service = 'cloudhsmv2'
         arn_type = 'backup'
         permission_prefix = arn_service = 'cloudhsm'
-        enum_spec = ('describe_backups', 'Backups', {'Filters': {
-            'states': ['READY']}})
+        enum_spec = ('describe_backups', 'Backups', None)
         id = name = 'BackupId'
         universal_taggable = object()
         permissions_augment = ("cloudhsm:ListTagsForResource",)
@@ -167,7 +166,7 @@ class HasStatementFilter(polstmt_filter.HasStatementFilter):
         self.policy_attribute = 'c7n:Policy'
 
     def process(self, resources, event=None):
-        resources = [self.policy_annotate(r) for r in resources]
+        resources = [self.policy_annotate(r) for r in resources if r['BackupState'] == 'READY']
         if not self.data.get('statement_ids', []) and not self.data.get('statements', []):
             return [r for r in resources if r.get(self.policy_attribute) != '{}']
         return super().process(resources, event)
