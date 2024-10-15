@@ -481,14 +481,18 @@ class KinesisStreamCrossAccount(CrossAccountAccessFilter):
     """
 
     permissions = ('kinesis:GetResourcePolicy',)
+    policy_annotation = "c7n:Policy"
 
     def get_resource_policy(self, r):
         client = local_session(self.manager.session_factory).client('kinesis')
-        policy = {}
+        if self.policy_annotation in r:
+            return r[self.policy_annotation]
         result = self.manager.retry(
                 client.get_resource_policy,
                 ResourceARN=r['StreamARN'],
                 ignore_err_codes=('ResourceNotFoundException'))
-        if result:
-            policy = result.get(self.policy_attribute, None)
+        if not result:
+            return
+        policy = result.get(self.policy_attribute, None)
+        r[self.policy_annotation] = policy
         return policy
