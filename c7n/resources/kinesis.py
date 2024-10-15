@@ -491,8 +491,7 @@ class KinesisStreamCrossAccount(CrossAccountAccessFilter):
                 client.get_resource_policy,
                 ResourceARN=r['StreamARN'],
                 ignore_err_codes=('ResourceNotFoundException'))
-        if not result:
-            return
-        policy = result.get(self.policy_attribute, None)
-        r[self.policy_annotation] = policy
+        if result:
+            policy = result.get(self.policy_attribute, None)
+            r[self.policy_annotation] = policy
         return policy
