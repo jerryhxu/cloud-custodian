@@ -130,7 +130,7 @@ class MarkedForOpReadinessCheck(TagActionFilter):
 GlobalAccelerator.filter_registry.register('shield-enabled', IsShieldProtected)
 
 
-@GlobalAccelerator.filter_registry.register('flow-logs')
+@GlobalAccelerator.filter_registry.register('attribute')
 class GlobalAcceleratorLoggingFilter(ValueFilter):
     """
     Filter by global accelerator
@@ -143,11 +143,11 @@ class GlobalAcceleratorLoggingFilter(ValueFilter):
             resource: aws.globalaccelerator
             filters:
               - not:
-                  - type: flow-logs
+                  - type: attribute
                     key: FlowLogsEnabled
                     value: True
     """
-    schema = type_schema('flow-logs', rinherit=ValueFilter.schema)
+    schema = type_schema('attribute', rinherit=ValueFilter.schema)
     schema_alias = False
     permissions = ('globalaccelerator:DescribeAcceleratorAttributes', )
     annotation_key = 'c7n:GlobalAcceleratorFlowLogs'

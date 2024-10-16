@@ -85,7 +85,7 @@ class GlobalAcceleratorTest(BaseTest):
             {
                 "name": "global-accelerator-flow-log",
                 "resource": "globalaccelerator",
-                "filters": [{"type": "flow-logs",
+                "filters": [{"type": "attribute",
                              "key": "FlowLogsEnabled",
                              "value": True
                              }],
