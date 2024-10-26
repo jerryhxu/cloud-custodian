@@ -142,15 +142,14 @@ class GlobalAcceleratorLoggingFilter(ValueFilter):
           - name: flow-log-enabled
             resource: aws.globalaccelerator
             filters:
-              - not:
-                  - type: attribute
-                    key: FlowLogsEnabled
-                    value: True
+              - type: attribute
+                key: FlowLogsEnabled
+                value: False
     """
     schema = type_schema('attribute', rinherit=ValueFilter.schema)
     schema_alias = False
     permissions = ('globalaccelerator:DescribeAcceleratorAttributes', )
-    annotation_key = 'c7n:GlobalAcceleratorFlowLogs'
+    annotation_key = 'c7n:GlobalAcceleratorAttributes'
 
     def get_client(self):
         return self.manager.get_client()
@@ -162,7 +161,7 @@ class GlobalAcceleratorLoggingFilter(ValueFilter):
             if self.annotation_key not in r:
                 try:
                     attributes = client.describe_accelerator_attributes(
-            AcceleratorArn=r['AcceleratorArn'])['AcceleratorAttributes']
+                    AcceleratorArn=r['AcceleratorArn'])['AcceleratorAttributes']
                 except client.exceptions.NotFoundException:
                     continue
 
