@@ -258,13 +258,34 @@ class RuleDescribe(DescribeSource):
 
     def augment(self, resources):
         client = local_session(self.manager.session_factory).client('events')
-        event_buses = [bus for bus in client.list_event_buses()['EventBuses'] if bus['Name'] != 'default']
+        event_buses = []
+        next_token = None
+
+        # Fetch all event buses using manual pagination
+        while True:
+            if next_token:
+                response = client.list_event_buses(NextToken=next_token)
+            else:
+                response = client.list_event_buses()
+    
+            # Add the fetched event buses to the list
+            event_buses.extend(response['EventBuses'])
+
+            # Check for NextToken in the response
+            next_token = response.get('NextToken')
+            if not next_token:
+                break
+
+        event_buses = [bus for bus in event_buses if bus['Name'] != 'default']
+        paginator = client.get_paginator('list_rules')
+        paginator.PAGE_ITERATOR_CLS = RetryPageIterator
 
         # Collect rules for all non-default event buses
         non_default_rules = [
             rule
             for event_bus in event_buses
-            for rule in client.list_rules(EventBusName=event_bus['Name'])['Rules']
+            for rule in paginator.paginate(EventBusName=event_bus['Name']) \
+                    .build_full_result().get('Rules', [])
         ]
 
         # Extend the resources list with the collected rules
