@@ -189,6 +189,26 @@ class EventBus(QueryResourceManager):
     source_mapping = {'describe': DescribeWithResourceTags,
                       'config': ConfigSource}
 
+        # #detail_spec = ("get_web_acl", "WebACLId", "WebACLId", "WebACL")
+        # id = name = 'Name'
+        # #service = "waf"
+        # #enum_spec = ("list_web_acls", "WebACLs", None)
+        # #detail_spec = ("get_web_acl", "WebACLId", "WebACLId", "WebACL")
+
+        # service = 'events'
+        # #arn_type = 'event-bus'
+        # #arn = 'Arn'
+        # enum_spec = ('list_event_buses', 'EventBuses', None)
+        # detail_spec = ('describe_event_bus', 'Name', 'Name', None)
+        # #config_type = cfn_type = 'AWS::Events::EventBus'
+        # #id = name = 'Name'
+        # #universal_taggable = object()
+        # permissions_augment = ("events:ListTagsForResource",)
+
+    # source_mapping = {'describe': DescribeWithResourceTags,
+    #                   'config': ConfigSource}
+
+
 
 @EventBus.filter_registry.register('cross-account')
 class EventBusCrossAccountFilter(CrossAccountAccessFilter):
@@ -235,6 +255,19 @@ class EventBusDelete(BaseAction):
 class RuleDescribe(DescribeSource):
 
     def augment(self, resources):
+        client = local_session(self.manager.session_factory).client('events')
+        event_buses = [bus for bus in client.list_event_buses()['EventBuses'] if bus['Name'] != 'default']
+
+        # Collect rules for all non-default event buses
+        non_default_rules = [
+            rule
+            for event_bus in event_buses
+            for rule in client.list_rules(EventBusName=event_bus['Name'])['Rules']
+        ]
+
+        # Extend the resources list with the collected rules
+        resources.extend(non_default_rules)
+
         return universal_augment(self.manager, resources)
 
 
@@ -257,6 +290,32 @@ class EventRule(QueryResourceManager):
         'config': ConfigSource,
         'describe': RuleDescribe
     }
+
+
+# @resources.register('event-rule')
+# class EventRule(ChildResourceManager):
+
+#     class resource_type(TypeInfo):
+#         service = 'events'
+#         arn_type = 'rule'
+#         #enum_spec = ('list_event_buses', 'EventBuses[]', None)
+#         enum_spec = ('list_rules', 'Rules', None)
+#         parent_spec = ('event-bus', 'EventBusName', True)
+#         #detail_spec = ("get_web_acl", "WebACLId", "WebACLId", "WebACL")
+#         id = name = 'Name'
+#         # service = "waf"
+#         #enum_spec = ("list_web_acls", "WebACLs", None)
+#         #detail_spec = ("list_rules", "EventBusName", "Name", None)
+#         # name = "Name"
+#         # id = "WebACLId"
+#         # dimension = "WebACL"
+#         # cfn_type = config_type = "AWS::WAF::WebACL"
+#         # arn_type = "webacl"
+
+#     # source_mapping = {
+#     #     'config': ConfigSource,
+#     #     'describe': RuleDescribe
+#     # }
 
 
 @EventRule.filter_registry.register('metrics')
@@ -506,7 +565,28 @@ class EventRuleTarget(ChildResourceManager):
         enum_spec = ('list_targets_by_rule', 'Targets', None)
         parent_spec = ('event-rule', 'Rule', True)
         name = id = 'Id'
+    
+    def augment(self, resources):
+        manager = self.get_parent_manager()
+        client = local_session(manager.session_factory).client('events')
+        event_buses = client.list_event_buses()['EventBuses']
 
+        # Create a dictionary of all rules for each event bus for faster lookup
+        event_bus_rules = {}
+        for event_bus in event_buses:
+            event_bus_name = event_bus['Name']
+            event_bus_rules[event_bus_name] = client.list_rules(EventBusName=event_bus_name)['Rules']
+
+        # Map resources to their corresponding rules
+        for r in resources:
+            parent_id = r.get('c7n:parent-id')
+            for event_bus_name, rules in event_bus_rules.items():
+                matching_rule = next((rule for rule in rules if rule['Name'] == parent_id), None)
+                if matching_rule:
+                    r['event-rule'] = matching_rule
+                    break
+
+        return resources
 
 @EventRuleTarget.filter_registry.register('cross-account')
 class CrossAccountFilter(CrossAccountAccessFilter):
