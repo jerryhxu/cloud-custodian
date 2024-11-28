@@ -181,6 +181,7 @@ class EventBus(QueryResourceManager):
         arn_type = 'event-bus'
         arn = 'Arn'
         enum_spec = ('list_event_buses', 'EventBuses', None)
+        detail_spec = ('describe_event_bus', 'Name', 'Name', None)
         config_type = cfn_type = 'AWS::Events::EventBus'
         id = name = 'Name'
         universal_taggable = object()
