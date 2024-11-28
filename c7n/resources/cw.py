@@ -21,6 +21,7 @@ from c7n.manager import resources
 from c7n.resolver import ValuesFrom
 from c7n.resources import load_resources
 from c7n.resources.aws import ArnResolver
+from c7n.query import RetryPageIterator
 from c7n.tags import universal_augment
 from c7n.utils import type_schema, local_session, chunks, get_retry, jmespath_search
 from botocore.config import Config
@@ -570,13 +571,32 @@ class EventRuleTarget(ChildResourceManager):
     def augment(self, resources):
         manager = self.get_parent_manager()
         client = local_session(manager.session_factory).client('events')
-        event_buses = client.list_event_buses()['EventBuses']
+        event_buses = []
+        next_token = None
+
+        # Fetch all event buses using manual pagination
+        while True:
+            if next_token:
+                response = client.list_event_buses(NextToken=next_token)
+            else:
+                response = client.list_event_buses()
+    
+            # Add the fetched event buses to the list
+            event_buses.extend(response['EventBuses'])
+
+            # Check for NextToken in the response
+            next_token = response.get('NextToken')
+            if not next_token:
+                break
 
         # Create a dictionary of all rules for each event bus for faster lookup
         event_bus_rules = {}
+        paginator = client.get_paginator('list_rules')
+        paginator.PAGE_ITERATOR_CLS = RetryPageIterator
         for event_bus in event_buses:
             event_bus_name = event_bus['Name']
-            event_bus_rules[event_bus_name] = client.list_rules(EventBusName=event_bus_name)['Rules']
+            event_bus_rules[event_bus_name] = paginator.paginate(EventBusName=event_bus_name) \
+                    .build_full_result().get('Rules', [])
 
         # Map resources to their corresponding rules
         for r in resources:
