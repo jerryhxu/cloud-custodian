@@ -28,6 +28,27 @@ from botocore.config import Config
 import re
 
 
+def GetEventBuses(client):
+    event_buses = []
+    next_token = None
+
+    # Fetch all event buses using manual pagination
+    while True:
+        if next_token:
+            response = client.list_event_buses(NextToken=next_token)
+        else:
+            response = client.list_event_buses()
+
+        # Add the fetched event buses to the list
+        event_buses.extend(response['EventBuses'])
+
+        # Check for NextToken in the response
+        next_token = response.get('NextToken')
+        if not next_token:
+            break
+    return event_buses
+
+
 class DescribeAlarm(DescribeSource):
     def augment(self, resources):
         return universal_augment(self.manager, super().augment(resources))
@@ -191,26 +212,6 @@ class EventBus(QueryResourceManager):
     source_mapping = {'describe': DescribeWithResourceTags,
                       'config': ConfigSource}
 
-        # #detail_spec = ("get_web_acl", "WebACLId", "WebACLId", "WebACL")
-        # id = name = 'Name'
-        # #service = "waf"
-        # #enum_spec = ("list_web_acls", "WebACLs", None)
-        # #detail_spec = ("get_web_acl", "WebACLId", "WebACLId", "WebACL")
-
-        # service = 'events'
-        # #arn_type = 'event-bus'
-        # #arn = 'Arn'
-        # enum_spec = ('list_event_buses', 'EventBuses', None)
-        # detail_spec = ('describe_event_bus', 'Name', 'Name', None)
-        # #config_type = cfn_type = 'AWS::Events::EventBus'
-        # #id = name = 'Name'
-        # #universal_taggable = object()
-        # permissions_augment = ("events:ListTagsForResource",)
-
-    # source_mapping = {'describe': DescribeWithResourceTags,
-    #                   'config': ConfigSource}
-
-
 
 @EventBus.filter_registry.register('cross-account')
 class EventBusCrossAccountFilter(CrossAccountAccessFilter):
@@ -258,23 +259,9 @@ class RuleDescribe(DescribeSource):
 
     def augment(self, resources):
         client = local_session(self.manager.session_factory).client('events')
-        event_buses = []
-        next_token = None
 
         # Fetch all event buses using manual pagination
-        while True:
-            if next_token:
-                response = client.list_event_buses(NextToken=next_token)
-            else:
-                response = client.list_event_buses()
-    
-            # Add the fetched event buses to the list
-            event_buses.extend(response['EventBuses'])
-
-            # Check for NextToken in the response
-            next_token = response.get('NextToken')
-            if not next_token:
-                break
+        event_buses = GetEventBuses(client)
 
         event_buses = [bus for bus in event_buses if bus['Name'] != 'default']
         paginator = client.get_paginator('list_rules')
@@ -313,32 +300,6 @@ class EventRule(QueryResourceManager):
         'config': ConfigSource,
         'describe': RuleDescribe
     }
-
-
-# @resources.register('event-rule')
-# class EventRule(ChildResourceManager):
-
-#     class resource_type(TypeInfo):
-#         service = 'events'
-#         arn_type = 'rule'
-#         #enum_spec = ('list_event_buses', 'EventBuses[]', None)
-#         enum_spec = ('list_rules', 'Rules', None)
-#         parent_spec = ('event-bus', 'EventBusName', True)
-#         #detail_spec = ("get_web_acl", "WebACLId", "WebACLId", "WebACL")
-#         id = name = 'Name'
-#         # service = "waf"
-#         #enum_spec = ("list_web_acls", "WebACLs", None)
-#         #detail_spec = ("list_rules", "EventBusName", "Name", None)
-#         # name = "Name"
-#         # id = "WebACLId"
-#         # dimension = "WebACL"
-#         # cfn_type = config_type = "AWS::WAF::WebACL"
-#         # arn_type = "webacl"
-
-#     # source_mapping = {
-#     #     'config': ConfigSource,
-#     #     'describe': RuleDescribe
-#     # }
 
 
 @EventRule.filter_registry.register('metrics')
@@ -592,37 +553,42 @@ class EventRuleTarget(ChildResourceManager):
     def augment(self, resources):
         manager = self.get_parent_manager()
         client = local_session(manager.session_factory).client('events')
-        event_buses = []
-        next_token = None
+        event_buses = GetEventBuses(client)
 
-        # Fetch all event buses using manual pagination
-        while True:
-            if next_token:
-                response = client.list_event_buses(NextToken=next_token)
-            else:
-                response = client.list_event_buses()
-    
-            # Add the fetched event buses to the list
-            event_buses.extend(response['EventBuses'])
+        # Initialize paginators with RetryPageIterator
+        paginator_rules = client.get_paginator('list_rules')
+        paginator_rules.PAGE_ITERATOR_CLS = RetryPageIterator
 
-            # Check for NextToken in the response
-            next_token = response.get('NextToken')
-            if not next_token:
-                break
+        # Create a dictionary of all rules for each event bus
+        event_bus_rules = {
+            event_bus['Name']: paginator_rules.paginate(EventBusName=event_bus['Name']) \
+                                            .build_full_result().get('Rules', [])
+            for event_bus in event_buses
+        }
 
-        # Create a dictionary of all rules for each event bus for faster lookup
-        event_bus_rules = {}
-        paginator = client.get_paginator('list_rules')
-        paginator.PAGE_ITERATOR_CLS = RetryPageIterator
-        for event_bus in event_buses:
-            event_bus_name = event_bus['Name']
-            event_bus_rules[event_bus_name] = paginator.paginate(EventBusName=event_bus_name) \
-                    .build_full_result().get('Rules', [])
+        # Filter out the default event bus
+        non_default_event_bus_rules = {
+            bus: rules for bus, rules in event_bus_rules.items() if bus != 'default'
+        }
+        paginator_targets = client.get_paginator('list_targets_by_rule')
+        paginator_targets.PAGE_ITERATOR_CLS = RetryPageIterator
+
+        # Collect all rule targets for non-default event buses with additional fields
+        non_default_rule_targets = [
+            {**target, 'c7n:parent-id': rule['Name']}
+            for event_bus_name, rules in non_default_event_bus_rules.items()
+            for rule in rules
+            for target in paginator_targets.paginate(EventBusName=event_bus_name, Rule=rule['Name']) \
+                                            .build_full_result().get('Targets', [])
+        ]
+
+        # Extend the resources list with collected rule targets
+        resources.extend(non_default_rule_targets)
 
         # Map resources to their corresponding rules
         for r in resources:
             parent_id = r.get('c7n:parent-id')
-            for event_bus_name, rules in event_bus_rules.items():
+            for _, rules in event_bus_rules.items():
                 matching_rule = next((rule for rule in rules if rule['Name'] == parent_id), None)
                 if matching_rule:
                     r['event-rule'] = matching_rule
