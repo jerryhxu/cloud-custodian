@@ -56,6 +56,27 @@ def test_event_bus_kms_filter(test, event_bridge_bus):
 
 class CloudWatchEventTest(BaseTest):
 
+    def test_event_rule_target_event_rule(self):
+        session_factory = self.replay_flight_data("test_event_rule_target_event_rule",
+                                                  region='us-west-1')
+        client = session_factory().client("events")
+        policy = self.load_policy(
+            {
+                "name": "cwe-event-rule-target",
+                "resource": "event-rule-target",
+                "filters":[ {
+                        "type": "value",
+                        "key": "Arn",
+                        "op": "eq",
+                        "value": "arn:aws:sns:us-west-1:644160558196:topic-2",
+                    }]
+            },
+            config={'region': 'us-west-1'},
+            session_factory=session_factory
+        )
+        resources = policy.run()
+        self.assertEqual(len(resources), 1)
+
     def test_event_rule_tags(self):
         factory = self.replay_flight_data('test_cwe_rule_tags')
         client = factory().client('events')
