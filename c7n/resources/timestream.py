@@ -197,3 +197,23 @@ TimestreamTable.filter_registry.register('consecutive-aws-backups', ConsecutiveA
 @TimestreamDatabase.filter_registry.register('kms-key')
 class KmsFilter(KmsRelatedFilter):
     RelatedIdsExpression = 'KmsKeyId'
+
+
+@TimestreamInfluxDB.action_registry.register('delete')
+class TimestreamInfluxDBDelete(Action):
+    """
+    Deletes a timestream influx-db instance
+    """
+
+    schema = type_schema('delete')
+    permissions = ('timestream-influxdb:DeleteDbInstance', )
+
+    def process(self, resources):
+        client = local_session(self.manager.session_factory).client('timestream-influxdb')
+        for r in resources:
+            try:
+                client.delete_db_instance(
+                    identifier=r['id']
+                )
+            except client.exceptions.ResourceNotFoundException:
+                continue
