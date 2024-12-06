@@ -108,6 +108,30 @@ TimestreamTable.action_registry.register('mark-for-op', TagDelayedAction)
 TimestreamDatabase.filter_registry.register('marked-for-op', TagActionFilter)
 TimestreamTable.filter_registry.register('marked-for-op', TagActionFilter)
 
+@TimestreamInfluxDB.action_registry.register('tag')
+class TimestreamInfluxDBTag(TagAction):
+
+    permissions = ('timestream-influxdb:TagResource', )
+
+    def process_resource_set(self, client, resource_set, tags):
+        for r in resource_set:
+            client.tag_resource(ResourceArn=r['arn'], Tags=tags)
+
+
+@TimestreamInfluxDB.action_registry.register('remove-tag')
+class TimestreamInfluxDBRemoveTag(RemoveTagAction):
+
+    permissions = ('timestream-influxdb:UntagResource', )
+
+    def process_resource_set(self, client, resource_set, tag_keys):
+        for r in resource_set:
+            client.untag_resource(ResourceArn=r['arn'], TagKeys=tag_keys)
+
+
+TimestreamInfluxDB.action_registry.register('mark-for-op', TagDelayedAction)
+
+TimestreamInfluxDB.filter_registry.register('marked-for-op', TagActionFilter)
+
 
 @TimestreamTable.action_registry.register('delete')
 class TimestreamTableDelete(Action):
