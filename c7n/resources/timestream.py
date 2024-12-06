@@ -52,6 +52,34 @@ class TimestreamTable(QueryResourceManager):
     }
 
 
+class DescribeTimestreamInfluxDB(DescribeSource):
+    def augment(self, resources):
+        for r in resources:
+            client = local_session(self.manager.session_factory).client('timestream-write')
+            r['Tags'] = client.list_tags_for_resource(ResourceARN=r['Arn'])['Tags']
+        return resources
+
+
+@resources.register('timestream-influxdb')
+class TimestreamInfluxDB(QueryResourceManager):
+    class resource_type(TypeInfo):
+        service = 'timestream-influxdb'
+        arn_type = ''
+        name = 'name'
+        id = arn = 'arn'
+        enum_spec = ('list_db_instances', 'items', {})
+        detail_spec = ('get_db_instance', 'identifier', 'id', None)
+        permission_prefix = 'timestream-influxdb'
+
+    def augment(self, resources):
+        resources = super().augment(resources)
+        for r in resources:
+            client = local_session(self.session_factory).client('timestream-influxdb')
+            r['Tags'] = client.list_tags_for_resource(resourceArn=r['arn'])['tags']
+        return resources
+
+
+
 @TimestreamDatabase.action_registry.register('tag')
 @TimestreamTable.action_registry.register('tag')
 class TimestreamTag(TagAction):
