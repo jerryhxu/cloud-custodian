@@ -1,11 +1,11 @@
 {
     "status_code": 200,
     "data": {
-        "id": "6490gajyqm",
-        "name": "db-example",
-        "arn": "arn:aws:timestream-influxdb:us-east-1:644160558196:db-instance/6490gajyqm",
+        "id": "hvnr971atp",
+        "name": "example-db",
+        "arn": "arn:aws:timestream-influxdb:us-east-1:644160558196:db-instance/hvnr971atp",
         "status": "DELETING",
-        "endpoint": "db-example-kx3to6fbi4fumn.us-east-1.timestream-influxdb.amazonaws.com",
+        "endpoint": "example-db-kx3to6fbi4fumn.us-east-1.timestream-influxdb.amazonaws.com",
         "port": 8086,
         "dbInstanceType": "db.influx.medium",
         "dbStorageType": "InfluxIOIncludedT1",
@@ -19,7 +19,7 @@
         "vpcSecurityGroupIds": [
             "sg-6c7fa917"
         ],
-        "influxAuthParametersSecretArn": "arn:aws:secretsmanager:us-east-1:644160558196:secret:READONLY-InfluxDB-auth-parameters-6490gajyqm-0SosRn",
+        "influxAuthParametersSecretArn": "arn:aws:secretsmanager:us-east-1:644160558196:secret:READONLY-InfluxDB-auth-parameters-hvnr971atp-exLmsO",
         "ResponseMetadata": {}
     }
 }

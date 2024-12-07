@@ -4,7 +4,7 @@
         "id": "hvnr971atp",
         "name": "example-db",
         "arn": "arn:aws:timestream-influxdb:us-east-1:644160558196:db-instance/hvnr971atp",
-        "status": "AVAILABLE",
+        "status": "DELETING",
         "endpoint": "example-db-kx3to6fbi4fumn.us-east-1.timestream-influxdb.amazonaws.com",
         "port": 8086,
         "dbInstanceType": "db.influx.medium",

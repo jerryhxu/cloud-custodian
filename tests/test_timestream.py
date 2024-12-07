@@ -271,7 +271,7 @@ class TestTimestreamInfluxDB(BaseTest):
         self.assertEqual(len(tags), 0)
 
     def test_timestream_influx_db_delete(self):
-        session_factory = self.record_flight_data('test_timestream_influx_db_delete')
+        session_factory = self.replay_flight_data('test_timestream_influx_db_delete')
         p = self.load_policy(
             {
                 'name': 'test-timestream-influx-db-delete',

@@ -3,11 +3,11 @@
     "data": {
         "items": [
             {
-                "id": "6490gajyqm",
-                "name": "db-example",
-                "arn": "arn:aws:timestream-influxdb:us-east-1:644160558196:db-instance/6490gajyqm",
+                "id": "hvnr971atp",
+                "name": "example-db",
+                "arn": "arn:aws:timestream-influxdb:us-east-1:644160558196:db-instance/hvnr971atp",
                 "status": "AVAILABLE",
-                "endpoint": "db-example-kx3to6fbi4fumn.us-east-1.timestream-influxdb.amazonaws.com",
+                "endpoint": "example-db-kx3to6fbi4fumn.us-east-1.timestream-influxdb.amazonaws.com",
                 "port": 8086,
                 "dbInstanceType": "db.influx.medium",
                 "dbStorageType": "InfluxIOIncludedT1",
