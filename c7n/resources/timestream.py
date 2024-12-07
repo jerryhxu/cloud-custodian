@@ -1,6 +1,7 @@
 from c7n.manager import resources
 from c7n.actions import Action
 from c7n.filters.kms import KmsRelatedFilter
+from c7n.filters.vpc import SecurityGroupFilter, SubnetFilter
 from c7n.query import DescribeSource, QueryResourceManager, TypeInfo
 from c7n.utils import local_session, type_schema
 from c7n.tags import (
@@ -52,14 +53,6 @@ class TimestreamTable(QueryResourceManager):
     }
 
 
-class DescribeTimestreamInfluxDB(DescribeSource):
-    def augment(self, resources):
-        for r in resources:
-            client = local_session(self.manager.session_factory).client('timestream-write')
-            r['Tags'] = client.list_tags_for_resource(ResourceARN=r['Arn'])['Tags']
-        return resources
-
-
 @resources.register('timestream-influxdb')
 class TimestreamInfluxDB(QueryResourceManager):
     class resource_type(TypeInfo):
@@ -75,9 +68,10 @@ class TimestreamInfluxDB(QueryResourceManager):
         resources = super().augment(resources)
         for r in resources:
             client = local_session(self.session_factory).client('timestream-influxdb')
-            r['Tags'] = client.list_tags_for_resource(resourceArn=r['arn'])['tags']
+            tags = client.list_tags_for_resource(resourceArn=r['arn'])['tags']
+            if tags:
+                r['Tags'] = [{'Key': k, 'Value': v} for k, v in tags.items()]
         return resources
-
 
 
 @TimestreamDatabase.action_registry.register('tag')
@@ -114,8 +108,9 @@ class TimestreamInfluxDBTag(TagAction):
     permissions = ('timestream-influxdb:TagResource', )
 
     def process_resource_set(self, client, resource_set, tags):
+        tags = {item['Key']: item['Value'] for item in tags}
         for r in resource_set:
-            client.tag_resource(ResourceArn=r['arn'], Tags=tags)
+            client.tag_resource(resourceArn=r['arn'], tags=tags)
 
 
 @TimestreamInfluxDB.action_registry.register('remove-tag')
@@ -125,12 +120,24 @@ class TimestreamInfluxDBRemoveTag(RemoveTagAction):
 
     def process_resource_set(self, client, resource_set, tag_keys):
         for r in resource_set:
-            client.untag_resource(ResourceArn=r['arn'], TagKeys=tag_keys)
+            client.untag_resource(resourceArn=r['arn'], tagKeys=tag_keys)
 
 
 TimestreamInfluxDB.action_registry.register('mark-for-op', TagDelayedAction)
 
 TimestreamInfluxDB.filter_registry.register('marked-for-op', TagActionFilter)
+
+
+@TimestreamInfluxDB.filter_registry.register('security-group')
+class TimestreamInfluxDBSGFilter(SecurityGroupFilter):
+
+    RelatedIdsExpression = "vpcSecurityGroupIds[]"
+
+
+@TimestreamInfluxDB.filter_registry.register('subnet')
+class TimestreamInfluxDBSubnetFilter(SubnetFilter):
+
+    RelatedIdsExpression = "vpcSubnetIds[]"
 
 
 @TimestreamTable.action_registry.register('delete')
