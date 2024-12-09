@@ -209,8 +209,17 @@ class KmsFilter(KmsRelatedFilter):
 
 @TimestreamInfluxDB.action_registry.register('delete')
 class TimestreamInfluxDBDelete(Action):
-    """
-    Deletes a timestream influx-db instance
+    """Delete timestream influx-db instance.
+
+    :example:
+
+    .. code-block:: yaml
+
+       policies:
+         - name: timestream-influxdb-delete
+           resource: timestream-influxdb
+           actions:
+             - type: delete
     """
 
     schema = type_schema('delete')
