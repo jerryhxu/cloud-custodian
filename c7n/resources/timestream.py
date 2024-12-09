@@ -102,6 +102,7 @@ TimestreamTable.action_registry.register('mark-for-op', TagDelayedAction)
 TimestreamDatabase.filter_registry.register('marked-for-op', TagActionFilter)
 TimestreamTable.filter_registry.register('marked-for-op', TagActionFilter)
 
+
 @TimestreamInfluxDB.action_registry.register('tag')
 class TimestreamInfluxDBTag(TagAction):
 
