@@ -78,18 +78,17 @@ class CloudWatchEventTest(BaseTest):
         self.assertEqual(len(resources), 1)
 
     def test_event_rule_tags(self):
-        factory = self.replay_flight_data('test_cwe_rule_tags')
+        factory = self.replay_flight_data('test_cwe_rule_tags', region='us-west-1')
         client = factory().client('events')
         policy = self.load_policy(
             {
                 'name': 'cwe-rule',
                 'resource': 'aws.event-rule',
                 'filters': [
-                    {'tag:App': 'absent'},
-                    {'Name': 'cloud-custodian-mailer'}],
+                    {'tag:App': 'absent'},],
                 'actions': [
                     {'type': 'tag', 'tags': {'App': 'Custodian'}}]
-            }, session_factory=factory, config={'region': 'us-west-2'})
+            }, session_factory=factory, config={'region': 'us-west-1'})
         resources = policy.run()
         self.assertEqual(len(resources), 1)
         tags = {t['Key']: t['Value'] for t in
@@ -99,7 +98,7 @@ class CloudWatchEventTest(BaseTest):
         self.assertEqual(tags, {'App': 'Custodian'})
 
     def test_event_rule_enable(self):
-        factory = self.replay_flight_data('test_cwe_enable_rule')
+        factory = self.replay_flight_data('test_cwe_enable_rule', region='us-west-1')
         client = factory().client('events')
         policy = self.load_policy(
             {
@@ -112,7 +111,7 @@ class CloudWatchEventTest(BaseTest):
                     }
                 ]
             },
-            session_factory=factory,
+            session_factory=factory, config={'region': 'us-west-1'}
         )
         resources = policy.run()
         response = client.describe_rule(
@@ -120,7 +119,7 @@ class CloudWatchEventTest(BaseTest):
         self.assertEqual(response['State'], 'ENABLED')
 
     def test_event_rule_disable(self):
-        factory = self.replay_flight_data('test_cwe_disable_rule')
+        factory = self.replay_flight_data('test_cwe_disable_rule', region='us-west-1')
         client = factory().client('events')
         policy = self.load_policy(
             {
@@ -133,7 +132,7 @@ class CloudWatchEventTest(BaseTest):
                     }
                 ]
             },
-            session_factory=factory,
+            session_factory=factory, config={'region': 'us-west-1'}
         )
         resources = policy.run()
         response = client.describe_rule(

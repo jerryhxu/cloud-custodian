@@ -286,7 +286,7 @@ class EventRule(QueryResourceManager):
 
     class resource_type(TypeInfo):
         service = 'events'
-        arn_type = 'rule'
+        arn = 'Arn'
         enum_spec = ('list_rules', 'Rules', None)
         name = "Name"
         id = "Name"
