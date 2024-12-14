@@ -375,7 +375,7 @@ class CloudWatchEventsFacadeTest(TestCase):
 
 class EventBusTest(BaseTest):
     def test_event_bus_delete(self):
-        factory = self.record_flight_data("test_event_bus_delete")
+        factory = self.replay_flight_data("test_event_bus_delete", region="us-west-1")
         p = self.load_policy(
             {
                 "name": "delete-event-bus",
@@ -383,7 +383,7 @@ class EventBusTest(BaseTest):
                 "filters": [{"Name": "test-event-bus"}],
                 "actions": ["delete"],
             },
-            session_factory=factory,
+            session_factory=factory, config={'region': 'us-west-1'}
         )
         resources = p.run()
         self.assertEqual(len(resources), 1)

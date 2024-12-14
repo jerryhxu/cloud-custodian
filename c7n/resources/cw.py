@@ -425,6 +425,22 @@ class ValidEventRuleTargetFilter(ChildResourceFilter):
                     r.setdefault('c7n:ChildArns', []).append(c['Arn'])
                 results.append(r)
         return results
+    
+    def get_related(self, resources):
+        self.child_resources = {}
+        child_resource_manager = self.get_resource_manager()
+        client = local_session(child_resource_manager.session_factory).client('events')
+        paginator_targets = client.get_paginator('list_targets_by_rule')
+        paginator_targets.PAGE_ITERATOR_CLS = RetryPageIterator
+
+        for r in resources:
+            targets = paginator_targets.paginate(EventBusName=r['EventBusName'], Rule=r['Name']) \
+            .build_full_result().get('Targets', [])
+            for target in targets:
+                target[self.ChildResourceParentKey] = r['Name']
+                self.child_resources.setdefault(target[self.ChildResourceParentKey], []).append(target)
+
+        return self.child_resources
 
     def process(self, resources, event=None):
         # Due to lazy loading of resources, we need to explicilty load the following
