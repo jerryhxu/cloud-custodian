@@ -159,7 +159,7 @@ class CloudWatchEventTest(BaseTest):
         self.assertEqual(targets, [])
 
     def test_event_rule_force_delete(self):
-        session_factory = self.replay_flight_data("test_cwe_rule_force_delete")
+        session_factory = self.replay_flight_data("test_cwe_rule_force_delete", region="us-west-1")
         client = session_factory().client('events')
         policy = self.load_policy({
             "name": "cwe-filter-on-target",
@@ -168,7 +168,7 @@ class CloudWatchEventTest(BaseTest):
                 {
                     "type": "event-rule-target",
                     "key": "[].Arn",
-                    "value": "arn:aws:lambda:us-east-1:644160558196:function:test",
+                    "value": "arn:aws:lambda:us-west-1:644160558196:function:test",
                     "op": "in",
                     "value_type": "swap"
                 }
@@ -179,7 +179,7 @@ class CloudWatchEventTest(BaseTest):
                     "force": True
                 }
             ]
-        }, session_factory=session_factory)
+        }, session_factory=session_factory, config={'region': 'us-west-1'})
         resources = policy.run()
         with self.assertRaises(client.exceptions.ResourceNotFoundException):
             client.describe_rule(Name=resources[0]["Name"])
@@ -375,7 +375,7 @@ class CloudWatchEventsFacadeTest(TestCase):
 
 class EventBusTest(BaseTest):
     def test_event_bus_delete(self):
-        factory = self.replay_flight_data("test_event_bus_delete")
+        factory = self.record_flight_data("test_event_bus_delete")
         p = self.load_policy(
             {
                 "name": "delete-event-bus",

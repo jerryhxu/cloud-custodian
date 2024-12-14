@@ -15,7 +15,7 @@ from c7n.filters.iamaccess import CrossAccountAccessFilter
 from c7n.filters.related import ChildResourceFilter
 from c7n.filters.kms import KmsRelatedFilter
 from c7n.query import (
-    QueryResourceManager, ChildResourceManager,
+    QueryResourceManager, ChildResourceManager, ChildResourceQuery,
     TypeInfo, DescribeSource, ConfigSource, DescribeWithResourceTags)
 from c7n.manager import resources
 from c7n.resolver import ValuesFrom
@@ -335,6 +335,22 @@ class EventRuleTargetFilter(ChildResourceFilter):
     schema = type_schema('event-rule-target', rinherit=ValueFilter.schema)
     permissions = ('events:ListTargetsByRule',)
 
+    def get_related(self, resources):
+        self.child_resources = {}
+        child_resource_manager = self.get_resource_manager()
+        client = local_session(child_resource_manager.session_factory).client('events')
+        paginator_targets = client.get_paginator('list_targets_by_rule')
+        paginator_targets.PAGE_ITERATOR_CLS = RetryPageIterator
+
+        for r in resources:
+            targets = paginator_targets.paginate(EventBusName=r['EventBusName'], Rule=r['Name']) \
+            .build_full_result().get('Targets', [])
+            for target in targets:
+                target[self.ChildResourceParentKey] = r['Name']
+                self.child_resources.setdefault(target[self.ChildResourceParentKey], []).append(target)
+
+        return self.child_resources
+
 
 @EventRule.filter_registry.register('invalid-targets')
 class ValidEventRuleTargetFilter(ChildResourceFilter):
@@ -471,7 +487,7 @@ class EventRuleDelete(BaseAction):
         target_error_msg = "Rule can't be deleted since it has targets."
         for r in resources:
             try:
-                client.delete_rule(Name=r['Name'])
+                client.delete_rule(Name=r['Name'], EventBusName=r['EventBusName'])
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Message'] != target_error_msg:
                     raise
@@ -484,8 +500,8 @@ class EventRuleDelete(BaseAction):
                 if not children:
                     children = EventRuleTargetFilter({}, child_manager).get_related(resources)
                 targets = list(set([t['Id'] for t in children.get(r['Name'])]))
-                client.remove_targets(Rule=r['Name'], Ids=targets)
-                client.delete_rule(Name=r['Name'])
+                client.remove_targets(Rule=r['Name'], Ids=targets, EventBusName=r['EventBusName'])
+                client.delete_rule(Name=r['Name'], EventBusName=r['EventBusName'])
 
 
 @EventRule.action_registry.register('set-rule-state')
