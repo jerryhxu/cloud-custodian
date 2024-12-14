@@ -59,7 +59,6 @@ class CloudWatchEventTest(BaseTest):
     def test_event_rule_target_event_rule(self):
         session_factory = self.replay_flight_data("test_event_rule_target_event_rule",
                                                   region='us-west-1')
-        client = session_factory().client("events")
         policy = self.load_policy(
             {
                 "name": "cwe-event-rule-target",
@@ -188,7 +187,8 @@ class CloudWatchEventTest(BaseTest):
         self.assertEqual(len(resources), 1)
 
     def test_event_rule_invalid_targets_any(self):
-        session_factory = self.replay_flight_data("test_cwe_rule_invalid_targets", region="us-west-1")
+        session_factory = self.replay_flight_data( \
+            "test_cwe_rule_invalid_targets", region="us-west-1")
         lambda_client = session_factory().client('lambda')
         sns_client = session_factory().client('sns')
         policy = self.load_policy({
@@ -213,7 +213,8 @@ class CloudWatchEventTest(BaseTest):
         #self.assertTrue(res)
 
     def test_event_rule_invalid_targets_all(self):
-        session_factory = self.replay_flight_data("test_cwe_rule_invalid_targets_all", region="us-west-1")
+        session_factory = self.replay_flight_data( \
+            "test_cwe_rule_invalid_targets_all", region="us-west-1")
         policy = self.load_policy({
             "name": "cwe-filter-on-invalid-target",
             "resource": "aws.event-rule",

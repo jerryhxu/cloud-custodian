@@ -15,7 +15,7 @@ from c7n.filters.iamaccess import CrossAccountAccessFilter
 from c7n.filters.related import ChildResourceFilter
 from c7n.filters.kms import KmsRelatedFilter
 from c7n.query import (
-    QueryResourceManager, ChildResourceManager, ChildResourceQuery,
+    QueryResourceManager, ChildResourceManager,
     TypeInfo, DescribeSource, ConfigSource, DescribeWithResourceTags)
 from c7n.manager import resources
 from c7n.resolver import ValuesFrom
@@ -324,7 +324,8 @@ class EventChildResourceFilter(ChildResourceFilter):
             .build_full_result().get('Targets', [])
             for target in targets:
                 target[self.ChildResourceParentKey] = r['Name']
-                self.child_resources.setdefault(target[self.ChildResourceParentKey], []).append(target)
+                self.child_resources.setdefault(target[self.ChildResourceParentKey], []) \
+                .append(target)
 
         return self.child_resources
 
@@ -428,7 +429,7 @@ class ValidEventRuleTargetFilter(EventChildResourceFilter):
                     r.setdefault('c7n:ChildArns', []).append(c['Arn'])
                 results.append(r)
         return results
-    
+
     def process(self, resources, event=None):
         # Due to lazy loading of resources, we need to explicilty load the following
         # potential targets for a event rule target:
@@ -568,7 +569,7 @@ class EventRuleTarget(ChildResourceManager):
         enum_spec = ('list_targets_by_rule', 'Targets', None)
         parent_spec = ('event-rule', 'Rule', True)
         name = id = 'Id'
-    
+
     def augment(self, resources):
         manager = self.get_parent_manager()
         client = local_session(manager.session_factory).client('events')
@@ -597,8 +598,8 @@ class EventRuleTarget(ChildResourceManager):
             {**target, 'c7n:parent-id': rule['Name']}
             for event_bus_name, rules in non_default_event_bus_rules.items()
             for rule in rules
-            for target in paginator_targets.paginate(EventBusName=event_bus_name, Rule=rule['Name']) \
-                                            .build_full_result().get('Targets', [])
+            for target in paginator_targets.paginate(EventBusName=event_bus_name, \
+                Rule=rule['Name']).build_full_result().get('Targets', [])
         ]
 
         # Extend the resources list with collected rule targets
