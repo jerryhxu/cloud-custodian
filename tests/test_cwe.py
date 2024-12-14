@@ -209,8 +209,6 @@ class CloudWatchEventTest(BaseTest):
             lambda_client.get_function(FunctionName="test")
         with self.assertRaises(sns_client.exceptions.NotFoundException):
             sns_client.get_topic_attributes(TopicArn="arn:aws:sns:us-west-1:644160558196:foo")
-        #res = sns_client.get_topic_attributes(TopicArn="arn:aws:sns:us-west-1:644160558196:test2")
-        #self.assertTrue(res)
 
     def test_event_rule_invalid_targets_all(self):
         session_factory = self.replay_flight_data( \
