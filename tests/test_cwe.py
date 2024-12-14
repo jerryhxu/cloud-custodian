@@ -140,7 +140,7 @@ class CloudWatchEventTest(BaseTest):
         self.assertEqual(response['State'], 'DISABLED')
 
     def test_target_cross_account_remove(self):
-        session_factory = self.replay_flight_data("test_cwe_rule_target_cross")
+        session_factory = self.replay_flight_data("test_cwe_rule_target_cross", region="us-west-1")
         client = session_factory().client("events")
         policy = self.load_policy(
             {
@@ -149,11 +149,13 @@ class CloudWatchEventTest(BaseTest):
                 "filters": [{"type": "cross-account"}],
                 "actions": ["delete"],
             },
-            session_factory=session_factory,
+            session_factory=session_factory, config={'region': 'us-west-1'}
         )
         resources = policy.run()
         self.assertEqual(len(resources), 1)
-        targets = client.list_targets_by_rule(Rule=resources[0]["c7n:parent-id"]).get(
+        rule_id = resources[0]["c7n:parent-id"]
+        event_bus = resources[0]["event-rule"]["EventBusName"]
+        targets = client.list_targets_by_rule(Rule=rule_id, EventBusName=event_bus).get(
             "Targets"
         )
         self.assertEqual(targets, [])

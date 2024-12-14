@@ -653,12 +653,15 @@ class DeleteTarget(BaseAction):
         client = local_session(self.manager.session_factory).client('events')
         rule_targets = {}
         for r in resources:
-            rule_targets.setdefault(r['c7n:parent-id'], []).append(r['Id'])
+            event_bus = r['event-rule']['EventBusName']
+            rule_id = r['c7n:parent-id']
+            rule_targets.setdefault((rule_id, event_bus), []).append(r['Id'])
 
-        for rule_id, target_ids in rule_targets.items():
+        for (rule_id, event_bus), target_ids in rule_targets.items():
             client.remove_targets(
                 Ids=target_ids,
-                Rule=rule_id)
+                Rule=rule_id,
+                EventBusName=event_bus)
 
 
 @resources.register('log-group')
