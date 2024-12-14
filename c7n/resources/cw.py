@@ -28,6 +28,8 @@ from botocore.config import Config
 import re
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/events.html#paginators
+# There is no paginator for list_event_buses. Therefore manual pagination is implemented here.
 def GetEventBuses(client):
     event_buses = []
     next_token = None
@@ -308,9 +310,26 @@ class EventRuleMetrics(MetricsFilter):
     def get_dimensions(self, resource):
         return [{'Name': 'RuleName', 'Value': resource['Name']}]
 
+class EventChildResourceFilter(ChildResourceFilter):
+
+    def get_related(self, resources):
+        self.child_resources = {}
+        child_resource_manager = self.get_resource_manager()
+        client = local_session(child_resource_manager.session_factory).client('events')
+        paginator_targets = client.get_paginator('list_targets_by_rule')
+        paginator_targets.PAGE_ITERATOR_CLS = RetryPageIterator
+
+        for r in resources:
+            targets = paginator_targets.paginate(EventBusName=r['EventBusName'], Rule=r['Name']) \
+            .build_full_result().get('Targets', [])
+            for target in targets:
+                target[self.ChildResourceParentKey] = r['Name']
+                self.child_resources.setdefault(target[self.ChildResourceParentKey], []).append(target)
+
+        return self.child_resources
 
 @EventRule.filter_registry.register('event-rule-target')
-class EventRuleTargetFilter(ChildResourceFilter):
+class EventRuleTargetFilter(EventChildResourceFilter):
 
     """
     Filter event rules by their targets
@@ -335,25 +354,9 @@ class EventRuleTargetFilter(ChildResourceFilter):
     schema = type_schema('event-rule-target', rinherit=ValueFilter.schema)
     permissions = ('events:ListTargetsByRule',)
 
-    def get_related(self, resources):
-        self.child_resources = {}
-        child_resource_manager = self.get_resource_manager()
-        client = local_session(child_resource_manager.session_factory).client('events')
-        paginator_targets = client.get_paginator('list_targets_by_rule')
-        paginator_targets.PAGE_ITERATOR_CLS = RetryPageIterator
-
-        for r in resources:
-            targets = paginator_targets.paginate(EventBusName=r['EventBusName'], Rule=r['Name']) \
-            .build_full_result().get('Targets', [])
-            for target in targets:
-                target[self.ChildResourceParentKey] = r['Name']
-                self.child_resources.setdefault(target[self.ChildResourceParentKey], []).append(target)
-
-        return self.child_resources
-
 
 @EventRule.filter_registry.register('invalid-targets')
-class ValidEventRuleTargetFilter(ChildResourceFilter):
+class ValidEventRuleTargetFilter(EventChildResourceFilter):
     """
     Filter event rules for invalid targets, Use the `all` option to
     find any event rules that have all invalid targets, otherwise
@@ -426,22 +429,6 @@ class ValidEventRuleTargetFilter(ChildResourceFilter):
                 results.append(r)
         return results
     
-    def get_related(self, resources):
-        self.child_resources = {}
-        child_resource_manager = self.get_resource_manager()
-        client = local_session(child_resource_manager.session_factory).client('events')
-        paginator_targets = client.get_paginator('list_targets_by_rule')
-        paginator_targets.PAGE_ITERATOR_CLS = RetryPageIterator
-
-        for r in resources:
-            targets = paginator_targets.paginate(EventBusName=r['EventBusName'], Rule=r['Name']) \
-            .build_full_result().get('Targets', [])
-            for target in targets:
-                target[self.ChildResourceParentKey] = r['Name']
-                self.child_resources.setdefault(target[self.ChildResourceParentKey], []).append(target)
-
-        return self.child_resources
-
     def process(self, resources, event=None):
         # Due to lazy loading of resources, we need to explicilty load the following
         # potential targets for a event rule target:
