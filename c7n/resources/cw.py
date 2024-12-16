@@ -310,6 +310,7 @@ class EventRuleMetrics(MetricsFilter):
     def get_dimensions(self, resource):
         return [{'Name': 'RuleName', 'Value': resource['Name']}]
 
+
 class EventChildResourceFilter(ChildResourceFilter):
 
     def get_related(self, resources):
@@ -328,6 +329,7 @@ class EventChildResourceFilter(ChildResourceFilter):
                 .append(target)
 
         return self.child_resources
+
 
 @EventRule.filter_registry.register('event-rule-target')
 class EventRuleTargetFilter(EventChildResourceFilter):
@@ -583,7 +585,7 @@ class EventRuleTarget(ChildResourceManager):
         # It will be used later to enrich event-rule-target json with additional
         # event-rule information.
         event_bus_rules = {
-            event_bus['Name']: paginator_rules.paginate(EventBusName=event_bus['Name']) \
+            event_bus['Name']: paginator_rules.paginate(EventBusName=event_bus['Name'])
                                             .build_full_result().get('Rules', [])
             for event_bus in event_buses
         }
@@ -600,7 +602,7 @@ class EventRuleTarget(ChildResourceManager):
             {**target, 'c7n:parent-id': rule['Name']}
             for event_bus_name, rules in non_default_event_bus_rules.items()
             for rule in rules
-            for target in paginator_targets.paginate(EventBusName=event_bus_name, \
+            for target in paginator_targets.paginate(EventBusName=event_bus_name,
                 Rule=rule['Name']).build_full_result().get('Targets', [])
         ]
 
