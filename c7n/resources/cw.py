@@ -579,7 +579,9 @@ class EventRuleTarget(ChildResourceManager):
         paginator_rules = client.get_paginator('list_rules')
         paginator_rules.PAGE_ITERATOR_CLS = RetryPageIterator
 
-        # Create a dictionary of all rules for each event bus
+        # Create a dictionary of all rules for each event bus.
+        # It will be used later to enrich event-rule-target json with additional
+        # event-rule information.
         event_bus_rules = {
             event_bus['Name']: paginator_rules.paginate(EventBusName=event_bus['Name']) \
                                             .build_full_result().get('Rules', [])
@@ -602,7 +604,9 @@ class EventRuleTarget(ChildResourceManager):
                 Rule=rule['Name']).build_full_result().get('Targets', [])
         ]
 
-        # Extend the resources list with collected rule targets
+        # Existing resources contain all event rule targets from default event bus.
+        # This will extend the resources with additional event rule targets
+        # from non-default event bus.
         resources.extend(non_default_rule_targets)
 
         # Map resources to their corresponding rules
@@ -615,6 +619,7 @@ class EventRuleTarget(ChildResourceManager):
                     break
 
         return resources
+
 
 @EventRuleTarget.filter_registry.register('cross-account')
 class CrossAccountFilter(CrossAccountAccessFilter):
