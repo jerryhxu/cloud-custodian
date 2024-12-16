@@ -273,7 +273,7 @@ class RuleDescribe(DescribeSource):
         non_default_rules = [
             rule
             for event_bus in event_buses
-            for rule in paginator.paginate(EventBusName=event_bus['Name']) \
+            for rule in paginator.paginate(EventBusName=event_bus['Name'])
                     .build_full_result().get('Rules', [])
         ]
 
