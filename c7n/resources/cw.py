@@ -4,7 +4,7 @@ import itertools
 from collections import defaultdict
 from concurrent.futures import as_completed
 from datetime import datetime, timedelta
-
+from botocore.paginate import Paginator
 import botocore.exceptions
 
 from c7n.actions import BaseAction
@@ -31,23 +31,13 @@ import re
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/events.html#paginators
 # There is no paginator for list_event_buses. Therefore manual pagination is implemented here.
 def GetEventBuses(client):
-    event_buses = []
-    next_token = None
-
-    # Fetch all event buses using manual pagination
-    while True:
-        if next_token:
-            response = client.list_event_buses(NextToken=next_token)
-        else:
-            response = client.list_event_buses()
-
-        # Add the fetched event buses to the list
-        event_buses.extend(response['EventBuses'])
-
-        # Check for NextToken in the response
-        next_token = response.get('NextToken')
-        if not next_token:
-            break
+    pager = Paginator(
+        client.list_event_buses,
+        {'input_token': 'NextToken', 'output_token': 'NextToken',
+            'result_key': 'EventBuses'},
+        client.meta.service_model.operation_model('ListEventBuses'))
+    pager.PAGE_ITERATOR_CLS = RetryPageIterator
+    event_buses = pager.paginate().build_full_result().get('EventBuses', [])
     return event_buses
 
 
