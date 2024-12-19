@@ -272,6 +272,7 @@ class RuleDescribe(DescribeSource):
 
         return universal_augment(self.manager, resources)
 
+
 class EventRuleQuery(query.ChildResourceQuery):
 
     def get_parent_parameters(self, params, parent_id, parent_key):
@@ -279,10 +280,12 @@ class EventRuleQuery(query.ChildResourceQuery):
         merged_params[parent_key] = parent_id
         return merged_params
 
+
 @query.sources.register('event-rule')
 class EventRuleSource(query.ChildDescribeSource):
 
     resource_query_factory = EventRuleQuery
+
 
 @resources.register('event-rule')
 class EventRule(ChildResourceManager):
@@ -601,10 +604,12 @@ class EventRuleTargetQuery(query.ChildResourceQuery):
         merged_params[parent_key] = parent_id
         return merged_params
 
+
 @query.sources.register('event-rule-target')
 class EventRuleTargetSource(query.ChildDescribeSource):
 
     resource_query_factory = EventRuleTargetQuery
+
 
 @resources.register('event-rule-target')
 class EventRuleTarget(ChildResourceManager):
