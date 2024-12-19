@@ -286,6 +286,9 @@ class EventRuleSource(query.ChildDescribeSource):
 
     resource_query_factory = EventRuleQuery
 
+    def augment(self, resources):
+        return universal_augment(self.manager, resources)
+
 
 @resources.register('event-rule')
 class EventRule(ChildResourceManager):
@@ -303,10 +306,6 @@ class EventRule(ChildResourceManager):
         config_type = cfn_type = 'AWS::Events::Rule'
         universal_taggable = object()
         permissions_augment = ("events:ListTagsForResource",)
-
-    def augment(self, resources):
-        manager = self.get_parent_manager()
-        return universal_augment(manager, resources)
 
 
 @EventRule.filter_registry.register('metrics')
