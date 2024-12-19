@@ -4,7 +4,7 @@ import itertools
 from collections import defaultdict
 from concurrent.futures import as_completed
 from datetime import datetime, timedelta
-from botocore.paginate import Paginator
+
 import botocore.exceptions
 from c7n import query
 from c7n.actions import BaseAction
