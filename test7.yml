@@ -1,0 +1,45 @@
+policies:
+- name: test-security-group
+  resource: security-group
+  # actions:
+  # - type: tag
+  #   tags:
+  #     environment: staging
+  # filters:
+  # - type: security-group
+  #   key: tag:c7n-public
+  #   value: 'Policy'
+  # - type: subnet
+  #   key: tag:Internal
+  #   value: 'False'
+  # filters:
+  # - type: event-rule-target
+  #   key: '[].Arn'
+  #   value: present
+  # filters:
+  # - type: value
+  #   key: "FileSystemProtection.ReplicationOverwriteProtection"
+  #   value: REPLICATING
+  # actions:
+  # - type: delete
+  # filters:
+  #   - type: attribute
+  #     key: FlowLogsEnabled
+  #     value: True
+  # actions:
+  # - type: remove-tag
+  #   tags: ["test"]
+  # resource: account
+  # region: us-east-1
+  # filters:
+  #   - type: check-cloudtrail
+  #     log-metric-filter-pattern:
+  #         type: value
+  #         op: regex
+  #         value: '\{ ?(\()? ?\$\.eventName ?= ?(")?ConsoleLogin(")? ?(\))? ?\}'
+# - name: account-check-config-services
+#   resource: account
+#   #region: us-east-1
+#   filters:
+#     - type: check-config
+#       #global-resources: false

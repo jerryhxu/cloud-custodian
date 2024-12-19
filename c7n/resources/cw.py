@@ -6,7 +6,7 @@ from concurrent.futures import as_completed
 from datetime import datetime, timedelta
 from botocore.paginate import Paginator
 import botocore.exceptions
-
+from c7n import query
 from c7n.actions import BaseAction
 from c7n.exceptions import PolicyValidationError
 from c7n.filters import Filter, MetricsFilter
@@ -272,14 +272,27 @@ class RuleDescribe(DescribeSource):
 
         return universal_augment(self.manager, resources)
 
+class EventRuleQuery(query.ChildResourceQuery):
+
+    def get_parent_parameters(self, params, parent_id, parent_key):
+        merged_params = dict(params)
+        merged_params[parent_key] = parent_id
+        return merged_params
+
+@query.sources.register('event-rule')
+class EventRuleSource(query.ChildDescribeSource):
+
+    resource_query_factory = EventRuleQuery
 
 @resources.register('event-rule')
-class EventRule(QueryResourceManager):
+class EventRule(ChildResourceManager):
 
+    child_source = 'event-rule'
     class resource_type(TypeInfo):
         service = 'events'
         arn = 'Arn'
         enum_spec = ('list_rules', 'Rules', None)
+        parent_spec = ('event-bus', 'EventBusName', None)
         name = "Name"
         id = "Name"
         filter_name = "NamePrefix"
@@ -288,10 +301,9 @@ class EventRule(QueryResourceManager):
         universal_taggable = object()
         permissions_augment = ("events:ListTagsForResource",)
 
-    source_mapping = {
-        'config': ConfigSource,
-        'describe': RuleDescribe
-    }
+    def augment(self, resources):
+        manager = self.get_parent_manager()
+        return universal_augment(manager, resources)
 
 
 @EventRule.filter_registry.register('metrics')
@@ -552,8 +564,52 @@ class SetRuleState(BaseAction):
                 continue
 
 
+class EventRuleTargetQuery(query.ChildResourceQuery):
+
+    def filter(self, resource_manager, parent_ids=None, **params):
+        """Query a set of resources."""
+        m = self.resolve(resource_manager.resource_type)
+        client = local_session(self.session_factory).client(m.service)
+
+        enum_op, path, extra_args = m.enum_spec
+        if extra_args:
+            params.update(extra_args)
+
+        parent_type, parent_key, annotate_parent = m.parent_spec
+        parents = self.manager.get_resource_manager(parent_type)
+        parent_resources = []
+        for p in parents.resources(augment=False):
+            parent_resources.append((p))
+
+        # Have to query separately for each parent's children.
+        results = []
+        for parent in parent_resources:
+            params['EventBusName'] = parent['EventBusName']
+            merged_params = self.get_parent_parameters(params, parent['Name'], parent_key)
+            subset = self._invoke_client_enum(
+                client, enum_op, merged_params, path, retry=self.manager.retry)
+            if annotate_parent:
+                for r in subset:
+                    r[self.parent_key] = parent['Name']
+                    r[parent_type] = parent
+            if subset:
+                results.extend(subset)
+        return results
+
+    def get_parent_parameters(self, params, parent_id, parent_key):
+        merged_params = dict(params)
+        merged_params[parent_key] = parent_id
+        return merged_params
+
+@query.sources.register('event-rule-target')
+class EventRuleTargetSource(query.ChildDescribeSource):
+
+    resource_query_factory = EventRuleTargetQuery
+
 @resources.register('event-rule-target')
 class EventRuleTarget(ChildResourceManager):
+
+    child_source = 'event-rule-target'
     class resource_type(TypeInfo):
         service = 'events'
         arn = False
@@ -561,56 +617,6 @@ class EventRuleTarget(ChildResourceManager):
         enum_spec = ('list_targets_by_rule', 'Targets', None)
         parent_spec = ('event-rule', 'Rule', True)
         name = id = 'Id'
-
-    def augment(self, resources):
-        manager = self.get_parent_manager()
-        client = local_session(manager.session_factory).client('events')
-        event_buses = GetEventBuses(client)
-
-        # Initialize paginators with RetryPageIterator
-        paginator_rules = client.get_paginator('list_rules')
-        paginator_rules.PAGE_ITERATOR_CLS = RetryPageIterator
-
-        # Create a dictionary of all rules for each event bus.
-        # It will be used later to enrich event-rule-target json with additional
-        # event-rule information.
-        event_bus_rules = {
-            event_bus['Name']: paginator_rules.paginate(EventBusName=event_bus['Name'])
-                                            .build_full_result().get('Rules', [])
-            for event_bus in event_buses
-        }
-
-        # Filter out the default event bus
-        non_default_event_bus_rules = {
-            bus: rules for bus, rules in event_bus_rules.items() if bus != 'default'
-        }
-        paginator_targets = client.get_paginator('list_targets_by_rule')
-        paginator_targets.PAGE_ITERATOR_CLS = RetryPageIterator
-
-        # Collect all rule targets for non-default event buses with additional fields
-        non_default_rule_targets = [
-            {**target, 'c7n:parent-id': rule['Name']}
-            for event_bus_name, rules in non_default_event_bus_rules.items()
-            for rule in rules
-            for target in paginator_targets.paginate(EventBusName=event_bus_name,
-                Rule=rule['Name']).build_full_result().get('Targets', [])
-        ]
-
-        # Existing resources contain all event rule targets from default event bus.
-        # This will extend the resources with additional event rule targets
-        # from non-default event bus.
-        resources.extend(non_default_rule_targets)
-
-        # Map resources to their corresponding rules
-        for r in resources:
-            parent_id = r.get('c7n:parent-id')
-            for _, rules in event_bus_rules.items():
-                matching_rule = next((rule for rule in rules if rule['Name'] == parent_id), None)
-                if matching_rule:
-                    r['event-rule'] = matching_rule
-                    break
-
-        return resources
 
 
 @EventRuleTarget.filter_registry.register('cross-account')
