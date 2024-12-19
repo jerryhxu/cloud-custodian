@@ -28,19 +28,6 @@ from botocore.config import Config
 import re
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/events.html#paginators
-# There is no paginator for list_event_buses. Therefore manual pagination is implemented here.
-def GetEventBuses(client):
-    pager = Paginator(
-        client.list_event_buses,
-        {'input_token': 'NextToken', 'output_token': 'NextToken',
-            'result_key': 'EventBuses'},
-        client.meta.service_model.operation_model('ListEventBuses'))
-    pager.PAGE_ITERATOR_CLS = RetryPageIterator
-    event_buses = pager.paginate().build_full_result().get('EventBuses', [])
-    return event_buses
-
-
 class DescribeAlarm(DescribeSource):
     def augment(self, resources):
         return universal_augment(self.manager, super().augment(resources))
@@ -245,32 +232,6 @@ class EventBusDelete(BaseAction):
                 self.manager.retry(
                     client.delete_event_bus,
                     Name=r['Name'])
-
-
-class RuleDescribe(DescribeSource):
-
-    def augment(self, resources):
-        client = local_session(self.manager.session_factory).client('events')
-
-        # Fetch all event buses using manual pagination
-        event_buses = GetEventBuses(client)
-
-        event_buses = [bus for bus in event_buses if bus['Name'] != 'default']
-        paginator = client.get_paginator('list_rules')
-        paginator.PAGE_ITERATOR_CLS = RetryPageIterator
-
-        # Collect rules for all non-default event buses
-        non_default_rules = [
-            rule
-            for event_bus in event_buses
-            for rule in paginator.paginate(EventBusName=event_bus['Name'])
-                    .build_full_result().get('Rules', [])
-        ]
-
-        # Extend the resources list with the collected rules
-        resources.extend(non_default_rules)
-
-        return universal_augment(self.manager, resources)
 
 
 class EventRuleQuery(query.ChildResourceQuery):
