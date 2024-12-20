@@ -613,7 +613,7 @@ class DeleteTarget(BaseAction):
         client = local_session(self.manager.session_factory).client('events')
         rule_targets = {}
         for r in resources:
-            event_bus = r['event-rule']['EventBusName']
+            event_bus = r['Rule']['EventBusName']
             rule_id = r['c7n:parent-id']
             rule_targets.setdefault((rule_id, event_bus), []).append(r['Id'])
 

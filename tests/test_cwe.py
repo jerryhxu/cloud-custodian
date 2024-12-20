@@ -153,7 +153,7 @@ class CloudWatchEventTest(BaseTest):
         resources = policy.run()
         self.assertEqual(len(resources), 1)
         rule_id = resources[0]["c7n:parent-id"]
-        event_bus = resources[0]["event-rule"]["EventBusName"]
+        event_bus = resources[0]["Rule"]["EventBusName"]
         targets = client.list_targets_by_rule(Rule=rule_id, EventBusName=event_bus).get(
             "Targets"
         )
