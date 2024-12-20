@@ -278,6 +278,8 @@ class EventRuleMetrics(MetricsFilter):
 
 class EventChildResourceFilter(ChildResourceFilter):
 
+    # This function provides custom functionality to query event-rule-targets
+    # using both event-rule and event-bus information.
     def get_related(self, resources):
         self.child_resources = {}
         child_resource_manager = self.get_resource_manager()
@@ -529,6 +531,8 @@ class SetRuleState(BaseAction):
 
 class EventRuleTargetQuery(query.ChildResourceQuery):
 
+    # This function provides custom functionality to query event-rule-targets
+    # using both event-rule and event-bus information.
     def filter(self, resource_manager, parent_ids=None, **params):
         """Query a set of resources."""
         m = self.resolve(resource_manager.resource_type)
@@ -554,7 +558,7 @@ class EventRuleTargetQuery(query.ChildResourceQuery):
             if annotate_parent:
                 for r in subset:
                     r[self.parent_key] = parent['Name']
-                    r[parent_type] = parent
+                    r[parent_key] = parent
             if subset:
                 results.extend(subset)
         return results
