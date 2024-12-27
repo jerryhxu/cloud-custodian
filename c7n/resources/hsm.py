@@ -119,7 +119,7 @@ class DescribeCloudHSMBackup(DescribeSource):
         for r in resources:
             r['Tags'] = r.pop('TagList', ())
         return resources
-    
+
     def resources(self, query):
         resources = self.query.filter(self.manager, **query)
         return [r for r in resources if r['BackupState'] != 'PENDING_DELETION']
