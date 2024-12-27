@@ -131,6 +131,7 @@ TimestreamInfluxDB.filter_registry.register('marked-for-op', TagActionFilter)
 
 TimestreamInfluxDB.filter_registry.register('network-location', net_filters.NetworkLocation)
 
+
 @TimestreamInfluxDB.filter_registry.register('security-group')
 class TimestreamInfluxDBSGFilter(SecurityGroupFilter):
 
