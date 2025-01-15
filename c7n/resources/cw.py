@@ -313,8 +313,16 @@ class EventRuleTargetFilter(EventChildResourceFilter):
               resource: aws.event-rule
               filters:
                 - type: event-rule-target
-                  key: Arn
-                  value: absent
+                  key: "@"
+                  value: empty
+
+            - name: find-event-rules-by-target-properties
+              resource: aws.event-rule
+              filters:
+                - type: event-rule-target
+                  key: "[].Arn"
+                  op: contains
+                  value: "arn:aws:sqs:us-east-2:111111111111:my-queue"
     """
 
     RelatedResource = "c7n.resources.cw.EventRuleTarget"
