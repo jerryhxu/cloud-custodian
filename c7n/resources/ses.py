@@ -351,7 +351,7 @@ class SESIngressEndpoint(QueryResourceManager):
         arn = 'IngressPointArn'
         universal_taggable = object()
         config_type = "AWS::SES::MailManagerIngressPoint"
-        permission_prefix = 'ses'
+        permission_prefix = 'MailManager'
 
 
 @SESIngressEndpoint.action_registry.register('tag')
@@ -419,3 +419,36 @@ class MarkSESIngressEndpointForOp(TagDelayedAction):
                 op: delete
                 days: 1
     """
+
+
+@SESIngressEndpoint.action_registry.register('delete')
+class Delete(Action):
+    """Delete an SES Ingress Endpoint resource.
+
+    :example:
+
+    .. code-block:: yaml
+
+            policies:
+              - name: ses-delete-rule-set
+                resource: aws.ses-receipt-rule-set
+                filters:
+                  - type: value
+                    key: Rules[0].Enabled
+                    op: eq
+                    value: true
+                actions:
+                    - delete
+
+    """
+    schema = type_schema('delete')
+    permissions = ("MailManager.DeleteIngressPoint",)
+
+    def process(self, ingressendpoints):
+        client = local_session(self.manager.session_factory).client('mailmanager')
+        for ingressendpoint in ingressendpoints:
+            self.manager.retry(
+                client.delete_ingress_point,
+                IngressPointId=ingressendpoint["IngressPointId"],
+                ignore_err_codes=("ResourceNotFoundException",)
+            )
