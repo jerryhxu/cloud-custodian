@@ -10,6 +10,7 @@ from c7n.manager import resources
 from c7n.query import DescribeSource, QueryResourceManager, TypeInfo
 from c7n.utils import local_session, type_schema, format_string_values
 from c7n.tags import universal_augment
+from c7n.tags import RemoveTag, Tag, TagActionFilter, TagDelayedAction
 
 
 class DescribeConfigurationSet(DescribeSource):
@@ -336,3 +337,85 @@ class Delete(Action):
                 RuleSetName=ruleset["Metadata"]['Name'],
                 ignore_err_codes=("CannotDeleteException",)
             )
+
+
+@resources.register('ses-ingress-endpoint')
+class SESIngressEndpoint(QueryResourceManager):
+    class resource_type(TypeInfo):
+        service = 'mailmanager'
+        enum_spec = ('list_ingress_points', 'IngressPoints', None)
+        detail_spec = ('get_ingress_point', 'IngressPointId', 'IngressPointId', None)
+        name = 'IngressPointName'
+        id = 'IngressPointId'
+        arn_type = 'mailmanager-ingress-point'
+        arn = 'IngressPointArn'
+        universal_taggable = object()
+        config_type = "AWS::SES::MailManagerIngressPoint"
+        permission_prefix = 'ses'
+
+
+@SESIngressEndpoint.action_registry.register('tag')
+class TagSESIngressEndpoint(Tag):
+    """Create tags on Network Firewalls
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+            - name: ses-ingress-endpoint-tag
+              resource: aws.ses-ingress-endpoint
+              actions:
+                - type: tag
+                  key: test
+                  value: something
+    """
+    permissions = ('ses:TagResource',)
+
+    def process_resource_set(self, client, resources, new_tags):
+        for r in resources:
+            client.tag_resource(ResourceArn=r["IngressPointArn"], Tags=new_tags)
+
+
+@SESIngressEndpoint.action_registry.register('remove-tag')
+class RemoveTagSESIngressEndpoint(RemoveTag):
+    """Remove tags from a network firewall
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+            - name: network-firewall-remove-tag
+              resource: aws.firewall
+              actions:
+                - type: remove-tag
+                  tags: ["tag-key"]
+    """
+    permissions = ('ses:UntagResource',)
+
+    def process_resource_set(self, client, resources, tags):
+        for r in resources:
+            client.untag_resource(ResourceArn=r['IngressPointArn'], TagKeys=tags)
+
+
+SESIngressEndpoint.filter_registry.register('marked-for-op', TagActionFilter)
+
+
+@SESIngressEndpoint.action_registry.register('mark-for-op')
+class MarkSESIngressEndpointForOp(TagDelayedAction):
+    """Mark network firewall for future actions
+
+    :example:
+
+    .. code-block:: yaml
+
+        policies:
+          - name: network-firewall-tag-mark
+            resource: aws.firewall
+            filters:
+              - "tag:delete": present
+            actions:
+              - type: mark-for-op
+                op: delete
+                days: 1
+    """
