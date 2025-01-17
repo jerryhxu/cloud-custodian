@@ -284,17 +284,17 @@ class SESV2Test(BaseTest):
         assert list(policies) == []
 
 
-class MailManagerTest(BaseTest):
+class SESIngressEndpointTest(BaseTest):
 
-    def test_ses_ingestion_endpoint_tag_untag(self):
-        session_factory = self.record_flight_data('test_ses_ingestion_endpoint_tag_untag')
+    def test_ses_ingress_endpoint_tag_untag(self):
+        session_factory = self.replay_flight_data('test_ses_ingress_endpoint_tag_untag')
         tag = {'env': 'dev'}
         p = self.load_policy(
             {
-                'name': 'ses-ingestion-endpoint-tag-untag',
-                'resource': 'ses-ingestion-endpoint',
+                'name': 'ses-ingress-endpoint-tag-untag',
+                'resource': 'ses-ingress-endpoint',
                 'filters': [{
-                    'tag:owner': 'policy'
+                    'tag:team': 'policy'
                 }],
                 'actions': [{
                     'type': 'tag',
@@ -302,7 +302,7 @@ class MailManagerTest(BaseTest):
                 },
                 {
                     'type': 'remove-tag',
-                    'tags': ['owner']
+                    'tags': ['team']
                 }]
             },
             session_factory=session_factory
@@ -310,61 +310,59 @@ class MailManagerTest(BaseTest):
         resources = p.run()
         self.assertEqual(1, len(resources))
         client = session_factory().client("mailmanager")
-        tags = client.list_tags(ResourceArn=resources[0]["ARN"])["TagList"]
+        tags = client.list_tags_for_resource(ResourceArn=resources[0]["IngressPointArn"])["Tags"]
         self.assertEqual(1, len(tags))
         new_tag = {}
         new_tag[tags[0]['Key']] = tags[0]['Value']
         self.assertEqual(tag, new_tag)
 
-    def test__mark_for_op(self):
-        session_factory = self.replay_flight_data("test_memorydb_mark_for_op")
-        p = self.load_policy(
-            {
-                "name": "memorydb-mark",
-                "resource": "memorydb",
-                "filters": [
-                    {'tag:owner': 'policy'},
-                ],
-                "actions": [
-                    {
-                        "type": "mark-for-op",
-                        "tag": "custodian_cleanup",
-                        "op": "delete",
-                        "days": 1,
-                    }
-                ],
-            },
-            session_factory=session_factory
-        )
-        resources = p.run()
-        self.assertEqual(len(resources), 1)
+    # def test_ingress_endpoint_mark_for_op(self):
+    #     session_factory = self.record_flight_data("test_ingress_endpoint_mark_for_op")
+    #     p = self.load_policy(
+    #         {
+    #             "name": "ingress-endpoint-mark",
+    #             "resource": "ses-ingress-endpoint",
+    #             "filters": [
+    #                 {'tag:env': 'dev'},
+    #             ],
+    #             "actions": [
+    #                 {
+    #                     "type": "mark-for-op",
+    #                     "op": "delete",
+    #                     "days": 1,
+    #                 }
+    #             ],
+    #         },
+    #         session_factory=session_factory
+    #     )
+    #     resources = p.run()
+    #     self.assertEqual(len(resources), 1)
 
-        p = self.load_policy(
-            {
-                "name": "memorydb-marked",
-                "resource": "memorydb",
-                "filters": [
-                    {
-                        "type": "marked-for-op",
-                        "tag": "custodian_cleanup",
-                        "op": "delete",
-                        "skew": 3,
-                    }
-                ],
-            },
-            session_factory=session_factory,
-        )
-        resources = p.run()
-        self.assertEqual(len(resources), 1)
-        assert resources[0]['Name'] == 'test-cluster'
+    #     p = self.load_policy(
+    #         {
+    #             "name": "ingress-endpoint-marked",
+    #             "resource": "ses-ingress-endpoint",
+    #             "filters": [
+    #                 {
+    #                     "type": "marked-for-op",
+    #                     "op": "delete",
+    #                     "skew": 3,
+    #                 }
+    #             ],
+    #         },
+    #         session_factory=session_factory,
+    #     )
+    #     resources = p.run()
+    #     self.assertEqual(len(resources), 1)
+    #     assert resources[0]['IngressPointName'] == 'test-ingress-point'
 
-    def test_delete_memorydb(self):
-        session_factory = self.replay_flight_data("test_delete_memorydb")
+    def test_delete_ingress_endpoint(self):
+        session_factory = self.replay_flight_data("test_delete_ingress_endpoint")
         p = self.load_policy(
             {
-                "name": "delete-memorydb",
-                "resource": "memorydb",
-                "filters": [{"tag:owner": "policy"}],
+                "name": "delete-ingress-endpoint",
+                "resource": "ses-ingress-endpoint",
+                "filters": [{"tag:env": "dev"}],
                 "actions": [{
                                 "type": "delete",
                             }],
@@ -373,4 +371,4 @@ class MailManagerTest(BaseTest):
         )
         resources = p.run()
         self.assertEqual(1, len(resources))
-        self.assertEqual(resources[0]["Name"], "test-cluster")
+        self.assertEqual(resources[0]["IngressPointName"], "test-ingress-point")

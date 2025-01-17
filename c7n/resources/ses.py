@@ -353,10 +353,21 @@ class SESIngressEndpoint(QueryResourceManager):
         config_type = "AWS::SES::MailManagerIngressPoint"
         permission_prefix = 'MailManager'
 
+    def augment(self, resources):
+        client = local_session(self.session_factory).client('mailmanager')
+
+        def _augment(r):
+            tags = self.retry(client.list_tags_for_resource,
+                ResourceArn=r['IngressPointArn'])['Tags']
+            r['Tags'] = tags
+            return r
+        resources = super().augment(resources)
+        return list(map(_augment, resources))
+
 
 @SESIngressEndpoint.action_registry.register('tag')
 class TagSESIngressEndpoint(Tag):
-    """Create tags on Network Firewalls
+    """Create tags on SES Ingress Endpoint
 
     :example:
 
@@ -379,14 +390,14 @@ class TagSESIngressEndpoint(Tag):
 
 @SESIngressEndpoint.action_registry.register('remove-tag')
 class RemoveTagSESIngressEndpoint(RemoveTag):
-    """Remove tags from a network firewall
+    """Remove tags from a SES Ingress Endpoint
     :example:
 
     .. code-block:: yaml
 
         policies:
-            - name: network-firewall-remove-tag
-              resource: aws.firewall
+            - name: ingress-endpoint-remove-tag
+              resource: aws.ses-ingress-endpoint
               actions:
                 - type: remove-tag
                   tags: ["tag-key"]
@@ -403,15 +414,15 @@ SESIngressEndpoint.filter_registry.register('marked-for-op', TagActionFilter)
 
 @SESIngressEndpoint.action_registry.register('mark-for-op')
 class MarkSESIngressEndpointForOp(TagDelayedAction):
-    """Mark network firewall for future actions
+    """Mark ingress endpoints for future actions
 
     :example:
 
     .. code-block:: yaml
 
         policies:
-          - name: network-firewall-tag-mark
-            resource: aws.firewall
+          - name: ingress-endpoint-tag-mark
+            resource: aws.ingress-endpoint
             filters:
               - "tag:delete": present
             actions:
@@ -422,7 +433,7 @@ class MarkSESIngressEndpointForOp(TagDelayedAction):
 
 
 @SESIngressEndpoint.action_registry.register('delete')
-class Delete(Action):
+class DeleteSESIngressEndpoint(Action):
     """Delete an SES Ingress Endpoint resource.
 
     :example:
@@ -430,13 +441,8 @@ class Delete(Action):
     .. code-block:: yaml
 
             policies:
-              - name: ses-delete-rule-set
-                resource: aws.ses-receipt-rule-set
-                filters:
-                  - type: value
-                    key: Rules[0].Enabled
-                    op: eq
-                    value: true
+              - name: ses-delete-ingress-endpoint
+                resource: aws.ses-ingress-endpoint
                 actions:
                     - delete
 
