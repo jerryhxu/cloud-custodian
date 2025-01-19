@@ -10,7 +10,10 @@ from c7n.manager import resources
 from c7n.query import DescribeSource, QueryResourceManager, TypeInfo
 from c7n.utils import local_session, type_schema, format_string_values
 from c7n.tags import universal_augment
-from c7n.tags import RemoveTag, Tag, TagActionFilter, TagDelayedAction
+from c7n.tags import RemoveTag, Tag
+from c7n.filters import (FilterRegistry, ListItemFilter)
+
+filters = FilterRegistry('SESIngressEndpoint.filters')
 
 
 class DescribeConfigurationSet(DescribeSource):
@@ -409,29 +412,6 @@ class RemoveTagSESIngressEndpoint(RemoveTag):
             client.untag_resource(ResourceArn=r['IngressPointArn'], TagKeys=tags)
 
 
-SESIngressEndpoint.filter_registry.register('marked-for-op', TagActionFilter)
-
-
-@SESIngressEndpoint.action_registry.register('mark-for-op')
-class MarkSESIngressEndpointForOp(TagDelayedAction):
-    """Mark ingress endpoints for future actions
-
-    :example:
-
-    .. code-block:: yaml
-
-        policies:
-          - name: ingress-endpoint-tag-mark
-            resource: aws.ingress-endpoint
-            filters:
-              - "tag:delete": present
-            actions:
-              - type: mark-for-op
-                op: delete
-                days: 1
-    """
-
-
 @SESIngressEndpoint.action_registry.register('delete')
 class DeleteSESIngressEndpoint(Action):
     """Delete an SES Ingress Endpoint resource.
@@ -458,3 +438,91 @@ class DeleteSESIngressEndpoint(Action):
                 IngressPointId=ingressendpoint["IngressPointId"],
                 ignore_err_codes=("ResourceNotFoundException",)
             )
+
+
+@SESIngressEndpoint.filter_registry.register('rule-set')
+class SESIngressEndpointRuleSet(ListItemFilter):
+    """Filter for S3 buckets to look at bucket replication configurations
+
+    The schema to supply to the attrs follows the schema here:
+     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/get_bucket_replication.html
+
+    :example:
+
+    .. code-block:: yaml
+
+            policies:
+              - name: s3-bucket-replication
+                resource: s3
+                filters:
+                  - type: bucket-replication
+                    attrs:
+                      - Status: Enabled
+                      - Filter:
+                          And:
+                            Prefix: test
+                            Tags:
+                              - Key: Owner
+                                Value: c7n
+                      - ExistingObjectReplication: Enabled
+
+    """
+    schema = type_schema(
+        'rule-set',
+        attrs={'$ref': '#/definitions/filters_common/list_item_attrs'},
+        count={'type': 'number'},
+        count_op={'$ref': '#/definitions/filters_common/comparison_operators'}
+    )
+
+    permissions = ("s3:GetReplicationConfiguration",)
+    annotation_key = 'RuleSet'
+    annotate_items = True
+
+    def __init__(self, data, manager=None):
+        super().__init__(data, manager)
+        self.data['key'] = self.annotation_key
+
+    def get_item_values(self, resource):
+        if self.annotation_key not in resource:
+            client = local_session(self.manager.session_factory).client('mailmanager')
+            response = client.get_rule_set(RuleSetId=resource['RuleSetId'])
+            resource["RuleSetName"] = response["RuleSetName"]
+            resource["RuleSetArn"] = response["RuleSetArn"]
+            rules = response.get('Rules', [])
+            for rule in rules:
+              for action in rule.get("Actions", []):
+                if "Archive" in action:
+                    target_archive = action["Archive"]["TargetArchive"]
+                    archive_details = client.get_archive(ArchiveId=target_archive)
+                    archive_details.pop("ResponseMetadata")
+                    # Convert retention period to numeric values for easier comparison
+                    action["Archive"]["TargetArchive"] = \
+                        self.convert_retention_period(archive_details)
+            resource[self.annotation_key] = rules
+
+        return resource[self.annotation_key]
+
+    def convert_retention_period(self, archive_details):
+        retention_mapping = {
+            "THREE_MONTHS": 3,
+            "SIX_MONTHS": 6,
+            "NINE_MONTHS": 9,
+            "ONE_YEAR": 12,
+            "EIGHTEEN_MONTHS": 18,
+            "TWO_YEARS": 24,
+            "THIRTY_MONTHS": 30,
+            "THREE_YEARS": 36,
+            "FOUR_YEARS": 48,
+            "FIVE_YEARS": 60,
+            "SIX_YEARS": 72,
+            "SEVEN_YEARS": 84,
+            "EIGHT_YEARS": 96,
+            "NINE_YEARS": 108,
+            "TEN_YEARS": 120,
+            "PERMANENT": 99999  # Very large value to represent "PERMANENT"
+        }
+
+        retention_text = archive_details["Retention"].pop("RetentionPeriod")  # Remove the old key
+        retention_value = retention_mapping.get(retention_text, None)  # Map to numeric value
+        archive_details["Retention"]["RetentionPeriodInMonth"] = retention_value
+        return archive_details

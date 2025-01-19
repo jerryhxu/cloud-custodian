@@ -372,3 +372,29 @@ class SESIngressEndpointTest(BaseTest):
         resources = p.run()
         self.assertEqual(1, len(resources))
         self.assertEqual(resources[0]["IngressPointName"], "test-ingress-point")
+
+    def test_ingress_endpoint_rule_set(self):
+        session_factory = self.replay_flight_data("test_ingress_endpoint_rule_set")
+        p = self.load_policy(
+            {
+                "name": "ses-ingress-endpoint-rule-set",
+                "resource": "ses-ingress-endpoint",
+                "filters": [
+                        {
+                "type": "rule-set",
+                "attrs": [
+                    {
+                        "type": "value",
+                        "key": "length(Actions[]|[?Archive.\
+                            TargetArchive.Retention.RetentionPeriodInMonth > `5`])",
+                        "value": 1
+                    }
+                ]
+                        }
+                    ],
+            },
+            session_factory=session_factory,
+        )
+        resources = p.run()
+        self.assertEqual(1, len(resources))
+        self.assertEqual(resources[0]["IngressPointName"], "test-ingress-endpoint")
