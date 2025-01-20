@@ -346,6 +346,7 @@ class DescribeSESIngressEndpoint(DescribeSource):
 
     def augment(self, resources):
         client = local_session(self.manager.session_factory).client('mailmanager')
+        
         def _augment(r):
             tags = client.list_tags_for_resource(ResourceArn=r['IngressPointArn'])['Tags']
             r['Tags'] = tags
