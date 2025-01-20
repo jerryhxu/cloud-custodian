@@ -458,7 +458,7 @@ class SESIngressEndpointRuleSet(ListItemFilter):
                 - type: rule-set
                   attrs:
                     - type: value
-                      key: length(Actions[]|[?Archive.TargetArchive.Retention.RetentionPeriodInMonth > `5`])
+                      key: length(Actions[]|[?Archive])
                       value: 1
     """
     schema = type_schema(
