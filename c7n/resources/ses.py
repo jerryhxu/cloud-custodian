@@ -354,7 +354,7 @@ class SESIngressEndpoint(QueryResourceManager):
         arn = 'IngressPointArn'
         universal_taggable = object()
         config_type = "AWS::SES::MailManagerIngressPoint"
-        permission_prefix = 'MailManager'
+        permission_prefix = 'ses'
 
     def augment(self, resources):
         client = local_session(self.session_factory).client('mailmanager')
@@ -428,7 +428,7 @@ class DeleteSESIngressEndpoint(Action):
 
     """
     schema = type_schema('delete')
-    permissions = ("MailManager.DeleteIngressPoint",)
+    permissions = ("ses:DeleteIngressPoint",)
 
     def process(self, ingressendpoints):
         client = local_session(self.manager.session_factory).client('mailmanager')
@@ -442,30 +442,24 @@ class DeleteSESIngressEndpoint(Action):
 
 @SESIngressEndpoint.filter_registry.register('rule-set')
 class SESIngressEndpointRuleSet(ListItemFilter):
-    """Filter for S3 buckets to look at bucket replication configurations
+    """Filter for SES Ingress Endpoints to look at rule sets
 
     The schema to supply to the attrs follows the schema here:
-     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/get_bucket_replication.html
+     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mailmanager/client/get_rule_set.html
 
     :example:
 
     .. code-block:: yaml
 
             policies:
-              - name: s3-bucket-replication
-                resource: s3
+              - name: ses-ingress-endpoint-rule-set
+                resource: ses-ingress-endpoint
                 filters:
-                  - type: bucket-replication
-                    attrs:
-                      - Status: Enabled
-                      - Filter:
-                          And:
-                            Prefix: test
-                            Tags:
-                              - Key: Owner
-                                Value: c7n
-                      - ExistingObjectReplication: Enabled
-
+                - type: rule-set
+                  attrs:
+                    - type: value
+                      key: length(Actions[]|[?Archive.TargetArchive.Retention.RetentionPeriodInMonth > `5`])
+                      value: 1
     """
     schema = type_schema(
         'rule-set',
@@ -474,7 +468,7 @@ class SESIngressEndpointRuleSet(ListItemFilter):
         count_op={'$ref': '#/definitions/filters_common/comparison_operators'}
     )
 
-    permissions = ("s3:GetReplicationConfiguration",)
+    permissions = ("ses:GetRuleSet",)
     annotation_key = 'RuleSet'
     annotate_items = True
 
