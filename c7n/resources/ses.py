@@ -345,11 +345,10 @@ class Delete(Action):
 class DescribeSESIngressEndpoint(DescribeSource):
 
     def augment(self, resources):
-        client = local_session(self.manager.session_factory).client('bedrock')
-
+        client = local_session(self.manager.session_factory).client('mailmanager')
         def _augment(r):
-            tags = client.list_tags_for_resource(resourceARN=r['jobArn'])['tags']
-            r['Tags'] = [{'Key': t['key'], 'Value': t['value']} for t in tags]
+            tags = client.list_tags_for_resource(ResourceArn=r['IngressPointArn'])['Tags']
+            r['Tags'] = tags
             return r
         resources = super().augment(resources)
         return list(map(_augment, resources))
