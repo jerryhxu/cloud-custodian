@@ -490,14 +490,14 @@ class SESIngressEndpointRuleSet(ListItemFilter):
             resource["RuleSetArn"] = response["RuleSetArn"]
             rules = response.get('Rules', [])
             for rule in rules:
-              for action in rule.get("Actions", []):
-                if "Archive" in action:
-                    target_archive = action["Archive"]["TargetArchive"]
-                    archive_details = client.get_archive(ArchiveId=target_archive)
-                    archive_details.pop("ResponseMetadata")
-                    # Convert retention period to numeric values for easier comparison
-                    action["Archive"]["TargetArchive"] = \
-                        self.convert_retention_period(archive_details)
+                for action in rule.get("Actions", []):
+                    if "Archive" in action:
+                        target_archive = action["Archive"]["TargetArchive"]
+                        archive_details = client.get_archive(ArchiveId=target_archive)
+                        archive_details.pop("ResponseMetadata")
+                        # Convert retention period to numeric values for easier comparison
+                        action["Archive"]["TargetArchive"] = \
+                            self.convert_retention_period(archive_details)
             resource[self.annotation_key] = rules
 
         return resource[self.annotation_key]
