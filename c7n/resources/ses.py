@@ -342,6 +342,19 @@ class Delete(Action):
             )
 
 
+class DescribeSESIngressEndpoint(DescribeSource):
+
+    def augment(self, resources):
+        client = local_session(self.manager.session_factory).client('bedrock')
+
+        def _augment(r):
+            tags = client.list_tags_for_resource(resourceARN=r['jobArn'])['tags']
+            r['Tags'] = [{'Key': t['key'], 'Value': t['value']} for t in tags]
+            return r
+        resources = super().augment(resources)
+        return list(map(_augment, resources))
+
+
 @resources.register('ses-ingress-endpoint')
 class SESIngressEndpoint(QueryResourceManager):
     class resource_type(TypeInfo):
@@ -356,16 +369,9 @@ class SESIngressEndpoint(QueryResourceManager):
         config_type = "AWS::SES::MailManagerIngressPoint"
         permission_prefix = 'ses'
 
-    def augment(self, resources):
-        client = local_session(self.session_factory).client('mailmanager')
-
-        def _augment(r):
-            tags = self.retry(client.list_tags_for_resource,
-                ResourceArn=r['IngressPointArn'])['Tags']
-            r['Tags'] = tags
-            return r
-        resources = super().augment(resources)
-        return list(map(_augment, resources))
+    source_mapping = {
+        'describe': DescribeSESIngressEndpoint
+    }
 
 
 @SESIngressEndpoint.action_registry.register('tag')
