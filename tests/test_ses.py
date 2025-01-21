@@ -316,46 +316,6 @@ class SESIngressEndpointTest(BaseTest):
         new_tag[tags[0]['Key']] = tags[0]['Value']
         self.assertEqual(tag, new_tag)
 
-    # def test_ingress_endpoint_mark_for_op(self):
-    #     session_factory = self.record_flight_data("test_ingress_endpoint_mark_for_op")
-    #     p = self.load_policy(
-    #         {
-    #             "name": "ingress-endpoint-mark",
-    #             "resource": "ses-ingress-endpoint",
-    #             "filters": [
-    #                 {'tag:env': 'dev'},
-    #             ],
-    #             "actions": [
-    #                 {
-    #                     "type": "mark-for-op",
-    #                     "op": "delete",
-    #                     "days": 1,
-    #                 }
-    #             ],
-    #         },
-    #         session_factory=session_factory
-    #     )
-    #     resources = p.run()
-    #     self.assertEqual(len(resources), 1)
-
-    #     p = self.load_policy(
-    #         {
-    #             "name": "ingress-endpoint-marked",
-    #             "resource": "ses-ingress-endpoint",
-    #             "filters": [
-    #                 {
-    #                     "type": "marked-for-op",
-    #                     "op": "delete",
-    #                     "skew": 3,
-    #                 }
-    #             ],
-    #         },
-    #         session_factory=session_factory,
-    #     )
-    #     resources = p.run()
-    #     self.assertEqual(len(resources), 1)
-    #     assert resources[0]['IngressPointName'] == 'test-ingress-point'
-
     def test_delete_ingress_endpoint(self):
         session_factory = self.replay_flight_data("test_delete_ingress_endpoint")
         p = self.load_policy(
@@ -371,7 +331,7 @@ class SESIngressEndpointTest(BaseTest):
         )
         resources = p.run()
         self.assertEqual(1, len(resources))
-        self.assertEqual(resources[0]["IngressPointName"], "test-ingress-point")
+        self.assertEqual(resources[0]["IngressPointName"], "test-ingress-endpoint")
 
     def test_ingress_endpoint_rule_set(self):
         session_factory = self.replay_flight_data("test_ingress_endpoint_rule_set")

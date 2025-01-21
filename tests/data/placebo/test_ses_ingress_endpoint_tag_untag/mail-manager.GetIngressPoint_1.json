@@ -1,29 +1,29 @@
 {
     "status_code": 200,
     "data": {
-        "ARecord": "y3cdir8spda6.fips.wmjb.mail-manager-smtp.amazonaws.com",
+        "ARecord": "ndwt5yriibyt.fips.wmjb.mail-manager-smtp.amazonaws.com",
         "CreatedTimestamp": {
             "__class__": "datetime",
             "year": 2025,
             "month": 1,
-            "day": 13,
-            "hour": 15,
-            "minute": 34,
-            "second": 2,
-            "microsecond": 400000
+            "day": 17,
+            "hour": 16,
+            "minute": 27,
+            "second": 14,
+            "microsecond": 826000
         },
-        "IngressPointArn": "arn:aws:ses:us-east-1:644160558196:mailmanager-ingress-point/inp-4xeaozogbjz6aw3l53nx3lvr",
-        "IngressPointId": "inp-4xeaozogbjz6aw3l53nx3lvr",
-        "IngressPointName": "test-ingress-point",
+        "IngressPointArn": "arn:aws:ses:us-east-1:644160558196:mailmanager-ingress-point/inp-edq42wan6v45giaoc3lggzk7",
+        "IngressPointId": "inp-edq42wan6v45giaoc3lggzk7",
+        "IngressPointName": "test-ingress-endpoint",
         "LastUpdatedTimestamp": {
             "__class__": "datetime",
             "year": 2025,
             "month": 1,
-            "day": 13,
-            "hour": 15,
-            "minute": 34,
-            "second": 2,
-            "microsecond": 400000
+            "day": 17,
+            "hour": 16,
+            "minute": 27,
+            "second": 14,
+            "microsecond": 826000
         },
         "RuleSetId": "rs-uvwnepkn25bop7mqs672elqt",
         "Status": "ACTIVE",

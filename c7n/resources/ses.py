@@ -7,7 +7,7 @@ from c7n.filters.iamaccess import CrossAccountAccessFilter
 import c7n.filters.policystatement as polstmt_filter
 from c7n.exceptions import PolicyValidationError
 from c7n.manager import resources
-from c7n.query import DescribeSource, QueryResourceManager, TypeInfo
+from c7n.query import DescribeSource, QueryResourceManager, TypeInfo, DescribeWithResourceTags
 from c7n.utils import local_session, type_schema, format_string_values
 from c7n.tags import universal_augment
 from c7n.tags import RemoveTag, Tag
@@ -342,19 +342,6 @@ class Delete(Action):
             )
 
 
-class DescribeSESIngressEndpoint(DescribeSource):
-
-    def augment(self, resources):
-        client = local_session(self.manager.session_factory).client('mailmanager')
-
-        def _augment(r):
-            tags = client.list_tags_for_resource(ResourceArn=r['IngressPointArn'])['Tags']
-            r['Tags'] = tags
-            return r
-        resources = super().augment(resources)
-        return list(map(_augment, resources))
-
-
 @resources.register('ses-ingress-endpoint')
 class SESIngressEndpoint(QueryResourceManager):
     class resource_type(TypeInfo):
@@ -365,12 +352,11 @@ class SESIngressEndpoint(QueryResourceManager):
         id = 'IngressPointId'
         arn_type = 'mailmanager-ingress-point'
         arn = 'IngressPointArn'
-        universal_taggable = object()
         config_type = "AWS::SES::MailManagerIngressPoint"
         permission_prefix = 'ses'
 
     source_mapping = {
-        'describe': DescribeSESIngressEndpoint
+        'describe': DescribeWithResourceTags
     }
 
 
@@ -461,11 +447,19 @@ class SESIngressEndpointRuleSet(ListItemFilter):
               - name: ses-ingress-endpoint-rule-set
                 resource: ses-ingress-endpoint
                 filters:
-                - type: rule-set
-                  attrs:
-                    - type: value
-                      key: length(Actions[]|[?Archive])
-                      value: 1
+                - or:
+                  - not:
+                    - type: rule-set
+                      attrs:
+                        - type: value
+                          key: length(Actions[]|[?Archive])
+                          value: 1
+                  - type: rule-set
+                    attrs:
+                      - type: value
+                        key: "length(Actions[]|[?Archive.TargetArchive \
+                            .Retention.RetentionPeriodInMonth > `5`])"
+                        value: 1
     """
     schema = type_schema(
         'rule-set',

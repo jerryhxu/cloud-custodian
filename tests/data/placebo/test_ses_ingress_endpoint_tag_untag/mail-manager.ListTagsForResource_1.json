@@ -3,8 +3,8 @@
     "data": {
         "Tags": [
             {
-                "Key": "team",
-                "Value": "policy"
+                "Key": "env",
+                "Value": "dev"
             }
         ],
         "ResponseMetadata": {}
