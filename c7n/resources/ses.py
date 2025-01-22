@@ -516,7 +516,7 @@ class SESIngressEndpointRuleSet(ListItemFilter):
             "PERMANENT": 99999  # Very large value to represent "PERMANENT"
         }
 
-        retention_text = archive_details["Retention"].pop("RetentionPeriod")  # Remove the old key
+        retention_text = archive_details["Retention"].get("RetentionPeriod")
         retention_value = retention_mapping.get(retention_text, None)  # Map to numeric value
         archive_details["Retention"]["RetentionPeriodInMonth"] = retention_value
         return archive_details
