@@ -94,10 +94,14 @@ class PolicyChecker:
             policy = policy_text
 
         violations = []
+        allowances = []
+
         for s in policy.get('Statement', ()):
             if self.handle_statement(s):
                 violations.append(s)
-        return violations
+            else:
+                allowances.append(s)
+        return allowances, violations
 
     def handle_statement(self, s):
         if (all((self.handle_principal(s),
@@ -251,6 +255,7 @@ class CrossAccountAccessFilter(Filter):
         actions={'type': 'array', 'items': {'type': 'string'}},
         # only consider policies which grant to *
         everyone_only={'type': 'boolean'},
+        allowance={'type': 'boolean'},
         # disregard statements using these conditions.
         whitelist_conditions={'type': 'array', 'items': {'type': 'string'}},
         # white list accounts
@@ -265,11 +270,13 @@ class CrossAccountAccessFilter(Filter):
 
     policy_attribute = 'Policy'
     annotation_key = 'CrossAccountViolations'
+    allowance_key = 'CrossAccountAllowances'
 
     checker_factory = PolicyChecker
 
     def process(self, resources, event=None):
         self.everyone_only = self.data.get('everyone_only', False)
+        self.allowance = self.data.get('allowance', False)
         self.conditions = set(self.data.get(
             'whitelist_conditions',
             ("aws:userid", "aws:username")))
@@ -327,7 +334,10 @@ class CrossAccountAccessFilter(Filter):
         p = self.get_resource_policy(r)
         if p is None:
             return False
-        violations = self.checker.check(p)
-        if violations:
+        allowances, violations = self.checker.check(p)
+        if self.allowance and allowances:
+            r[self.allowance_key]   = allowances
+            return True
+        elif violations:
             r[self.annotation_key] = violations
             return True
