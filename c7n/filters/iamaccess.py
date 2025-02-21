@@ -59,6 +59,10 @@ class PolicyChecker:
 
     # Config properties
     @property
+    def allowance(self):
+        return self.checker_config.get('allowance', False)
+
+    @property
     def allowed_accounts(self):
         return self.checker_config.get('allowed_accounts', ())
 
@@ -100,7 +104,7 @@ class PolicyChecker:
                 violations.append(s)
             else:
                 allowances.append(s)
-        return allowances, violations
+        return allowances if self.allowance else violations
 
     def handle_statement(self, s):
         if (all((self.handle_principal(s),
@@ -293,7 +297,8 @@ class CrossAccountAccessFilter(Filter):
              'allowed_orgid': self.orgid,
              'check_actions': self.actions,
              'everyone_only': self.everyone_only,
-             'whitelist_conditions': self.conditions})
+             'whitelist_conditions': self.conditions,
+             'allowance': self.allowance})
         self.checker = self.checker_factory(self.checker_config)
         return super(CrossAccountAccessFilter, self).process(resources, event)
 
