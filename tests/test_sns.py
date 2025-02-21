@@ -959,8 +959,7 @@ class TestSNS(BaseTest):
         self.assertEqual(len(resources), 1)
 
     def test_sns_cross_account_allowance(self):
-        session_factory = self.record_flight_data("test_sns_cross_account_allowance")
-        client = session_factory().client("sns")
+        session_factory = self.replay_flight_data("test_sns_cross_account_allowance")
 
         p = self.load_policy(
             {
@@ -975,7 +974,8 @@ class TestSNS(BaseTest):
         )
         resources = p.run()
 
-        self.assertEqual([r["TopicArn"] for r in resources], ['arn:aws:sns:us-east-2:644160558196:foo'])
+        self.assertEqual(len(resources), 1)
+        self.assertEqual(resources[0]["TopicArn"], 'arn:aws:sns:us-east-2:644160558196:foo')
 
 
 class TestSubscription(BaseTest):
