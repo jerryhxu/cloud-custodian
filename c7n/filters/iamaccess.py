@@ -93,8 +93,7 @@ class PolicyChecker:
         else:
             policy = policy_text
 
-        violations = []
-        allowances = []
+        allowances, violations = [], []
 
         for s in policy.get('Statement', ()):
             if self.handle_statement(s):
@@ -255,6 +254,7 @@ class CrossAccountAccessFilter(Filter):
         actions={'type': 'array', 'items': {'type': 'string'}},
         # only consider policies which grant to *
         everyone_only={'type': 'boolean'},
+        # only consider policies which grant to the specified accounts
         allowance={'type': 'boolean'},
         # disregard statements using these conditions.
         whitelist_conditions={'type': 'array', 'items': {'type': 'string'}},
@@ -336,8 +336,9 @@ class CrossAccountAccessFilter(Filter):
             return False
         allowances, violations = self.checker.check(p)
         if self.allowance and allowances:
-            r[self.allowance_key]   = allowances
+            r[self.allowance_key] = allowances
             return True
-        elif violations:
+
+        if not self.allowance and violations:
             r[self.annotation_key] = violations
             return True

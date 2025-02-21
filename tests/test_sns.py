@@ -958,6 +958,25 @@ class TestSNS(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
 
+    def test_sns_cross_account_allowance(self):
+        session_factory = self.record_flight_data("test_sns_cross_account_allowance")
+        client = session_factory().client("sns")
+
+        p = self.load_policy(
+            {
+                "name": "sns-rm-matched",
+                "resource": "sns",
+                "filters": [
+                    {"type": "cross-account", "whitelist": ["644160558196"], "allowance": True},
+                ],
+            },
+            session_factory=session_factory,
+            config={'region': 'us-east-2'}
+        )
+        resources = p.run()
+
+        self.assertEqual([r["TopicArn"] for r in resources], ['arn:aws:sns:us-east-2:644160558196:foo'])
+
 
 class TestSubscription(BaseTest):
 
