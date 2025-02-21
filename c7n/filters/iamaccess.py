@@ -339,11 +339,11 @@ class CrossAccountAccessFilter(Filter):
         p = self.get_resource_policy(r)
         if p is None:
             return False
-        allowances, violations = self.checker.check(p)
-        if self.allowance and allowances:
-            r[self.allowance_key] = allowances
+        results = self.checker.check(p)
+        if self.allowance and results:
+            r[self.allowance_key] = results
             return True
 
-        if not self.allowance and violations:
-            r[self.annotation_key] = violations
+        if not self.allowance and results:
+            r[self.annotation_key] = results
             return True
