@@ -50,6 +50,7 @@ class PolicyChecker:
     checker_config:
       - check_actions: only check one of the specified actions
       - everyone_only: only check for wildcard permission grants
+      - allownace: if true, return the allowed statements
       - allowed_accounts: permission grants to these accounts are okay
       - whitelist_conditions: a list of conditions that are considered
             sufficient enough to whitelist the statement.
