@@ -958,15 +958,19 @@ class TestSNS(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
 
-    def test_sns_cross_account_allowance(self):
-        session_factory = self.replay_flight_data("test_sns_cross_account_allowance")
+    def test_sns_cross_account_whitelist_statement(self):
+        session_factory = self.replay_flight_data("test_sns_cross_account_whitelist_statement")
 
         p = self.load_policy(
             {
                 "name": "sns-rm-matched",
                 "resource": "sns",
                 "filters": [
-                    {"type": "cross-account", "whitelist": ["644160558196"], "allowance": True},
+                    {
+                        "type": "cross-account",
+                        "whitelist": ["644160558196"],
+                        "whitelist_statement": True
+                    },
                 ],
             },
             session_factory=session_factory,
