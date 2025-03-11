@@ -338,8 +338,8 @@ class TestTimestreamInfluxDBCluster(BaseTest):
         session_factory = self.replay_flight_data('test_timestream_influx_db_cluster_tag')
         p = self.load_policy(
             {
-                'name': 'test-timestream-influx-db-tag',
-                'resource': 'aws.timestream-influxdb',
+                'name': 'test-timestream-influx-cluster-tag',
+                'resource': 'aws.timestream-influxdb-cluster',
                 'filters': [
                     {
                         'tag:foo': 'absent'
@@ -363,11 +363,11 @@ class TestTimestreamInfluxDBCluster(BaseTest):
         self.assertEqual(value, 'bar')
 
     def test_timestream_influx_db_remove_tag(self):
-        session_factory = self.replay_flight_data('test_timestream_influx_db_remove_tag')
+        session_factory = self.replay_flight_data('test_timestream_influx_cluster_remove_tag')
         p = self.load_policy(
             {
-                'name': 'test-timestream-influx-db-remove-tag',
-                'resource': 'aws.timestream-influxdb',
+                'name': 'test-timestream-influx-cluster-remove-tag',
+                'resource': 'aws.timestream-influxdb-cluster',
                 'filters': [
                     {
                         'tag:foo': 'present'
