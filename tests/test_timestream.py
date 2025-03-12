@@ -334,11 +334,11 @@ class TestTimestreamInfluxDB(BaseTest):
 
 
 class TestTimestreamInfluxDBCluster(BaseTest):
-    def test_timestream_influx_db_cluster_tag(self):
-        session_factory = self.replay_flight_data('test_timestream_influx_db_cluster_tag')
+    def test_timestream_influxdb_cluster_tag(self):
+        session_factory = self.replay_flight_data('test_timestream_influxdb_cluster_tag')
         p = self.load_policy(
             {
-                'name': 'test-timestream-influx-cluster-tag',
+                'name': 'test-timestream-influxdb-cluster-tag',
                 'resource': 'aws.timestream-influxdb-cluster',
                 'filters': [
                     {
@@ -362,8 +362,8 @@ class TestTimestreamInfluxDBCluster(BaseTest):
         self.assertEqual(key, 'foo')
         self.assertEqual(value, 'bar')
 
-    def test_timestream_influx_db_remove_tag(self):
-        session_factory = self.replay_flight_data('test_timestream_influx_cluster_remove_tag')
+    def test_timestream_influxdb_cluster_remove_tag(self):
+        session_factory = self.replay_flight_data('test_timestream_influxdb_cluster_remove_tag')
         p = self.load_policy(
             {
                 'name': 'test-timestream-influx-cluster-remove-tag',
@@ -387,12 +387,12 @@ class TestTimestreamInfluxDBCluster(BaseTest):
         tags = client.list_tags_for_resource(resourceArn=resources[0]['arn'])['tags']
         self.assertEqual(len(tags), 0)
 
-    def test_timestream_influx_db_delete(self):
-        session_factory = self.replay_flight_data('test_timestream_influx_db_delete')
+    def test_timestream_influxdb_cluster_delete(self):
+        session_factory = self.replay_flight_data('test_timestream_influxdb_cluster_delete')
         p = self.load_policy(
             {
-                'name': 'test-timestream-influx-db-delete',
-                'resource': 'aws.timestream-influxdb',
+                'name': 'test-timestream-influxdb-cluster-delete',
+                'resource': 'aws.timestream-influxdb-cluster',
                 'actions': [
                     {
                         'type': 'delete',
@@ -403,16 +403,16 @@ class TestTimestreamInfluxDBCluster(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
         client = session_factory().client('timestream-influxdb')
-        db = client.list_db_instances()['items']
-        instance = client.get_db_instance(identifier=db[0]['id'])
-        self.assertEqual(instance['status'], 'DELETING')
+        db = client.list_db_clusters()['items']
+        cluster = client.get_db_cluster(dbClusterId=db[0]['id'])
+        self.assertEqual(cluster['status'], 'DELETING')
 
-    def test_timestream_influxdb_with_subnet_sg_filter(self):
-        factory = self.replay_flight_data("test_timestream_influx_db_subnet_sg")
+    def test_timestream_influxdb_cluster_with_subnet_sg_filter(self):
+        factory = self.replay_flight_data("test_timestream_influxdb_cluster_subnet_sg")
         p = self.load_policy(
             {
-                "name": "timestream_influx_db_subnet_sg",
-                "resource": "aws.timestream-influxdb",
+                "name": "timestream_influxdb_cluster_subnet_sg",
+                "resource": "aws.timestream-influxdb-cluster",
                 "filters": [
                     {'type': 'subnet',
                      'key': 'tag:Internal',
@@ -425,14 +425,15 @@ class TestTimestreamInfluxDBCluster(BaseTest):
         )
         resources = p.run()
         self.assertEqual(len(resources), 1)
+        assert resources[0]['name'] == 'test-cluster'
 
-    def test_timestream_influxdb_network_location_filter(self):
-        factory = self.replay_flight_data("test_timestream_influxdb_network_location_filter")
+    def test_timestream_influxdb_cluster_network_location_filter(self):
+        factory = self.replay_flight_data("test_timestream_influxdb_cluster_network_location_filter")
 
         p = self.load_policy(
             {
-                "name": "test_timestream_influxdb_network_location_filter",
-                "resource": "timestream-influxdb",
+                "name": "test_timestream_influxdb_cluster_network_location_filter",
+                "resource": "timestream-influxdb-cluster",
                 "filters": [
                     {
                         "type": "network-location",
@@ -447,4 +448,4 @@ class TestTimestreamInfluxDBCluster(BaseTest):
 
         resources = p.run()
         self.assertEqual(len(resources), 1)
-        assert resources[0]['name'] == 'test-db'
+        assert resources[0]['name'] == 'test-cluster'
