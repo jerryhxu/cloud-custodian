@@ -264,7 +264,6 @@ class TimestreamInfluxDBDelete(Action):
                 continue
 
 
-
 TimestreamInfluxDBCluster.action_registry.register('mark-for-op', TagDelayedAction)
 
 TimestreamInfluxDBCluster.filter_registry.register('marked-for-op', TagActionFilter)
