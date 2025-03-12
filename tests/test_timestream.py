@@ -428,7 +428,7 @@ class TestTimestreamInfluxDBCluster(BaseTest):
         assert resources[0]['name'] == 'test-cluster'
 
     def test_timestream_influxdb_cluster_network_location_filter(self):
-        factory = self.replay_flight_data("test_timestream_influxdb_cluster_network_location_filter")
+        factory = self.replay_flight_data("test_timestream_influxdb_cluster_network_location")
 
         p = self.load_policy(
             {

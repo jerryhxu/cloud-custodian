@@ -2,8 +2,6 @@
     "status_code": 200,
     "data": {
         "tags": {
-            "Environment": "Staging",
-            "ResourceOwner": "Avengers",
             "c7n-public": "Policy"
         },
         "ResponseMetadata": {}
