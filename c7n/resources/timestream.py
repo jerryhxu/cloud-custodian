@@ -176,7 +176,6 @@ class Parameter(ValueFilter):
                 influxdb_param = client.get_db_parameter_group(
                     identifier=r['dbParameterGroupIdentifier']) \
                     .get('parameters', {}).get('InfluxDBv2', {})
-              
                 r[self.annotation_key] = influxdb_param
 
             if self.match(r[self.annotation_key]):
