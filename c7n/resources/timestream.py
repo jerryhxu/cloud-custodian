@@ -147,35 +147,37 @@ class TimestreamInfluxDBSubnetFilter(SubnetFilter):
 
 @TimestreamInfluxDB.filter_registry.register('param')
 class Parameter(ValueFilter):
-    """Filter AppSync GraphQLApi based on the api cache attributes
+    """Filter timestream influxdb instances based parameter values.
 
     :example:
 
     .. code-block:: yaml
 
        policies:
-         - name: filter-graphql-api-cache
-           resource: aws.graphql-api
+         - name: filter-timestream-influxdb-instance
+           resource: aws.timestream-influxdb
            filters:
-            - type: api-cache
-              key: 'apiCachingBehavior'
-              value: 'FULL_REQUEST_CACHING'
+            - type: param
+              key: fluxLogEnabled
+              value: True
     """
-    permissions = ('appsync:GetApiCache',)
-    schema = type_schema('api-cache', rinherit=ValueFilter.schema)
-    annotation_key = 'c7n:ApiCaches'
+    permissions = ('timestream-influxdb:GetDbParameterGroup',)
+    schema = type_schema('param', rinherit=ValueFilter.schema)
+    annotation_key = 'c7n:TimestreamInfluxdbParam'
 
     def process(self, resources, event=None):
-        client = local_session(self.manager.session_factory).client('appsync')
+        client = local_session(self.manager.session_factory).client('timestream-influxdb')
         results = []
         for r in resources:
             if self.annotation_key not in r:
                 try:
-                    api_cache = client.get_db_parameter_group(identifier=r['dbParameterGroupIdentifier']).get('parameters').get('InfluxDBv2')
+                  influxdb_param = client.get_db_parameter_group(
+                      identifier=r['dbParameterGroupIdentifier']) \
+                        .get('parameters', {}).get('InfluxDBv2', {})
                 except client.exceptions.NotFoundException:
                     continue
 
-                r[self.annotation_key] = api_cache
+                r[self.annotation_key] = influxdb_param
 
             if self.match(r[self.annotation_key]):
                 results.append(r)
