@@ -2395,9 +2395,9 @@ class CrossAccountChecker(TestCase):
             violations = checker.check(p)
             self.assertEqual(bool(violations), expected)
 
-    def test_s3_whitelist_statement_only(self):
+    def test_s3_return_allowed_only(self):
         policies = load_data("iam/s3-principal.json")
-        checker = PolicyChecker({"whitelist_statement": True})
+        checker = PolicyChecker({"return_allowed": True})
         for p, expected in zip(policies, [False, False, False, True, True, True]):
             allowances = checker.check(p)
             self.assertEqual(bool(allowances), expected)
