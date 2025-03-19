@@ -12,6 +12,7 @@ from c7n.tags import (
     RemoveTag as RemoveTagAction
 )
 from c7n.filters.backup import ConsecutiveAwsBackupsFilter
+from c7n.filters import ValueFilter
 
 
 class DescribeTimestream(DescribeSource):
@@ -142,6 +143,44 @@ class TimestreamInfluxDBSGFilter(SecurityGroupFilter):
 class TimestreamInfluxDBSubnetFilter(SubnetFilter):
 
     RelatedIdsExpression = "vpcSubnetIds[]"
+
+
+@TimestreamInfluxDB.filter_registry.register('param')
+class Parameter(ValueFilter):
+    """Filter AppSync GraphQLApi based on the api cache attributes
+
+    :example:
+
+    .. code-block:: yaml
+
+       policies:
+         - name: filter-graphql-api-cache
+           resource: aws.graphql-api
+           filters:
+            - type: api-cache
+              key: 'apiCachingBehavior'
+              value: 'FULL_REQUEST_CACHING'
+    """
+    permissions = ('appsync:GetApiCache',)
+    schema = type_schema('api-cache', rinherit=ValueFilter.schema)
+    annotation_key = 'c7n:ApiCaches'
+
+    def process(self, resources, event=None):
+        client = local_session(self.manager.session_factory).client('appsync')
+        results = []
+        for r in resources:
+            if self.annotation_key not in r:
+                try:
+                    api_cache = client.get_db_parameter_group(identifier=r['dbParameterGroupIdentifier']).get('parameters').get('InfluxDBv2')
+                except client.exceptions.NotFoundException:
+                    continue
+
+                r[self.annotation_key] = api_cache
+
+            if self.match(r[self.annotation_key]):
+                results.append(r)
+
+        return results
 
 
 @TimestreamTable.action_registry.register('delete')
