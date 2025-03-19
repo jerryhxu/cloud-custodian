@@ -170,11 +170,14 @@ class Parameter(ValueFilter):
         results = []
         for r in resources:
             if self.annotation_key not in r:
+                if 'dbParameterGroupIdentifier' not in r:
+                    # Skip this resource if the key is missing
+                    continue
                 try:
                     influxdb_param = client.get_db_parameter_group(
                       identifier=r['dbParameterGroupIdentifier']) \
                         .get('parameters', {}).get('InfluxDBv2', {})
-                except client.exceptions.NotFoundException:
+                except client.exceptions.ResourceNotFoundException:
                     influxdb_param = {}
                     continue
 
