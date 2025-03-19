@@ -958,8 +958,8 @@ class TestSNS(BaseTest):
         resources = p.run()
         self.assertEqual(len(resources), 1)
 
-    def test_sns_cross_account_whitelist_statement(self):
-        session_factory = self.replay_flight_data("test_sns_cross_account_whitelist_statement")
+    def test_sns_cross_account_return_allowed(self):
+        session_factory = self.replay_flight_data("test_sns_cross_account_return_allowed")
 
         p = self.load_policy(
             {
@@ -969,7 +969,7 @@ class TestSNS(BaseTest):
                     {
                         "type": "cross-account",
                         "whitelist": ["644160558196"],
-                        "whitelist_statement": True
+                        "return_allowed": True
                     },
                 ],
             },
