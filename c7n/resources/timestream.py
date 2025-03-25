@@ -163,7 +163,7 @@ class Parameter(ValueFilter):
     """
     permissions = ('timestream-influxdb:GetDbParameterGroup',)
     schema = type_schema('db-parameter', rinherit=ValueFilter.schema)
-    annotation_key = 'c7n:TimestreamInfluxdbParam'
+    annotation_key = 'c7n:MatchedDBParameter'
 
     def process(self, resources, event=None):
         client = local_session(self.manager.session_factory).client('timestream-influxdb')
