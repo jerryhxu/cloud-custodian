@@ -171,9 +171,9 @@ class Parameter(ValueFilter):
         for r in resources:
             if self.annotation_key not in r and \
                 'dbParameterGroupIdentifier' in r:
-                    r[self.annotation_key] = client.get_db_parameter_group(
-                        identifier=r['dbParameterGroupIdentifier']) \
-                        .get('parameters', {}).get('InfluxDBv2', {})
+                r[self.annotation_key] = client.get_db_parameter_group(
+                identifier=r['dbParameterGroupIdentifier']) \
+                .get('parameters', {}).get('InfluxDBv2', {})
 
             if self.match(r.get(self.annotation_key, {})):
                 results.append(r)
