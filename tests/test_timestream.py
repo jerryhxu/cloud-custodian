@@ -332,8 +332,8 @@ class TestTimestreamInfluxDB(BaseTest):
         self.assertEqual(len(resources), 1)
         assert resources[0]['name'] == 'test-db'
 
-    def test_timestream_influxdb_param_filter(self):
-        factory = self.replay_flight_data("test_timestream_influxdb_param_filter")
+    def test_timestream_influxdb_db_parameter_filter(self):
+        factory = self.replay_flight_data("test_timestream_influxdb_db_parameter_filter")
 
         p = self.load_policy(
             {
@@ -341,7 +341,7 @@ class TestTimestreamInfluxDB(BaseTest):
                 "resource": "timestream-influxdb",
                 "filters": [
                     {
-                        "type": "param",
+                        "type": "db-parameter",
                         "key": "fluxLogEnabled",
                         "value": False,
                     }
