@@ -777,7 +777,8 @@ class RDSDbShardGroup(QueryResourceManager):
     class resource_type(TypeInfo):
         service = 'rds'
         arn = 'DBShardGroupArn'
-        name = id = 'DBShardGroupIdentifier'
+        name = 'DBShardGroupIdentifier'
+        id = 'DBShardGroupResourceId'
         enum_spec = ('describe_db_shard_groups', 'DBShardGroups', None)
         cfn_type = config_type = 'AWS::RDS::DBShardGroup'
         permissions_augment = ("rds:DescribeDBShardGroups",)
