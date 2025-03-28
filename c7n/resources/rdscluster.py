@@ -771,19 +771,14 @@ class DescribeDbShardGroup(DescribeSource):
             r['Tags'] = r.pop('TagList', ())
         return resources
 
+
 @resources.register('rds-db-shard-group')
 class RDSDbShardGroup(QueryResourceManager):
     class resource_type(TypeInfo):
         service = 'rds'
         arn = 'DBShardGroupArn'
-        name = id = 'DBClusterIdentifier'
-        enum_spec = ('describe_db_shard_groups', 'DBShardGroups', {'Filters': [{
-            'Name': 'DescribeDBClusters',
-            'Values': [
-                '',
-            ]
-            }]
-            })
+        name = id = 'DBShardGroupIdentifier'
+        enum_spec = ('describe_db_shard_groups', 'DBShardGroups', None)
         cfn_type = config_type = 'AWS::RDS::DBShardGroup'
         permissions_augment = ("rds:DescribeDBShardGroups",)
         universal_taggable = object()
