@@ -771,7 +771,7 @@ class DescribeDbShardGroup(DescribeSource):
             r['Tags'] = r.pop('TagList', ())
         return resources
 
-@resources.register('rds-dbshard-group')
+@resources.register('rds-db-shard-group')
 class RDSDbShardGroup(QueryResourceManager):
     class resource_type(TypeInfo):
         service = 'rds'
@@ -786,6 +786,8 @@ class RDSDbShardGroup(QueryResourceManager):
             })
         cfn_type = config_type = 'AWS::RDS::DBShardGroup'
         permissions_augment = ("rds:DescribeDBShardGroups",)
-        source_mapping = {
+        universal_taggable = object()
+
+    source_mapping = {
             'describe': DescribeDbShardGroup
         }
