@@ -780,8 +780,8 @@ class RDSDbShardGroup(QueryResourceManager):
         name = 'DBShardGroupIdentifier'
         id = 'DBShardGroupResourceId'
         enum_spec = ('describe_db_shard_groups', 'DBShardGroups', None)
-        cfn_type = config_type = 'AWS::RDS::DBShardGroup'
-        permissions_augment = ("rds:DescribeDBShardGroups",)
+        cfn_type = 'AWS::RDS::DBShardGroup'
+        permissions_enum = ("rds:DescribeDBShardGroups",)
         universal_taggable = object()
 
     source_mapping = {
