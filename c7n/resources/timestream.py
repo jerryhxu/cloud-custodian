@@ -189,7 +189,7 @@ class ParameterFilter(ValueFilter):
                     pgcache[pg] = pg_values
                     continue
                 pgcache[pg] = self._get_param_list(pg)
-                cache.save(cache_key,  pgcache[pg])
+                cache.save(cache_key, pgcache[pg])
         return pgcache
 
     def process(self, resources, event=None):
