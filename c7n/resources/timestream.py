@@ -79,9 +79,9 @@ class TimestreamInfluxDB(QueryResourceManager):
 class TimestreamInfluxDBCluster(QueryResourceManager):
     class resource_type(TypeInfo):
         service = 'timestream-influxdb'
-        arn_type = ''
         name = 'name'
-        id = arn = 'arn'
+        arn = 'arn'
+        id = 'id'
         enum_spec = ('list_db_clusters', 'items', {})
         detail_spec = ('get_db_cluster', 'dbClusterId', 'id', None)
         permission_prefix = 'timestream-influxdb'
@@ -273,7 +273,7 @@ TimestreamInfluxDBCluster.filter_registry.register('network-location', net_filte
 
 @TimestreamInfluxDBCluster.action_registry.register('delete')
 class TimestreamInfluxDBClusterDelete(Action):
-    """Delete timestream influx-db instance.
+    """Delete timestream influx-db cluster.
 
     :example:
 
