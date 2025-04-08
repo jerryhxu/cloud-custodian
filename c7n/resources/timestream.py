@@ -84,7 +84,8 @@ class TimestreamInfluxDBCluster(QueryResourceManager):
         id = 'id'
         enum_spec = ('list_db_clusters', 'items', {})
         detail_spec = ('get_db_cluster', 'dbClusterId', 'id', None)
-        permission_prefix = 'timestream-influxdb'
+        permissions_enum = ('timestream-influxdb:ListDbClusters',
+                            'timestream-influxdb:GetDbCluster')
 
     def augment(self, resources):
         resources = super().augment(resources)
