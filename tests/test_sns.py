@@ -980,7 +980,17 @@ class TestSNS(BaseTest):
 
         self.assertEqual(len(resources), 1)
         self.assertEqual(resources[0]["TopicArn"], 'arn:aws:sns:us-east-2:644160558196:foo')
-        self.assertIn('CrossAccountAllowlists', resources[0])
+        self.assertEqual(
+            resources[0]['CrossAccountAllowlists'], [
+                {
+                 'Sid': 'allSid1',
+                 'Effect': 'Allow',
+                 'Principal': {'AWS': '*'},
+                 'Action': 'SNS:Subscribe',
+                 'Resource': '*',
+                 'Condition': {'StringEquals': {'AWS:SourceOwner': '644160558196'}},
+                 }
+            ])
 
 
 class TestSubscription(BaseTest):
