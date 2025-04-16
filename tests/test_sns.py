@@ -982,6 +982,7 @@ class TestSNS(BaseTest):
         self.assertEqual(resources[0]["TopicArn"], 'arn:aws:sns:us-east-2:644160558196:foo')
         self.assertIn('CrossAccountAllowlists', resources[0])
 
+
 class TestSubscription(BaseTest):
 
     def test_subscription_delete(self):
