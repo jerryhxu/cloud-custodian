@@ -98,14 +98,14 @@ class PolicyChecker:
         else:
             policy = policy_text
 
-        whitelist_ststatements, violations = [], []
+        allowlist_statements, violations = [], []
 
         for s in policy.get('Statement', ()):
             if self.handle_statement(s):
                 violations.append(s)
             else:
-                whitelist_ststatements.append(s)
-        return whitelist_ststatements if self.return_allowed else violations
+                allowlist_statements.append(s)
+        return allowlist_statements if self.return_allowed else violations
 
     def handle_statement(self, s):
         if (all((self.handle_principal(s),
@@ -275,7 +275,7 @@ class CrossAccountAccessFilter(Filter):
 
     policy_attribute = 'Policy'
     annotation_key = 'CrossAccountViolations'
-    whitelist_key = 'CrossAccountWhitelists'
+    allowlist_key = 'CrossAccountAllowlists'
 
     checker_factory = PolicyChecker
 
@@ -342,7 +342,7 @@ class CrossAccountAccessFilter(Filter):
             return False
         results = self.checker.check(p)
         if self.return_allowed and results:
-            r[self.whitelist_key] = results
+            r[self.allowlist_key] = results
             return True
 
         if not self.return_allowed and results:
