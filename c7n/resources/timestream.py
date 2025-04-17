@@ -203,19 +203,37 @@ class ParameterFilter(ValueFilter):
     def handle_paramgroup_cache(self, param_groups):
         pgcache = {}
         cache = self.manager._cache
+        missing_param_groups = []
 
+        # Lock cache once to check for all cached values
         with cache:
             for pg in param_groups:
                 cache_key = {
                     'region': self.manager.config.region,
                     'account_id': self.manager.config.account_id,
-                    'rds-pg': pg}
+                    'rds-pg': pg
+                }
                 pg_values = cache.get(cache_key)
                 if pg_values is not None:
                     pgcache[pg] = pg_values
-                    continue
-                pgcache[pg] = self._get_param_list(pg)
+                else:
+                    missing_param_groups.append(pg)
+
+        # Make API calls for all missing parameter groups
+        for pg in missing_param_groups:
+            param_list = self._get_param_list(pg)
+            pgcache[pg] = param_list
+
+        # Lock cache again to update it with new values
+        with cache:
+            for pg in missing_param_groups:
+                cache_key = {
+                    'region': self.manager.config.region,
+                    'account_id': self.manager.config.account_id,
+                    'rds-pg': pg
+                }
                 cache.save(cache_key, pgcache[pg])
+
         return pgcache
 
     def process(self, resources, event=None):
