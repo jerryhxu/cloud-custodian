@@ -224,7 +224,6 @@ class ParameterFilter(ValueFilter):
 
         # Fetch missing parameter groups via API
         if missing_param_groups:
-            # Optionally parallelize API calls if supported
             for pg in missing_param_groups:
                 param_list = self._get_param_list(pg)
                 pgcache[pg] = param_list
