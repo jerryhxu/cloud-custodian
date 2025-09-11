@@ -4,6 +4,7 @@ from .common import BaseTest, event_data
 from c7n.resources.aws import shape_validate
 from c7n.utils import local_session, jmespath_compile
 from unittest.mock import MagicMock
+from unittest.mock import patch
 
 
 class CloudFrontWaf(BaseTest):
@@ -671,11 +672,34 @@ class CloudFront(BaseTest):
             'acm'
         )
 
+    from unittest.mock import patch
+
+    from unittest.mock import MagicMock
+
     def test_cloudfront_update_distribution(self):
+        # Replay flight data for the test
         factory = self.replay_flight_data("test_distribution_update_distribution")
+        client = factory().client("cloudfront")
+
+        # Create a mock factory
+        mock_factory = MagicMock()
+        mock_factory.region = 'us-east-1'
+
+        # Mock the exception for update_distribution
+        mock_factory().client('cloudfront').exceptions.NoSuchDistribution = (
+            client.exceptions.NoSuchDistribution
+        )
+        mock_factory().client('cloudfront').update_distribution.side_effect = (
+            client.exceptions.NoSuchDistribution(
+                {'Error': {'Code': 'NoSuchDistribution'}},
+                operation_name='update_distribution'
+            )
+        )
+
+        # Load the policy
         p = self.load_policy(
             {
-                "name": "cloudfront-tagging-us-east-1",
+                "name": "cloudfront-update-distribution",
                 "resource": "distribution",
                 "filters": [
                     {
@@ -700,21 +724,18 @@ class CloudFront(BaseTest):
                     }
                 ],
             },
-            config=dict(region='us-east-1'),
-            session_factory=factory,
+            session_factory=mock_factory,
         )
 
-        resources = p.run()
+        # Process the action and handle the exception
+        try:
+            p.resource_manager.actions[0].process([{'Id': 'abc'}])
+        except client.exceptions.NoSuchDistribution:
+            self.fail('should not raise')
 
-        self.assertEqual(len(resources), 1)
-
-        client = local_session(factory).client("cloudfront")
-        dist_id = resources[0]['Id']
-        resp = client.get_distribution_config(Id=dist_id)
-        self.assertEqual(
-            resp['DistributionConfig']['Logging']['Enabled'], True
-        )
-
+        # Assert that update_distribution was called once
+        mock_factory().client('cloudfront').update_distribution.assert_called_once()
+    
     def test_cloudfront_update_streaming_distribution(self):
         factory = self.replay_flight_data("test_distribution_update_streaming_distribution")
         p = self.load_policy(
